@@ -1,8 +1,8 @@
 # ChatApp
 ## Git
-* Tạo Folder dự án **BlueOceanClient**
+* Tạo Folder dự án **BlueOcean** (Không đề xuất )
 * Mở git bash trong Folder
-### Nếu chưa tạo thư mục BlueOcean ( clone sẽ tự khởi tạo thư mục BlueOcean)
+### Nếu chưa tạo thư mục BlueOcean ( clone sẽ tự khởi tạo thư mục BlueOcean) -Reccommen
 ```bash
 git clone https://github.com/TruongNguyenDinh/BlueOcean
 ```
