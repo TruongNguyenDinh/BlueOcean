@@ -1,0 +1,46 @@
+package application;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.util.concurrent.CompletableFuture;
+
+public class Main extends Application {
+    private static final int TIMEOUT = 10000; // 10 giây
+
+    @Override
+    public void start(Stage primaryStage) {
+        // Tạo cửa sổ splash với logo
+        ImageView logo = new ImageView(new Image("file:logo.png")); // Đường dẫn ảnh
+        StackPane root = new StackPane(logo);
+        Scene scene = new Scene(root, 400, 300);
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Đang kết nối...");
+        primaryStage.show();
+
+        // Kiểm tra kết nối SQL Server trong nền
+        CompletableFuture.supplyAsync(() -> DatabaseUtil.testConnection(TIMEOUT))
+            .thenAccept(success -> {
+                if (success) {
+                    javafx.application.Platform.runLater(() -> {
+                        primaryStage.close();
+                        new LoginScreen().start(new Stage()); // Mở cửa sổ đăng nhập
+                    });
+                } else {
+                    javafx.application.Platform.runLater(() -> {
+                        System.out.println("Không thể kết nối đến SQL Server!");
+                        primaryStage.close();
+                    });
+                }
+            });
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

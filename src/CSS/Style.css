@@ -1,0 +1,83 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 14, 2025, 12:04:55 AM
+    Author     : truong
+*/
+.loginField {
+    -fx-background-radius: 15px;
+    -fx-text-fill: #012a4a;
+    -fx-font-family: "Verdana", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 8px 5px 8px;
+    -fx-border-width: 0px;
+    -fx-cursor: hand;
+}
+.loginFieldPass{
+    -fx-background-radius: 15px;
+    -fx-text-fill: #012a4a;
+    -fx-font-family: "Verdana", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 8px 5px 8px;
+    -fx-border-width: 0px;
+    -fx-cursor: hand;
+}
+.showpassbutton{
+    -fx-background-radius: 50%;
+    -fx-font-size: 14px;
+    -fx-padding: 0px 2px 0px 2px;
+    -fx-background-color: white;
+    -fx-cursor: hand;
+}
+.loginButton{
+    -fx-background-color: #89c2d9;
+    -fx-background-radius: 80px;
+    -fx-text-fill: #012a4a;
+    -fx-font-family:"Roboto", "Arial", sans-serif;
+    -fx-font-size: 15px;
+    -fx-padding: 5px 8px 5px 8px;   
+    -fx-border-width: 0px;     
+    -fx-effect: dropshadow(gaussian, rgba(44, 187, 99, 0.15), 8, 0.5, 0, 2); 
+    -fx-cursor: hand;
+}
+.loginButton:hover{
+    -fx-background-color: #61a5c2;
+}
+.buttonRegis{
+    -fx-background-color: #89c2d9;
+    -fx-background-radius: 80px; 
+    -fx-text-fill: #012a4a;     
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-font-size: 15px;       
+    -fx-padding: 5px 10px 5px 10px;    
+    -fx-border-width: 0px;  
+    -fx-effect: dropshadow(gaussian, rgba(44, 187, 99, 0.15), 8, 0.5, 0, 2); 
+    -fx-cursor: hand;
+}
+.buttonRegis:hover{
+    -fx-background-color: #61a5c2;
+}
+.textFieldRegis{
+    -fx-background-radius:10px 15px 15px 10px;
+    -fx-text-fill: #012a4a; 
+    -fx-font-family: "Verdana", sans-serif;
+    -fx-font-size: 14px;
+    -fx-padding: 5px 8px 5px 8px;
+    -fx-border-width: 0px;
+    -fx-effect: dropshadow(gaussian, rgba(44, 187, 99, 0.15), 8, 0.5, 0, 2);
+    -fx-cursor: hand;
+}
+.errorInput{
+    -fx-fill:red;
+    -fx-font-family: "Verdana", sans-serif;
+    -fx-font-size: 15px;
+}
+.textForget{
+    -fx-fill: white;
+    -fx-font-family: "Robot", sans-serif;
+    -fx-font-size: 14px;
+}
+
+

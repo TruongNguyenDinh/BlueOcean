@@ -1,0 +1,9 @@
+loginButton.getStyleClass().add("custom-button");
+.custom-button {
+    -fx-background-color: #89c2d9;
+    -fx-background-radius: 80px;
+    -fx-text-fill: #012a4a;
+}
+.custom-button:pressed {
+    -fx-background-color: #468faf;
+}
