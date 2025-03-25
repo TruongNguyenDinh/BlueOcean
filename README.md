@@ -25,7 +25,7 @@ git switch ten-nhanh
 ```bash
 git fetch origin
 ```
-*Kiểm tra cách nhánh hiện có
+* Kiểm tra cách nhánh hiện có
 ```bash
 git branch -r
 ```
@@ -40,5 +40,11 @@ git branch
 * Cập nhật code mới nhất từ GitHub bằng
 ```bash
 git pull origin nhanh-moi( nhánh cần lấy code)
+```
+## Đẩy code
+```bash
+git add tên-file
+git commit -m "Nội dung thay đổi"
+git push origin tên-nhánh
 ```
 
