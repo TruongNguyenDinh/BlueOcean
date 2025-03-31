@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package MainForm;
+package MainForm.Controllers;
 
 import javafx.stage.Stage;
 
@@ -11,13 +11,14 @@ import javafx.stage.Stage;
  * @author truon
  */
 import BlueOceanScene.MainScene;
+import MainForm.Utils.checkInputData;
 import javafx.application.Platform;
-public class LoginController {
+public class LogInController {
     private String AccountId;
     public String username,password;
     private Stage loginStage;
-    public LoginController(){}
-    public  LoginController(Stage loginStage,String username,String password){
+    public LogInController(){}
+    public  LogInController(Stage loginStage,String username,String password){
         this.username = username;
         this.password = password;
         this.loginStage = loginStage;

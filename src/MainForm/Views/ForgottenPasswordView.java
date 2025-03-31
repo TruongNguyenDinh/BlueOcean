@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package MainForm;
+package MainForm.Views;
 
+import MainForm.Views.LogInView;
+import MainForm.Controllers.FogottenPasswordController;
 import java.util.List;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -25,7 +27,7 @@ import TextFactory.TextLableFact;
  *
  * @author truon
  */
-public class ForgetPassword extends Application {
+public class ForgottenPasswordView extends Application {
     private List<Rectangle> rectangleList;
     private List<Circle> circleList; 
     private List<TextField> inputList;
@@ -33,14 +35,15 @@ public class ForgetPassword extends Application {
     private List<Text> textLable;
     private List<Text> textLable2;
     private List<ImageView> imageList;
+    private Text errorText;
     private Scene scene2;
     private Stage window;
-    private int lockButton = 0;
     private final ImgFactory img = new ImgFactory();
     private final RectangleFactory rect = new RectangleFactory();
     private final CircleFactory cir = new CircleFactory();
     private final TextFieldFact textField = new TextFieldFact();
     private final TextLableFact label = new TextLableFact();
+    private FogottenPasswordController fpc;
     @Override
     public void start(Stage primaryStage) {
         this.window  = primaryStage;
@@ -82,13 +85,20 @@ public class ForgetPassword extends Application {
         send.setLayoutY(340);
         send.setText("Send");
         send.getStyleClass().add("loginButton");
-        send.setOnMouseClicked(event ->{
-            window.setTitle("Re Password");
-            window.setScene(scene2());
-            
+        send.setOnMouseClicked(event -> {
+            String user = userNameField.getText();
+            String phone = phoneNumberField.getText();
+            String tag = tagNameField.getText();
+            fpc = new FogottenPasswordController(user, phone, tag);
+            if (fpc.checkYesNo()) {
+                window.setTitle("Re Password");
+                window.setScene(scene2());
+            }
+            else errorText.setVisible(true);
         });
+
         
-        Text errorText = new Text(" ! <False> Can not find Username");
+        errorText = new Text(" ! <False> Can not find Username");
         errorText.setLayoutX(170);
         errorText.setLayoutY(400);
         errorText.getStyleClass().add("errorInput");
@@ -104,7 +114,7 @@ public class ForgetPassword extends Application {
         root.getChildren().addAll(send);
         
         Scene scene = new Scene(root, 600, 600);
-        scene.getStylesheets().add(getClass().getResource("../CSS/Style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
         window.setTitle("Fogot Password");
 //        window.setOnCloseRequest(e->{closeForget(window);});
         window.setResizable(false);
@@ -134,7 +144,10 @@ public class ForgetPassword extends Application {
         Finish.getStyleClass().add("loginButton");
         Finish.setText("Finish");
         Finish.setOnMouseClicked(e->{
-            closeForget(window);
+            String newpass = newPass.getText().trim();
+            String newpass_again = newPass.getText().trim();
+            if(fpc.changePassword(newpass,newpass_again)) closeForget(window);
+            else errorText.setVisible(true);
         });
         root.getChildren().addAll(rectangleList);
         root.getChildren().addAll(circleList);
@@ -143,7 +156,7 @@ public class ForgetPassword extends Application {
         root.getChildren().addAll(textLable2);
         root.getChildren().add(Finish);
         scene2 = new Scene(root,600,600);
-        scene2.getStylesheets().add(getClass().getResource("../CSS/Style.css").toExternalForm());
+        scene2.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
         return scene2;
     }
     private void closeForget(Stage stage){

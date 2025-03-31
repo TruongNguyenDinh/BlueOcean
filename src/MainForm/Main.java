@@ -4,6 +4,7 @@
  */
 package MainForm;
 
+import MainForm.Views.LogInView;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -16,7 +16,6 @@ import javafx.stage.Stage;
  * @author truon
  */
 public class MainScene extends Application {
-    private double[] windowHeight[];
     private static String Id;
     
     public static void setId(String id) {

@@ -8,7 +8,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-class TermsandLicense {
+public class TermsandLicense {
     private TermsandLicense(){
         
     }

@@ -2,17 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package MainForm;
+package MainForm.Utils;
 
+import MainForm.Controllers.RegistorController;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
-class  AnimationFx {
+public class  AnimationFx {
    public AnimationFx(){}
    private double offset = 0;
    //Hiệu ứng nước chảy cho textlogo
@@ -37,6 +42,27 @@ class  AnimationFx {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+   }
+   public void registerFx(AtomicBoolean  finished,Text content,Node...nodesToHide){
+       RegistorController.Visiable(finished.get(), nodesToHide);
+       TranslateTransition moveText = new TranslateTransition(Duration.seconds(2), content);
+        moveText.setFromY(0);
+        moveText.setToY(-200);
+        moveText.setCycleCount(1);
+        moveText.setAutoReverse(false);
+        moveText.play();
+        moveText.setOnFinished(e ->{
+            finished.set(true);
+            RegistorController.Visiable(finished.get(), nodesToHide);
+        });
+   }
+   public void errorsShow(Text text){
+    text.setVisible(false);
+    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),event->{
+        text.setVisible(true);
+    }));
+    timeline.setCycleCount(3);
+    timeline.play(); 
    }
 }
 

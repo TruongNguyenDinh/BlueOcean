@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package MainForm;
+package MainForm.Utils;
 
-class checkInputData {
+public class checkInputData {
 
     private checkInputData() {
     }
@@ -32,6 +32,6 @@ class checkInputData {
         return nameInGame != null && nameInGame.matches("^[a-zA-ZÀ-Ỹà-ỹ0-9_]+$");
     }
     public static boolean  isValidTagName(String tagName){
-        return tagName !=null && tagName.matches("\\w{1,5}");
+        return tagName !=null && tagName.matches("\\w{1,6}");
     }
 }
