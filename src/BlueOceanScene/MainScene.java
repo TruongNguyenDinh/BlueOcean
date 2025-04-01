@@ -3,12 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
 package BlueOceanScene;
-import javafx.geometry.Rectangle2D;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.stage.Screen;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -17,6 +22,7 @@ import javafx.stage.Stage;
  */
 public class MainScene extends Application {
     private static String Id;
+    private static double width,height;
     
     public static void setId(String id) {
         Id = id;
@@ -32,30 +38,45 @@ public class MainScene extends Application {
     }
     
     public static void openMainStage(String id) {
-        Id = id;  // Lưu Id
-        
-        // Tạo cửa sổ chính mới
         Stage mainStage = new Stage();
-        Text idText = new Text("Chào, " + Id);
-        idText.setLayoutX(10);
-        idText.setY(12);
-        idText.setX(0);
-        Rectangle2D sc = Screen.getPrimary().getVisualBounds();
-        double sh = sc.getHeight();
-        double sw = sc.getWidth();Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-            
-        // Đặt kích thước cửa sổ theo kích thước có thể hiển thị
-//        mainStage.setX(visualBounds.getMinX());
-//        mainStage.setY(visualBounds.getMinY());
-//        mainStage.setWidth(visualBounds.getWidth());
-//        mainStage.setHeight(visualBounds.getHeight());
-        System.out.print("sh: "+sh+" sw: "+sw);
-        StackPane root = new StackPane(idText);
-        Scene scene = new Scene(root, 720, 480);
-
+        BorderPane mainPane = new BorderPane();
+        mainPane.setStyle("-fx-background-color: #013a6a");
+        Scene scene = new Scene(mainPane, 1000, 700);
         mainStage.setTitle("Chat App - " + Id);
         mainStage.setMaximized(true);
         mainStage.setScene(scene);
+        
+        Rectangle rect1 = new Rectangle();
+        Rectangle rect2 = new Rectangle();
+        Rectangle rect3 = new Rectangle();
+//        rect1.widthProperty().bind(scene.widthProperty().multiply(0.05));
+//        rect1.heightProperty().bind(scene.heightProperty().multiply(0.97));
+        scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+            rect1.setWidth(newVal.doubleValue() * 0.05);
+            rect2.setWidth(newVal.doubleValue() * 0.47);
+            rect3.setWidth(newVal.doubleValue() * 0.44);
+        });
+
+        scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+            rect1.setHeight(newVal.doubleValue() * 0.97);
+            rect2.setHeight(newVal.doubleValue() * 0.97);
+            rect3.setHeight(newVal.doubleValue() * 0.97);
+        });
+        rect1.setFill(Color.web("012a4a")); 
+        rect2.setFill(Color.web("012a4a")); 
+        rect3.setFill(Color.web("012a4a")); 
+        scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            rect1.setTranslateY(newHeight.doubleValue() * 0.015);
+            rect2.setTranslateY(newHeight.doubleValue() * 0.015);
+            rect3.setTranslateY(newHeight.doubleValue() * 0.015);
+        });
+        scene.widthProperty().addListener((obs, oldHeight, newHeight) -> {
+            rect1.setTranslateX(newHeight.doubleValue() * 0.0098);
+            rect2.setTranslateX(newHeight.doubleValue() * 0.018);
+            rect3.setTranslateX(newHeight.doubleValue() * 0.028);
+        });  
+        HBox taskbar = new HBox(rect1,rect2,rect3);
+        mainPane.setLeft(taskbar);
         mainStage.show();
     }
     
