@@ -11,7 +11,7 @@ public class DatabaseHelper {
 
     public static void main(String[] args) {
         // Chuỗi kết nối đến SQL Server
-        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=chatapp;user=sa;password=123;encrypt=false;";
+        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=123;encrypt=false;";
 
         Connection con = null;
 
