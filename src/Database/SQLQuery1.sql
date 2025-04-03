@@ -74,5 +74,10 @@ VALUES
 ('PhucLe', 'Le The Phuc', 'Phuc', '034567891', 'Da Nang, Vietnam', 1, '789', 'phucle@gmail.com', 0),
 ('DinhTruong', 'Nguyen Dinh Truong', 'Truong', '097889901', 'Hai Phong, Vietnam', 1, '987', 'dinhtruong@gmail.com', 1),
 ('MaiLe', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, '563', 'maile@gmail.com', 1);
+
 GO
 SELECT*FROM users;
+INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
+VALUES
+('Truong', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 0);
+GO

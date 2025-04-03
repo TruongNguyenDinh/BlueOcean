@@ -47,9 +47,9 @@ public class MainScene extends Application {
         BorderPane mainPane = new BorderPane();
         mainPane.setStyle("-fx-background-color: #bad9d6");
         Scene scene = new Scene(mainPane, 1000, 700);
-        mainStage.setTitle("Chat App - " + Id);
-        mainStage.initStyle(StageStyle.UNDECORATED);
-
+        mainStage.setTitle("Chat App - " + id);
+//        mainStage.initStyle(StageStyle.UNDECORATED);
+        
         mainStage.setMaximized(true);
         mainStage.setScene(scene);
               

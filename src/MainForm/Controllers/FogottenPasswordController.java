@@ -43,13 +43,7 @@ public class FogottenPasswordController {
     public boolean changePassword(String newPassword, String newPassword_){
 //        find ID(abc) ID-> đổi mật khẩu
         ///////////////////////////Gửi mật khẩu đến database ////////////////
-        //////////Tạo một hàm kiểm tra xem nếu gửi thành công thì trả về true còn không thì false
-<<<<<<< HEAD
-        // thay đổi trường mật khẩu thông qua biến id  ALTE
-=======
-        ///
-       
->>>>>>> database
+        //////////Tạo một hàm kiểm tra xem nếu gửi thành công thì trả về true còn không thì false  
         return true;
     }
 }

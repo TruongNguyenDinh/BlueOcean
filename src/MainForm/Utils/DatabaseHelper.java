@@ -1,59 +1,61 @@
-<<<<<<< HEAD
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package MainForm.Utils;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author truong
  * Kết thực hiện kết nối database ở đây
  */
-import MainForm.Main;
-public class DatabaseHelper {
-    public Main main = new Main();
-    public void x (){
-        main.con(true);
-    }
-}
-=======
-package MainForm.Utils;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 /**
  * Kết thực hiện kết nối database ở đây
  */
 public class DatabaseHelper {
+    private static String fullname;
+    private  static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=truong;encrypt=false;";
+    public static boolean isUserValid(String username, String password) {
+        String sql = "SELECT COUNT(*), fullname FROM users WHERE username =? AND password = ? GROUP BY fullname";
 
-    public static void main(String[] args) {
-        // Chuỗi kết nối đến SQL Server
-        String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=123;encrypt=false;";
-
-        Connection con = null;
-
-        try {
-            // Kết nối đến cơ sở dữ liệu
-            con = DriverManager.getConnection(connectionUrl);
-            System.out.println("Kết nối thành công!");
+        try (Connection con = DriverManager.getConnection(connectionUrl);
+               PreparedStatement stmt = con.prepareStatement(sql) ){
+            stmt.setString(1,username);
+            stmt.setString(2,password);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()){
+                fullname = rs.getString("fullname");
+                return rs.getInt(1)>0;
+            }
         } catch (SQLException e) {
             // Xử lý lỗi kết nối
-            System.err.println("Lỗi kết nối: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            // Đảm bảo đóng kết nối
-            try {
-                if (con != null) {
-                    con.close();
-                    System.out.println("Đóng kết nối thành công!");
-                }
-            } catch (SQLException e) {
-                System.err.println("Lỗi khi đóng kết nối: " + e.getMessage());
-            }
+            System.err.println("Loi: " + e.getMessage());
+//            e.printStackTrace();
         }
+        return false;
     }
+    public static String getFullname(String username, String password) {
+        String sql = "SELECT fullname FROM users WHERE username =? AND password = ?";
+        try (Connection con = DriverManager.getConnection(connectionUrl);
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("fullname"); // Trả về fullname nếu tìm thấy
+            }
+        } catch (SQLException e) {
+            System.err.println("Loi: " + e.getMessage());
+        }
+        return null; // Trả về null nếu không tìm thấy người dùng
+    }
+
 }
->>>>>>> database
