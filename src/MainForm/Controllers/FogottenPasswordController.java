@@ -13,6 +13,7 @@ import MainForm.Utils.checkInputData;
  */
 public class FogottenPasswordController {
     private String userName,phoneNumber,tagName;
+    private String Id;
     public FogottenPasswordController(){}
     
     public FogottenPasswordController(String userName,String phoneNumber,String tagName){
@@ -31,14 +32,19 @@ public class FogottenPasswordController {
                 this.phoneNumber.equals("0362361299") &&
                 this.tagName.equals("11200")) {
                 System.out.println("Thông tin khớp!");
+                Id = "Abc";
+                /// TÌm được thì lấy id người dùng
+                ///// Gán id người dùng vào biến id
                 return true;
             }
         }
         return false;
     }
     public boolean changePassword(String newPassword, String newPassword_){
+//        find ID(abc) ID-> đổi mật khẩu
         ///////////////////////////Gửi mật khẩu đến database ////////////////
-        //////////Tạo một hàm kiểm tra xem nếu gửi thành công thì trả về true còn không thì false   
+        //////////Tạo một hàm kiểm tra xem nếu gửi thành công thì trả về true còn không thì false
+        // thay đổi trường mật khẩu thông qua biến id  ALTE
         return true;
     }
 }

@@ -9,6 +9,10 @@ package MainForm.Utils;
  * @author truong
  * Kết thực hiện kết nối database ở đây
  */
+import MainForm.Main;
 public class DatabaseHelper {
-    
+    public Main main = new Main();
+    public void x (){
+        main.con(true);
+    }
 }

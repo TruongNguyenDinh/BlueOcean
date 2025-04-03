@@ -116,7 +116,7 @@ public class ForgottenPasswordView extends Application {
         Scene scene = new Scene(root, 600, 600);
         scene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
         window.setTitle("Fogot Password");
-        window.setOnCloseRequest(e->{closeForget(window);});
+//        window.setOnCloseRequest(e->{closeForget(window);});
         window.setResizable(false);
         window.setScene(scene);
         window.show();

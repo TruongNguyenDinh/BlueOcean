@@ -17,6 +17,7 @@ public class LogInController {
     private String AccountId;
     public String username,password;
     private Stage loginStage;
+    private MainScene mainScene = new MainScene();
     public LogInController(){}
     public  LogInController(Stage loginStage,String username,String password){
         this.username = username;
@@ -41,19 +42,54 @@ public class LogInController {
     public boolean checkPassword(){
         return checkInputData.isValidPassword(this.password);
     }
+    // Khóa chính = username
+    // SELECT inputdata FROM username
+    
+    // String = res
+    private boolean find(){
+        // Giả sử this.username = truong
+        // String SQL = "SELECT " + this.username+ "FROM Users";
+        //  SELECT truong FROM Users
+        /// ResultSet rs = stmt.executeQuery(SQL);
+        // {value,value}
+
+        //  Duyệt qua kết quả và hiển thị dữ liệu
+        //
+        //      String username = rs.getString(); => username truong
+        ///         username nhat
+        ///     rs: ""
+        ///     rs: username
+        ///     Kiem tra rs != rong ""
+        ///      return tre=ue
+        //       you = input("enter") 
+        //      enter: sfdsddsdddd
+        //      String email = rs.getString("email");
+        //      if(!username.equals("") return true; 
+        //      System.out.println("Username: " + username + ", Email: " + email);
+        //  }
+
+        ///
+        ///
+
+        return true;
+    }
     public void getAccountId() {
         if (checkUsername() && checkPassword()) {
-            if (this.username.equals("Truong") && this.password.equals("Truong")) {
-                AccountId = "Truong";
+            if (find()) {
+                AccountId = this.username;
+                openChatApp();
+
             }
+            //Cho vòa trong đây
+            else {}
         }
         System.out.println("AccountId: " + AccountId);
-        openChatApp();
     }
+    
     public void openChatApp() {
     Platform.runLater(() -> {
         loginStage.close(); // Đóng cửa sổ đăng nhập
-        MainScene.openMainStage(AccountId); // Mở cửa sổ chính
+        mainScene.openMainStage(AccountId); // Mở cửa sổ chính
     });
 }
 }
