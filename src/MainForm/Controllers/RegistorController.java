@@ -52,14 +52,13 @@ public class RegistorController {
         return checkInputData.isValidNameInGame(this.nickname);
     }    
     ///
-    //// Phương thức gửi đến dữ liệu đến databasa
+    //// Phương thức gửi đến dữ liệu đến database
     private boolean sendData(){
         
         //giả sử gửi được dữ liệu
         return false;
     }
     //// Template
-    //// Hàm gửi dữ liệu đến database
     public boolean checkAllData(){
         if(checkUsername()&&checkPassword()&&checkPhonenumber()&&checkFullname()
                 &&checkEmail()&&checkTagname()&&checkNickname())
