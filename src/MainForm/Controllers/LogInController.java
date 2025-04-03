@@ -8,9 +8,10 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author truon
+ * @author truong
  */
 import BlueOceanScene.MainScene;
+import MainForm.Utils.DatabaseHelper;
 import MainForm.Utils.checkInputData;
 import javafx.application.Platform;
 public class LogInController {
@@ -41,19 +42,24 @@ public class LogInController {
     public boolean checkPassword(){
         return checkInputData.isValidPassword(this.password);
     }
-    public void getAccountId() {
-        if (checkUsername() && checkPassword()) {
-            if (this.username.equals("Truong") && this.password.equals("Truong")) {
-                AccountId = "Truong";
-            }
+    
+    public void getAccountId(){
+    if(checkUsername() && checkPassword()){
+        if(DatabaseHelper.isUserValid(username, password)) {
+            AccountId = username;
+            openChatApp();
+        } else {
+            System.out.println("Invalid username or password.");
         }
-        System.out.println("AccountId: " + AccountId);
-        openChatApp();
     }
+    System.out.println("AccountId: " + AccountId);
+}
+
     public void openChatApp() {
     Platform.runLater(() -> {
         loginStage.close(); // Đóng cửa sổ đăng nhập
         MainScene.openMainStage(AccountId); // Mở cửa sổ chính
+        
     });
 }
 }

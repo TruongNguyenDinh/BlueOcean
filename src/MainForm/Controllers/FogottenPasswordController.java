@@ -38,7 +38,9 @@ public class FogottenPasswordController {
     }
     public boolean changePassword(String newPassword, String newPassword_){
         ///////////////////////////Gửi mật khẩu đến database ////////////////
-        //////////Tạo một hàm kiểm tra xem nếu gửi thành công thì trả về true còn không thì false   
+        //////////Tạo một hàm kiểm tra xem nếu gửi thành công thì trả về true còn không thì false
+        ///
+       
         return true;
     }
 }
