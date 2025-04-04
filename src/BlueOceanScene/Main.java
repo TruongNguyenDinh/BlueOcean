@@ -25,7 +25,7 @@ public class Main extends Application {
     private static boolean news = true,apps = false,setting = false,info = false;
     private IconFact icon = new IconFact();
     private double width,height;
-    private HBox title_bar,groupPane;
+    private HBox title_bar,groupPane,news_friend ;
     private Pane bulletin_boardPane,imgEventPane,infoClientPane,friendPane;
     private VBox img_info,overralPane;
     public static void setId(String id) {
@@ -100,11 +100,11 @@ public class Main extends Application {
        sub_title_bar.widthProperty().bind(scene.widthProperty().multiply(0.25));
        title_bar_close.widthProperty().bind(scene.widthProperty().multiply(0.05));
        bulletin_board.widthProperty().bind(scene.widthProperty().multiply(0.9));
-       bg_img_slide.widthProperty().bind(scene.widthProperty().multiply(0.44));
+       bg_img_slide.widthProperty().bind(scene.widthProperty().multiply(0.35));
        info_client.widthProperty().bind(bg_img_slide.widthProperty());
-       date_time.widthProperty().bind(scene.widthProperty().multiply(0.474));
-       friend_list.widthProperty().bind(date_time.widthProperty().multiply(0.48));
-       news_list.widthProperty().bind(date_time.widthProperty().multiply(0.48));
+       date_time.widthProperty().bind(scene.widthProperty().multiply(0.524));
+       friend_list.widthProperty().bind(date_time.widthProperty().multiply(0.47));
+       news_list.widthProperty().bind(date_time.widthProperty().multiply(0.47));
        
        // Thiet lap vi tri chieu dai
        //Phan vung 1
@@ -124,14 +124,25 @@ public class Main extends Application {
        bg_img_slide.heightProperty().bind(scene.heightProperty().multiply(0.4));
        info_client.heightProperty().bind(scene.heightProperty().multiply(0.43));
        date_time.heightProperty().bind(scene.heightProperty().multiply(0.1));
-       friend_list.heightProperty().bind(scene.heightProperty().multiply(0.74));
-       news_list.heightProperty().bind(scene.heightProperty().multiply(0.74));
+       friend_list.heightProperty().bind(scene.heightProperty().multiply(0.73));
+       news_list.heightProperty().bind(scene.heightProperty().multiply(0.73));
        
         //Bám scene
-        scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {height = newHeight.doubleValue();});
+        scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
+            height = newHeight.doubleValue();
+            bulletin_boardPane.setTranslateY(height*0.005);
+            img_info.setTranslateY(height*0.01);
+            infoClientPane.setTranslateY(height*0.005);
+            news_friend.setTranslateY(height*0.005);
+            overralPane.setTranslateY(height*0.01);
+        });
         scene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             width = newWidth.doubleValue();
             title_bar.setTranslateX(width*0.05);
+            bulletin_boardPane.setTranslateX(width*0.005);
+            img_info.setTranslateX(width*0.005);
+            friendPane.setTranslateX(width*0.003);
+            overralPane.setTranslateX(width*0.007);
             System.out.println(width);
             });
        
@@ -158,20 +169,20 @@ public class Main extends Application {
        
        maintt.setStyle("-fx-border-color: red;");
        //Img-info client
-       Pane imgEventPane = new Pane(bg_img_slide);
-       Pane infoClientPane = new Pane(info_client);
-       VBox img_info = new VBox(imgEventPane,infoClientPane);
+       imgEventPane = new Pane(bg_img_slide);
+       infoClientPane = new Pane(info_client);
+       img_info = new VBox(imgEventPane,infoClientPane);
        //time_friend_news
        Pane timePane = new Pane(date_time);
-       Pane friendPane = new Pane(friend_list);
+       friendPane = new Pane(friend_list);
        Pane newsListPane = new Pane(news_list);
        // thiết lập friend cùng ngang với news
-       HBox news_friend = new HBox(friendPane,newsListPane);
+       news_friend = new HBox(newsListPane,friendPane);
        // thiết lập time nằm trên khối friend + time
-       VBox overralPane = new VBox(timePane,news_friend);
+       overralPane = new VBox(timePane,news_friend);
        
-       HBox groupPane = new HBox(img_info,overralPane);
-               
+       groupPane = new HBox(img_info,overralPane);
+       infoClientPane.setStyle("-fx-border-color: red;");      
        VBox group2 = new VBox(title_bar,bulletin_boardPane,groupPane);
        
        HBox news_layout = new HBox(task_bar,group2);

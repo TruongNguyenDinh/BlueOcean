@@ -20,17 +20,16 @@ import java.sql.ResultSet;
  */
 public class DatabaseHelper {
     private static String fullname;
-    private  static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=truong;encrypt=false;";
+    private static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=truong;encrypt=false;";
     public static boolean isUserValid(String username, String password) {
-        String sql = "SELECT COUNT(*), fullname FROM users WHERE username =? AND password = ? GROUP BY fullname";
+        String sql = "SELECT COUNT(*) FROM users WHERE username =? AND password = ?";
 
         try (Connection con = DriverManager.getConnection(connectionUrl);
-               PreparedStatement stmt = con.prepareStatement(sql) ){
+            PreparedStatement stmt = con.prepareStatement(sql) ){
             stmt.setString(1,username);
             stmt.setString(2,password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()){
-                fullname = rs.getString("fullname");
                 return rs.getInt(1)>0;
             }
         } catch (SQLException e) {
