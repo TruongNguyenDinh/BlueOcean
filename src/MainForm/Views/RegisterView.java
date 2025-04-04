@@ -136,13 +136,14 @@ public class RegisterView extends Application {
             String email = emailField.getText();
             String phonenumber  = phonenumberField.getText();
             String fullname = fullnameField.getText();
-            String tagname = tagnameField.getText();
+       
             String nickname = nicknameField.getText();
             if (password.equals(passwordCheck)&& !"".equals(password)){
-               RegistorController rgc = new RegistorController(userName, password, phonenumber, email, tagname, fullname, nickname);
+               RegistorController rgc = new RegistorController(userName, password, phonenumber, email, fullname, nickname);
                if(rgc.checkAllData()){
                    errorSending.setVisible(false);
                    errorInput.setVisible(false);
+                   rgc.sendData();
                    closeRegister(registorStage);
                    AlertMain.showAlert(true,primaryStage,Alert.AlertType.INFORMATION, 
                       "Thông báo", "Chúc mừng", "Chúc mừng bạn đã đăng kí tài khoản thành công");
@@ -153,6 +154,7 @@ public class RegisterView extends Application {
                    AlertMain.showAlert(false,primaryStage,Alert.AlertType.ERROR, 
                       "Thông báo", "Lỗi", "Không thể kết nối tới máy chủ");
                    errorInput.setVisible(false);
+                   
                    fx.errorsShow(errorSending);
                }
             }

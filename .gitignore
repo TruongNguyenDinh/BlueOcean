@@ -9,7 +9,7 @@ nbproject/Package-*.bash
 nbproject/configurations.xml
 
 # Ignore database files (nếu không phải file cấu hình cố định)
-database/
+
 
 # Ignore compiled Java classes
 *.class
@@ -21,3 +21,7 @@ database/
 # Ignore build configuration (tùy chọn)
 build.xml
 manifest.mf
+
+# Ignore mdf and ldf
+database/DATA/BluceOcean.mdf
+database/DATA/BluceOcean_log.ldf
