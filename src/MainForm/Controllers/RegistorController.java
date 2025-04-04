@@ -4,6 +4,9 @@
  */
 package MainForm.Controllers;
 
+import static MainForm.Controllers.LogInController.password;
+import static MainForm.Controllers.LogInController.username;
+import MainForm.Utils.DatabaseHelper;
 import MainForm.Utils.checkInputData;
 import javafx.scene.Node;
 
@@ -12,16 +15,15 @@ import javafx.scene.Node;
  * @author truon
  */
 public class RegistorController {
-    private String userName,password,phonenumber,email,tagname,fullname,nickname;
+    private static String userName,password,phonenumber,email,fullname,nickname;
     public RegistorController(){}
-    public RegistorController(String username,String password,String phonenumber,String email,String tagname,String fullname,String nickname){
-        this.userName = username;
-        this.password = password;
-        this.tagname = tagname;
-        this.phonenumber = phonenumber;
-        this.fullname = fullname;
-        this.email = email;
-        this.nickname = nickname;
+    public RegistorController(String username,String password,String phonenumber,String email,String fullname,String nickname){
+        RegistorController.userName = username;
+        RegistorController.password = password;
+        RegistorController.phonenumber = phonenumber;
+        RegistorController.fullname = fullname;
+        RegistorController.email = email;
+        RegistorController.nickname = nickname;
     }
     public static void Visiable(boolean isVisible,Node...nodes){
         for(Node node:nodes){
@@ -31,45 +33,71 @@ public class RegistorController {
         }
     }
     private boolean checkUsername(){
-        return checkInputData.isValidUserName(this.userName);
+        return checkInputData.isValidUserName(RegistorController.userName);
     }
     private boolean checkPassword(){
-        return checkInputData.isValidPassword(this.password);
+        return checkInputData.isValidPassword(RegistorController.password);
     }
     private boolean checkPhonenumber(){
-        return checkInputData.isValidNumberPhone(this.phonenumber);
+        return checkInputData.isValidNumberPhone(RegistorController.phonenumber);
     }
     private boolean checkFullname(){
-        return checkInputData.isValidFullName(this.fullname);
+        return checkInputData.isValidFullName(RegistorController.fullname);
     }
     private boolean checkEmail(){
-        return checkInputData.isValidEmail(this.email);
+        return checkInputData.isValidEmail(RegistorController.email);
     }
-    private boolean checkTagname(){
-        return checkInputData.isValidTagName(this.tagname);
-    }
+
     private boolean checkNickname(){
-        return checkInputData.isValidNameInGame(this.nickname);
+        return checkInputData.isValidNameInGame(RegistorController.nickname);
     }    
-    ///
     //// Phương thức gửi đến dữ liệu đến database
-    private boolean sendData(){
-        
+     private boolean find() {
+        return DatabaseHelper.testConnection();
+    }
+    public boolean sendData(){
+        // Ktra nếu kết nối csdl được thì gửi 
+        if (find()){
+           boolean success = DatabaseHelper.sendData(userName, password, phonenumber, email, fullname, nickname);
+           if(success){
+               System.out.print("Ok");
+               return true;
+           }else {
+               System.out.print("NOT OK");
+               return false;
+           }
+        }
         //giả sử gửi được dữ liệu
         return false;
     }
+   
     //// Template
     public boolean checkAllData(){
+        
         if(checkUsername()&&checkPassword()&&checkPhonenumber()&&checkFullname()
-                &&checkEmail()&&checkTagname()&&checkNickname())
+                &&checkEmail()&&checkNickname())
+            
         {
-            if(sendData())return true;
-            else return false;
+            System.out.print("OK");
+            
+            return true;
         }
         
         else return false;
      }
     // Mục tiêu: tìm xem có username trùng không ?
     // -> thêm 
-       
+    public static void main(String[] args){
+        
+        String usernamE = "Truong5";
+        String  passworD = "Truong5";
+        String fullnamE = " Truong";
+        String phonenumbeR = "097980986";
+        String nicknamE = "truong1245";
+        String emaiL = "truong5@gmail.com";
+        RegistorController a = new RegistorController(usernamE,passworD,phonenumbeR,emaiL,fullnamE,nicknamE);
+        boolean k = a.sendData();
+        System.out.print(k);
+    }
 }
+

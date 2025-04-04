@@ -36,6 +36,7 @@ public class LogInController {
     }
     public String getFullname(){return this.fullname;}
     public void getAccountId() {
+       
         if (checkUsername() && checkPassword()) {
             if (find()) {
                 LogInController.fullname =DatabaseHelper.getFullname(LogInController.username,LogInController.password);

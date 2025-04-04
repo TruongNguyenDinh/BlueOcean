@@ -26,7 +26,7 @@ public class checkInputData {
     }
 
     public static boolean isValidNumberPhone(String numberphone) {
-        return numberphone != null && numberphone.matches("0\\d{9}");
+        return numberphone != null && numberphone.matches("0\\d{8}");
     }
     public static boolean isValidNameInGame(String nameInGame){
         return nameInGame != null && nameInGame.matches("^[a-zA-ZÀ-Ỹà-ỹ0-9_]+$");

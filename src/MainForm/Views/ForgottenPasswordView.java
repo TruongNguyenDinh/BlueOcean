@@ -88,11 +88,10 @@ public class ForgottenPasswordView extends Application {
         send.setOnMouseClicked(event -> {
             String user = userNameField.getText();
             String phone = phoneNumberField.getText();
-            String tag = tagNameField.getText();
-            fpc = new FogottenPasswordController(user, phone, tag);
+            fpc = new FogottenPasswordController(user, phone);
             if (fpc.checkYesNo()) {
                 window.setTitle("Re Password");
-                window.setScene(scene2());
+                window.setScene(scene2(user,phone));
             }
             else errorText.setVisible(true);
         });
@@ -126,12 +125,13 @@ public class ForgottenPasswordView extends Application {
     /**
      * @param args the command line arguments
      */
-    private Scene scene2(){
+    private Scene scene2(String username, String phonenumber){
+        
         Pane root = new Pane(imageList.get(1));
-        TextField passworLabel  = textField.createFieldData(225, 250, "Password", "loginFieldPass");
-        TextField passworLabel1  = textField.createFieldData(225, 300, "Password", "loginFieldPass");
+        TextField passworField  = textField.createFieldData(225, 250, "Password", "loginFieldPass");
+        TextField passworField1  = textField.createFieldData(225, 300, "Password", "loginFieldPass");
         inputList2 = List.of(
-                passworLabel,passworLabel1
+                passworField ,passworField1
         );
         Text Notification = label.createText(200, 220, "Enter new password for: " + inputList.get(0).getText());
         Text newPass = label.createText(225, 245, "New Password");
@@ -145,9 +145,12 @@ public class ForgottenPasswordView extends Application {
         Finish.getStyleClass().add("loginButton");
         Finish.setText("Finish");
         Finish.setOnMouseClicked(e->{
-            String newpass = newPass.getText().trim();
-            String newpass_again = newPass.getText().trim();
-            if(fpc.changePassword(newpass,newpass_again)) closeForget(window);
+            String newpass = passworField.getText().trim();
+            String newpass_again = passworField1.getText().trim();
+            if(newpass.equals(newpass_again)){
+                if(fpc.changePassword(username, phonenumber, newpass));
+                closeForget(window);
+            }           
             else errorText.setVisible(true);
         });
         root.getChildren().addAll(rectangleList);
