@@ -8,26 +8,39 @@ import IconFactoryPkg.IconFact;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
+import Font.FontManagement;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 /**
  *
  * @author truon
  */
 public class Main extends Application {
     private static String Id;
-    private static boolean news = true,apps = false,setting = false,info = false;
+    private static boolean newsOpens = true,apps = false,setting = false,info = false;
     private IconFact icon = new IconFact();
     private double width,height;
-    private HBox title_bar,groupPane,news_friend ;
-    private Pane bulletin_boardPane,imgEventPane,infoClientPane,friendPane;
+    private HBox title_bar,groupPane,news_friend,layoutfinal;
+    private Pane bulletin_boardPane,imgEventPane,infoClientPane,friendPane,timePane;
     private VBox img_info,overralPane;
+    private ImageView imageView;
+    private AnimationFx fx = new AnimationFx();
+    private Label timer;
+    private String[] imagePaths = {
+        "Image/1.jpeg",
+        "Image/2.jpeg",
+        "Image/3.jpeg"
+    };
     public static void setId(String id) {
         Id = id;
     }
@@ -35,7 +48,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         openMainStage(Id);
     }
-    private HBox newsPane(){
+    private HBox newsPane(Scene scene){
         HBox news = new HBox();
         return  news;
     }
@@ -52,7 +65,9 @@ public class Main extends Application {
 //       MainStage.initStyle(StageStyle.UNDECORATED);
        MainStage.setMaximized(true);
        MainStage.setScene(scene);
-       
+       if(newsOpens){
+           layoutfinal = newsPane(scene);
+       }
        //Phan vung
        //Phân vùng 1 - task bar
        Rectangle bgLogo = new Rectangle();
@@ -79,6 +94,8 @@ public class Main extends Application {
        Rectangle bulletin_board = new Rectangle();
        // Phân cùng 2_3:1
        Rectangle bg_img_slide = new Rectangle();
+       Rectangle img_slide = new Rectangle();
+       img_slide.setFill(Color.BEIGE);
        Rectangle info_client = new Rectangle();
        // Phân vùng 2_3:2
        Rectangle date_time = new Rectangle();
@@ -101,6 +118,7 @@ public class Main extends Application {
        title_bar_close.widthProperty().bind(scene.widthProperty().multiply(0.05));
        bulletin_board.widthProperty().bind(scene.widthProperty().multiply(0.9));
        bg_img_slide.widthProperty().bind(scene.widthProperty().multiply(0.35));
+       img_slide.widthProperty().bind(scene.widthProperty().multiply(0.25));
        info_client.widthProperty().bind(bg_img_slide.widthProperty());
        date_time.widthProperty().bind(scene.widthProperty().multiply(0.524));
        friend_list.widthProperty().bind(date_time.widthProperty().multiply(0.47));
@@ -121,11 +139,12 @@ public class Main extends Application {
        sub_title_bar.heightProperty().bind(main_title_bar.heightProperty());
        title_bar_close.heightProperty().bind(main_title_bar.heightProperty());
        bulletin_board.heightProperty().bind(scene.heightProperty().multiply(0.1));
-       bg_img_slide.heightProperty().bind(scene.heightProperty().multiply(0.4));
-       info_client.heightProperty().bind(scene.heightProperty().multiply(0.43));
+       bg_img_slide.heightProperty().bind(scene.heightProperty().multiply(0.46));
+       img_slide.heightProperty().bind(scene.heightProperty().multiply(0.3));
+       info_client.heightProperty().bind(scene.heightProperty().multiply(0.38));
        date_time.heightProperty().bind(scene.heightProperty().multiply(0.1));
-       friend_list.heightProperty().bind(scene.heightProperty().multiply(0.73));
-       news_list.heightProperty().bind(scene.heightProperty().multiply(0.73));
+       friend_list.heightProperty().bind(scene.heightProperty().multiply(0.74));
+       news_list.heightProperty().bind(scene.heightProperty().multiply(0.74));
        
         //Bám scene
         scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
@@ -143,8 +162,15 @@ public class Main extends Application {
             img_info.setTranslateX(width*0.005);
             friendPane.setTranslateX(width*0.003);
             overralPane.setTranslateX(width*0.007);
+            
             System.out.println(width);
             });
+       Text newsText = new Text("HELLO ");
+       newsText.setFill(Color.CORNFLOWERBLUE);
+       newsText.setLayoutX(10);
+       newsText.setLayoutY(20);
+       timer = new Label();fx.Timer(timer);
+       timer.setTextFill(Color.WHITE);
        
        //Thiet lap pha vung
        //Task_bar
@@ -159,21 +185,54 @@ public class Main extends Application {
        VBox task_bar = new VBox(logoBackground,newsPane,appsPane,infoPane,settingPane,profilePane,logoutPane,end_taskbar);
        //Phân vùng 2
        //bulletin_board
-       bulletin_boardPane = new Pane(bulletin_board);
+       bulletin_boardPane = new Pane(bulletin_board,newsText);
        //Title
        Pane maintt = new Pane(main_title_bar);
        Pane sub_maintt = new Pane(sub_title_bar);
        Pane maintt_close = new Pane(title_bar_close);
        title_bar = new HBox(maintt,sub_maintt,maintt_close);
-       title_bar.setTranslateX(width*0.1);
-       
+//       title_bar.setTranslateX(width*0.1);
        maintt.setStyle("-fx-border-color: red;");
        //Img-info client
-       imgEventPane = new Pane(bg_img_slide);
+       imageView = new ImageView(new Image("Image/1.jpeg"));
+//       imageView.setPreserveRatio(true);
+       Pane imgPane = new Pane(img_slide,imageView);
+       img_slide.widthProperty().addListener((obs,oldVal,newVal)->{
+           imageView.setFitWidth(newVal.doubleValue());
+       });
+       img_slide.heightProperty().addListener((obs,oldVal,newVal)->{
+           imageView.setFitHeight(newVal.doubleValue());
+       });
+       AnimationFx.createSlideshowAnimation(imageView, imagePaths);
+       Text noitice = new Text("New Events");
+       noitice.setFill(Color.AQUA);
+       imgEventPane = new Pane(bg_img_slide,noitice,imgPane);
+       
+       imgPane.setStyle("-fx-border-color: red;"); 
+       imgEventPane.widthProperty().addListener((obs,oldVal,newVal)->{
+           imgPane.setLayoutX(newVal.doubleValue()*0.15);
+           noitice.setLayoutX(newVal.doubleValue()*0.45);
+       });
+       imgEventPane.heightProperty().addListener((obs,oldVal,newVal)->{
+           imgPane.setLayoutY(newVal.doubleValue()*0.15);
+           noitice.setLayoutY(newVal.doubleValue()*0.1);
+           System.out.println("img:"+img_slide.getHeight());
+       });
+       
        infoClientPane = new Pane(info_client);
        img_info = new VBox(imgEventPane,infoClientPane);
        //time_friend_news
-       Pane timePane = new Pane(date_time);
+       timePane = new Pane(date_time,timer);
+       
+       timePane.heightProperty().addListener((obs,oldVal,newVal)->{
+           timer.setLayoutY(timePane.getHeight()*0.25);
+           timer.setFont(FontManagement.Roboto(timePane.getHeight() * 0.55));
+
+       });
+       timePane.widthProperty().addListener((obs,oldVal,newVal)->{
+           timer.setLayoutX(timePane.getWidth()*0.35);
+       });
+       
        friendPane = new Pane(friend_list);
        Pane newsListPane = new Pane(news_list);
        // thiết lập friend cùng ngang với news
@@ -182,7 +241,7 @@ public class Main extends Application {
        overralPane = new VBox(timePane,news_friend);
        
        groupPane = new HBox(img_info,overralPane);
-       infoClientPane.setStyle("-fx-border-color: red;");      
+       bulletin_boardPane.setStyle("-fx-border-color: red;");      
        VBox group2 = new VBox(title_bar,bulletin_boardPane,groupPane);
        
        HBox news_layout = new HBox(task_bar,group2);

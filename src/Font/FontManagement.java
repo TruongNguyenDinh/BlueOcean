@@ -11,11 +11,14 @@ import javafx.scene.text.Font;
  * @author truon
  */
 public class FontManagement {
-    public FontManagement (){}
-    public Font Roboto (int size){
-        return Font.loadFont(getClass().getResourceAsStream("/Font/Roboto-Medium.ttf"),size);
+    public static Font Roboto (double size){
+        return Font.loadFont(FontManagement.class.getResourceAsStream("/Font/Roboto-Medium.ttf"),size);
     }
     public Font Pacifico(int size){
         return Font.loadFont(getClass().getResourceAsStream("/Font/Pacifico-Regular.ttf"), size);
     }
+    public Font WinkySans(int size){
+        return Font.loadFont(getClass().getResourceAsStream("/Font/WinkySans-VariableFont_wght.ttf"), size);
+    }
+    
 }
