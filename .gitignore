@@ -9,7 +9,7 @@ nbproject/Package-*.bash
 nbproject/configurations.xml
 
 # Ignore database files (nếu không phải file cấu hình cố định)
-database/
+
 
 # Ignore compiled Java classes
 *.class
