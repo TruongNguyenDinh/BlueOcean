@@ -69,5 +69,7 @@ public class RegistorController {
         
         else return false;
      }
+    // Mục tiêu: tìm xem có username trùng không ?
+    // -> thêm 
        
 }

@@ -20,6 +20,7 @@ import javafx.util.Duration;
  * @author truong
  */
 public class Main extends Application {
+    
     @Override
     public void start(Stage splashStage) {
         // Tạo và hiển thị cửa sổ splash
@@ -37,7 +38,7 @@ public class Main extends Application {
         splashStage.show();
 
         // Chờ 3 giây trước khi mở cửa sổ đăng nhập
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        PauseTransition delay = new PauseTransition(Duration.seconds(4));
         delay.setOnFinished(event -> {
             splashStage.close(); // Đóng màn hình splash
             javafx.application.Platform.runLater(() -> {
@@ -46,6 +47,7 @@ public class Main extends Application {
                     });
 
         });
+        /// 
         delay.play();
     }
 
@@ -55,5 +57,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+    public  boolean con(boolean x){
+        return x;
+    }
 }

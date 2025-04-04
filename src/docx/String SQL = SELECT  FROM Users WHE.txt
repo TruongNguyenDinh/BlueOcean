@@ -1,0 +1,72 @@
+String SQL = "SELECT * FROM Users WHERE username = ?";
+// Sau đó dùng PreparedStatement để truyền tham số
+PreparedStatement pstmt = connection.prepareStatement(SQL);
+pstmt.setString(1, this.username);
+ResultSet rs = pstmt.executeQuery();
+
+
+String SQL = "SELECT COUNT(*) FROM Users WHERE username = ?";
+PreparedStatement pstmt = connection.prepareStatement(SQL);
+pstmt.setString(1, this.username);
+ResultSet rs = pstmt.executeQuery();
+if (rs.next() && rs.getInt(1) > 0) {
+    System.out.println("Người dùng tồn tại");
+}
+
+// xác thực
+String checkUserSQL = "SELECT COUNT(*) FROM Users WHERE username = ? AND phone_number = ?";
+PreparedStatement pstmt = connection.prepareStatement(checkUserSQL);
+pstmt.setString(1, username);
+pstmt.setString(2, phoneNumber);
+ResultSet rs = pstmt.executeQuery();
+
+if (rs.next() && rs.getInt(1) > 0) {
+    // Người dùng hợp lệ, cho phép đổi mật khẩu
+} else {
+    // Sai thông tin, không cho đổi mật khẩu
+}
+/// cập nhật mật khẩu mới
+String updatePasswordSQL = "UPDATE Users SET password = ? WHERE username = ?";
+PreparedStatement pstmtUpdate = connection.prepareStatement(updatePasswordSQL);
+
+// Mã hóa mật khẩu mới (ví dụ dùng BCrypt)
+String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+
+pstmtUpdate.setString(1, hashedPassword);
+pstmtUpdate.setString(2, username);
+int rowsAffected = pstmtUpdate.executeUpdate();
+
+if (rowsAffected > 0) {
+    System.out.println("Đổi mật khẩu thành công!");
+} else {
+    System.out.println("Lỗi khi đổi mật khẩu!");
+}
+//
+public boolean changePassword(String username, String phoneNumber, String newPassword) {
+    try {
+        // 1. Kiểm tra username và phone number
+        String checkSQL = "SELECT COUNT(*) FROM Users WHERE username = ? AND phone_number = ?";
+        PreparedStatement pstmt = connection.prepareStatement(checkSQL);
+        pstmt.setString(1, username);
+        pstmt.setString(2, phoneNumber);
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next() && rs.getInt(1) > 0) {
+            // 2. Nếu hợp lệ, cập nhật mật khẩu mới (đã mã hóa)
+            String updateSQL = "UPDATE Users SET password = ? WHERE username = ?";
+            PreparedStatement pstmtUpdate = connection.prepareStatement(updateSQL);
+            
+            String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+            pstmtUpdate.setString(1, hashedPassword);
+            pstmtUpdate.setString(2, username);
+            
+            int updatedRows = pstmtUpdate.executeUpdate();
+            return updatedRows > 0;
+        } else {
+            return false; // Xác thực thất bại
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}

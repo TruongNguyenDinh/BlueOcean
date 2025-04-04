@@ -15,51 +15,54 @@ import MainForm.Utils.DatabaseHelper;
 import MainForm.Utils.checkInputData;
 import javafx.application.Platform;
 public class LogInController {
-    private String AccountId;
-    public String username,password;
+    private static String fullname;
+    public static String username,password;
     private Stage loginStage;
+//    private MainScene mainScene = new MainScene();
     public LogInController(){}
     public  LogInController(Stage loginStage,String username,String password){
-        this.username = username;
-        this.password = password;
+        LogInController.username = username;
+        LogInController.password = password;
         this.loginStage = loginStage;
-    } 
-    public void setUsername(String username){
-        this.username = username;
-    }
-    public String getUsername(){
-        return username;
-    }
-    public void setPassword(String password){
-        this.password = password;
-    }
-    public String getPassword(){
-        return password;
     }
     public boolean checkUsername(){
-        return checkInputData.isValidUserName(this.username);
+        return checkInputData.isValidUserName(LogInController.username);
     }
     public boolean checkPassword(){
-        return checkInputData.isValidPassword(this.password);
+        return checkInputData.isValidPassword(LogInController.password);
     }
-    
-    public void getAccountId(){
-    if(checkUsername() && checkPassword()){
-        if(DatabaseHelper.isUserValid(username, password)) {
-            AccountId = username;
-            openChatApp();
-        } else {
-            System.out.println("Invalid username or password.");
+    private boolean find() {
+        return DatabaseHelper.isUserValid(username, password);
+    }
+    public String getFullname(){return this.fullname;}
+    public void getAccountId() {
+        if (checkUsername() && checkPassword()) {
+            if (find()) {
+                LogInController.fullname =DatabaseHelper.getFullname(LogInController.username,LogInController.password);
+//                fullname = DatabaseHelper.fullname();
+                System.out.print(fullname);
+                openChatApp();
+
+            }
+            //Cho vòa trong đây
+            else {}
         }
     }
-    System.out.println("AccountId: " + AccountId);
-}
+    
+        public void openChatApp() {
+            Platform.runLater(() -> {
+                loginStage.close(); // Đóng cửa sổ đăng nhập
+                MainScene.openMainStage(fullname); // Mở cửa sổ chính
 
-    public void openChatApp() {
-    Platform.runLater(() -> {
-        loginStage.close(); // Đóng cửa sổ đăng nhập
-        MainScene.openMainStage(AccountId); // Mở cửa sổ chính
+            });
+        }
+    public static void main (String[] args){
+        LogInController.username = "Truong";
+        LogInController.password = "Truong";
         
-    });
-}
+        String a = DatabaseHelper.getFullname(LogInController.username, LogInController.password);
+        System.out.print(a);
+        System.out.print(LogInController.fullname);
+    }
+
 }
