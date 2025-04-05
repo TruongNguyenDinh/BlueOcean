@@ -1,3 +1,7 @@
+
+# Ignore mdf and ldf
+database/DATA/BluceOcean.mdf
+database/DATA/BluceOcean_log.ldf
 # Ignore build and output folders
 /build/
 /dist/
