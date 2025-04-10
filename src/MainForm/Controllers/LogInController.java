@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  *
  * @author truong
  */
-import BlueOceanScene.MainScene;
+import BlueOceanScene.Main;
 import MainForm.Utils.DatabaseHelper;
 import MainForm.Utils.checkInputData;
 import javafx.application.Platform;
@@ -18,6 +18,7 @@ public class LogInController {
     private static String fullname;
     public static String username,password;
     private Stage loginStage;
+    private Main main = new Main();
 //    private MainScene mainScene = new MainScene();
     public LogInController(){}
     public  LogInController(Stage loginStage,String username,String password){
@@ -53,7 +54,7 @@ public class LogInController {
         public void openChatApp() {
             Platform.runLater(() -> {
                 loginStage.close(); // Đóng cửa sổ đăng nhập
-                MainScene.openMainStage(fullname); // Mở cửa sổ chính
+                main.openMainStage(fullname); // Mở cửa sổ chính
 
             });
         }

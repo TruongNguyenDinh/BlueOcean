@@ -100,4 +100,3 @@ public class RegistorController {
         System.out.print(k);
     }
 }
-

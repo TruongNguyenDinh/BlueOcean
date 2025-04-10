@@ -28,7 +28,7 @@ public class DatabaseHelper {
     public static boolean isUserValid(String username, String password) {
         String sql = "SELECT COUNT(*) FROM users WHERE username =? AND password = ? ";
         try (Connection con = DriverManager.getConnection(connectionUrl);
-            PreparedStatement stmt = con.prepareStatement(sql) ){
+               PreparedStatement stmt = con.prepareStatement(sql) ){
             stmt.setString(1,username);
             stmt.setString(2,password);
             ResultSet rs = stmt.executeQuery();
