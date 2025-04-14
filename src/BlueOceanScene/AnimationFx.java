@@ -93,9 +93,15 @@ public class AnimationFx {
         Image image = new Image(imagePaths[index]);
         imageView.setImage(image);
     }
-    public ImageView rotation(ImageView imageView) {
+    public ImageView rotation(ImageView imageView,int direction) {
         rotateTransition = new RotateTransition(Duration.seconds(3), imageView);
-        rotateTransition.setByAngle(360); // Xoay 360 độ
+        if (direction==0){
+          rotateTransition.setByAngle(-360); // Xoay 360 độ  
+        }
+        else {
+            rotateTransition.setByAngle(360); // Xoay 360 độ
+        }
+        
         rotateTransition.setCycleCount(RotateTransition.INDEFINITE); // Lặp vô hạn
         rotateTransition.setAxis(javafx.geometry.Point3D.ZERO.add(0, 0, 1)); // Xoay theo trục Z
         rotateTransition.setInterpolator(javafx.animation.Interpolator.LINEAR);

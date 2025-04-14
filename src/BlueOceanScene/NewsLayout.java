@@ -42,6 +42,9 @@ public class NewsLayout {
     double itemHeight; 
     private final ReminderPanel rm = new ReminderPanel();
     private final QuoteSlideshow quoteSlideshow = new QuoteSlideshow();
+    private final ScrollPane scrollPaneNotion = new ScrollPane();
+    private CalendarView calendarView;
+    private BorderPane calendarUI;
     private final String[] imagePaths = {
         "Image/1.jpeg",
         "Image/2.jpeg",
@@ -85,20 +88,31 @@ public class NewsLayout {
         Rectangle bg_info_client = new Rectangle();bg_info_client.setFill(Color.web("66a5ad"));
         Rectangle bg_music_client = new Rectangle();bg_music_client.setFill(Color.web("66A5AD"));
         // Phân vùng 2_3:2
+        ImageView afternoon = new ImageView(new Image("Image/Day/morning.jpg"));
         Rectangle date_time = new Rectangle();date_time.setFill(Color.WHITESMOKE);
         Rectangle friend_list = new Rectangle(); friend_list.setFill(Color.WHITESMOKE);
         Rectangle task_list = new Rectangle(); task_list.setFill(Color.WHITESMOKE); 
         Rectangle news_list = new Rectangle();news_list.setFill(Color.WHITESMOKE);
         
+        calendarView = new CalendarView();
+        calendarUI = calendarView.createCalendar(scene.heightProperty(),date_time.widthProperty());
+        
         ///Text
-       Label music_backgoundText = new Label("Music background: " ); // 1
+       Label music_backgoundText = new Label("You're listening: " ); // 1
+       Label current_music = new Label(MediaMusic.getCurrentSongName());
+       current_music.setWrapText(true);
+       current_music.setMaxWidth(300);
+       MediaMusic.setLabel(current_music);
+       current_music.setLayoutY(2);
+       current_music.setTextFill(Color.ROYALBLUE);
+       
        //img
        ImageView cd = new ImageView(new Image("Image/cd.png")); //1
        cd.setPreserveRatio(true); //1
        cd.fitWidthProperty().bind(Bindings.multiply(scene.widthProperty(), 0.08));
        cd.fitHeightProperty().bind(Bindings.multiply(scene.heightProperty(), 0.08));
-       cd.setRotate(50);  // Xoay ảnh 45 độ
-       fx.rotation(cd);
+       cd.setRotate(50);  
+       fx.rotation(cd,1);
        ImageView play = new ImageView(new Image("Image/play.png"));
        play.setPreserveRatio(true);
        play.fitWidthProperty().bind(Bindings.multiply(scene.widthProperty(), 0.045));
@@ -111,11 +125,13 @@ public class NewsLayout {
             pause.setVisible(true);
             play.setVisible(false);
             fx.stopRotation();
+            MediaMusic.stopMusic();
        });
        pause.setOnMouseClicked(e->{
             play.setVisible(true);
             pause.setVisible(false);
             fx.startRotation();
+            MediaMusic.playMusic();
        });
        
        bg_img_slide.widthProperty().bind(scene.widthProperty().multiply(0.35));
@@ -125,8 +141,9 @@ public class NewsLayout {
        bg_quote_client.widthProperty().bind(bg_info_client.widthProperty().multiply(1));
        bg_music_client.widthProperty().bind(bg_info_client.widthProperty());
        date_time.widthProperty().bind(scene.widthProperty().multiply(0.524));
+       afternoon.fitWidthProperty().bind(scene.widthProperty().multiply(0.5)); /////////////////////////
        friend_list.widthProperty().bind(date_time.widthProperty().multiply(0.47));
-       task_list.widthProperty().bind(date_time.widthProperty().multiply(0.47));
+       scrollPaneNotion.prefWidthProperty().bind(date_time.widthProperty().multiply(0.47));
        news_list.widthProperty().bind(date_time.widthProperty().multiply(0.47));
        
        
@@ -137,15 +154,16 @@ public class NewsLayout {
        bg_quote_client.heightProperty().bind(bg_info_client.heightProperty().multiply(1));
        bg_music_client.heightProperty().bind(scene.heightProperty().multiply(0.11));
        date_time.heightProperty().bind(scene.heightProperty().multiply(0.1));
+       afternoon.fitHeightProperty().bind(scene.heightProperty().multiply(0.1));
        friend_list.heightProperty().bind(scene.heightProperty().multiply(0.425));
-       task_list.heightProperty().bind(scene.heightProperty().multiply(0.315));
+       scrollPaneNotion.prefHeightProperty().bind(scene.heightProperty().multiply(0.315));
        news_list.heightProperty().bind(scene.heightProperty().multiply(0.74));
        
        scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-            img_info.setTranslateY(height*0.01);
-            infoClientPane.setTranslateY(height*0.005);
-            news_friend.setTranslateY(height*0.005);
-            overralPane.setTranslateY(height*0.01);
+            img_info.setTranslateY(height*0.03);
+            infoClientPane.setTranslateY(height*0.007);
+            news_friend.setTranslateY(height*0.007);
+            overralPane.setTranslateY(height*0.03);
        });
        
        scene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
@@ -157,8 +175,8 @@ public class NewsLayout {
        });
        
        //Calendar 
-        CalendarView calendarView = new CalendarView();
-        BorderPane calendarUI = calendarView.createCalendar(friend_list.heightProperty());
+//        CalendarView calendarView = new CalendarView();
+//        BorderPane calendarUI = calendarView.createCalendar(friend_list.heightProperty());
         System.out.print(imageView);
        Pane imgPane = new Pane(img_slide,imageView);
        img_slide.widthProperty().addListener((obs,oldVal,newVal)->{
@@ -196,13 +214,15 @@ public class NewsLayout {
         
         StackPane controlPane = new StackPane(play, pause); // Xếp chồng play và pause
         controlPane.setAlignment(Pos.CENTER); // Căn giữa
-        bg_music_clientPane = new Pane(bg_music_client,music_backgoundText,cd,controlPane);
+        bg_music_clientPane = new Pane(bg_music_client,music_backgoundText,cd,controlPane,current_music);
         bg_music_clientPane.widthProperty().addListener((obs,oldVal,newVal)->{
             music_backgoundText.setLayoutX(newVal.doubleValue()*0.03);
+            current_music.setLayoutX(newVal.doubleValue()*0.3);
             controlPane.setLayoutX(newVal.doubleValue()*0.3);
         });
         bg_music_clientPane.heightProperty().addListener((obs,oldVal,newVal)->{
             music_backgoundText.setFont(FontManagement.Roboto(bg_music_clientPane.getHeight() * 0.2));
+            current_music.setFont(FontManagement.Roboto(bg_music_clientPane.getHeight() * 0.2));
             cd.setLayoutY(newVal.doubleValue()*0.2);
             controlPane.setLayoutY(newVal.doubleValue()*0.5);
         });
@@ -224,7 +244,9 @@ public class NewsLayout {
            bg_info_music_clientPane.setLayoutY(newVal.doubleValue()*0.03);
        });
        
-       img_info = new VBox(imgEventPane,infoClientPane);
+       img_info = new VBox();
+        img_info.setSpacing(3); // Khoảng cách 10 pixel giữa các phần tử
+        img_info.getChildren().addAll(imgEventPane, infoClientPane);
        //Img day
        //time_friend_news
        timePane = new Pane(date_time, timer, greeting);
@@ -243,22 +265,14 @@ public class NewsLayout {
        Label what = new Label("What should I do today ?");
        
        VBox notionVBox = rm.Notion();
-       ScrollPane scrollPaneNotion = new ScrollPane(notionVBox);
-       scrollPaneNotion.setFitToWidth(true);
+
+        scrollPaneNotion.setContent(notionVBox);
+        scrollPaneNotion.setFitToWidth(true);
         scrollPaneNotion.setFitToHeight(true);
-//       notionVBox.setPrefHeight(300); // hoặc một giá trị nào đó tạm
+
 
        scrollPaneNotion.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-       Pane  taskPane = new Pane(task_list,scrollPaneNotion);
-       taskPane.prefWidthProperty().bind(task_list.widthProperty());
-       taskPane.prefHeightProperty().bind(task_list.heightProperty());
-       taskPane.heightProperty().addListener((obs,oldVal,newVal)->{
-           scrollPaneNotion.setPrefHeight(newVal.doubleValue());
-       });
-       taskPane.widthProperty().addListener((obs,oldVal,newVal)->{
-           scrollPaneNotion.setPrefWidth(newVal.doubleValue());
-
-       });
+       Pane taskPane = new Pane(scrollPaneNotion);
        Pane whatPane = new Pane(what);
        
        friendPane = new Pane(friend_list,whatPane);
@@ -277,10 +291,11 @@ public class NewsLayout {
        
        
        Label news = new Label("News");
+       news.setTextFill(Color.SADDLEBROWN);
        
        newsListPane = new Pane(news_list,news);
        newsListPane.heightProperty().addListener((obs,oldVal,newVal)->{
-           news.setFont(Font.font(newVal.doubleValue()*0.04));
+           news.setFont(Font.font(newVal.doubleValue()*0.045));
            
        });
        newsListPane.widthProperty().addListener((obs,oldVal,newVal)->{
@@ -290,26 +305,19 @@ public class NewsLayout {
 //       // thiết lập friend cùng ngang với news
        news_friend = new HBox(newsListPane,notion_friend);
        // thiết lập time nằm trên khối friend + time
-       overralPane = new VBox(timePane,news_friend);
+       overralPane = new VBox();
+        overralPane.setSpacing(3); // Khoảng cách 10 pixel giữa các phần tử
+        overralPane.getChildren().addAll(timePane, news_friend);
        
        groupPane = new HBox(img_info,overralPane);
 //       bulletin_boardPane.setStyle("-fx-border-color: red;");    
        
         Platform.runLater(() -> {
-           
-//            scrollPaneNotion.applyCss();
-//            scrollPaneNotion.layout();
-           
+            
             StackPane calendarUIPane = new StackPane(calendarUI);
             calendarUIPane.setLayoutX(0);
             calendarUIPane.setLayoutY(0);
-            calendarUIPane.prefWidthProperty().bind(friend_list.widthProperty());
-            calendarUIPane.prefHeightProperty().bind(friend_list.heightProperty().multiply(0.7));
-
             friendPane.getChildren().add(calendarUIPane);
-            // Đảm bảo calendarUI co giãn theo calendarUIPane
-//            calendarUI.prefWidthProperty().bind(calendarUIPane.widthProperty());
-//            calendarUI.prefHeightProperty().bind(calendarUIPane.heightProperty());
             for (int i = 0; i < galleyPaths.length; i++) {
                 VBox galleryItem = GalleryItemFactory.createGalleryItem(
                     galleyPaths[i], 

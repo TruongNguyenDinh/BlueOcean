@@ -14,11 +14,16 @@ public class FontManagement {
     public static Font Roboto (double size){
         return Font.loadFont(FontManagement.class.getResourceAsStream("/Font/Roboto-Medium.ttf"),size);
     }
-    public Font Pacifico(int size){
-        return Font.loadFont(getClass().getResourceAsStream("/Font/Pacifico-Regular.ttf"), size);
+    public static Font Pacifico(double size){
+        return Font.loadFont(FontManagement.class.getResourceAsStream("/Font/Pacifico-Regular.ttf"), size);
     }
     public Font WinkySans(int size){
         return Font.loadFont(getClass().getResourceAsStream("/Font/WinkySans-VariableFont_wght.ttf"), size);
     }
-    
+    public static Font CorGara (double size){
+        return Font.loadFont(FontManagement.class.getResourceAsStream("/Font/Cormorant_Garamond/CormorantGaramond-Medium.ttf"),size);
+    }
+    public static Font GreVib (double size){
+        return Font.loadFont(FontManagement.class.getResourceAsStream("/Font/Great_Vibes/GreatVibes-Regular.ttf"),size);
+    }
 }

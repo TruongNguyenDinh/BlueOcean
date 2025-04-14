@@ -22,21 +22,27 @@ public class CalendarView {
     private final ComboBox<Integer> monthBox = new ComboBox<>();
     private final ComboBox<Integer> yearBox = new ComboBox<>();
     private final LocalDate today = LocalDate.now();
-    private double height;
+    private double height,width;
     private Label label;
     private ReadOnlyDoubleProperty heightPro;
     private List<Label> weekdayLabels;
     
     
-    public BorderPane createCalendar(ReadOnlyDoubleProperty heightProperty) {
-        height = heightProperty.get();
-        heightPro = heightProperty;
-        heightProperty.addListener((obs, oldVal, newVal) -> {
-        height = newVal.doubleValue();
+    public BorderPane createCalendar(ReadOnlyDoubleProperty heightpro,ReadOnlyDoubleProperty widthpro) {
+//        width = heightProperty.get()*0.47;
+//        height = heightProperty.get()*0.425;
+        widthpro.addListener((obs, oldVal, newVal) -> {
+            height = newVal.doubleValue()*0.425;
+            updateWeekdayLabelFont();
+        });
+        widthpro.addListener((obs, oldVal, newVal) -> {
+            width = newVal.doubleValue()*0.47;
             updateWeekdayLabelFont();
         });
 
         BorderPane root = new BorderPane();
+        root.prefWidthProperty().bind(heightpro.multiply(0.425));
+        root.prefHeightProperty().bind(widthpro.multiply(0.7*0.47));
         root.setPadding(new Insets(10));
         
         // Top - chọn tháng và năm
@@ -64,7 +70,7 @@ public class CalendarView {
         root.setCenter(calendarGrid);
 
         updateCalendar();
-
+        
         return root;
     }
 
@@ -76,7 +82,7 @@ public class CalendarView {
         weekdayLabels = new ArrayList<>();
         for (int i = 0; i < weekdays.length; i++) {
             label = new Label(weekdays[i]);
-            label.setFont(Font.font(height*0.035));
+            label.setFont(Font.font(height*0.036));
             label.setPadding(new Insets(5));
             label.setAlignment(Pos.CENTER);
             calendarGrid.add(wrapInPane(label), i, 0);

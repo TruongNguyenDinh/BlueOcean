@@ -65,8 +65,16 @@ CREATE TABLE room_members (
     FOREIGN KEY (room_id) REFERENCES chat_rooms(room_id)
 );
 GO
-
--- 7. Thêm người dùng vào bảng users
+-- 7. Tạo bảng Notes
+CREATE TABLE notes (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    user_id INT NOT NULL,
+    content NVARCHAR(MAX) NOT NULL,
+    reminder_time DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+GO
+-- 8. Thêm người dùng vào bảng users
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES 
 ('XuanNhat', 'Nguyen Xuan Nhat', 'Nhat', '097987653', 'Hanoi, Vietnam', 1, '123', 'xuannhat@gmail.com', 1),

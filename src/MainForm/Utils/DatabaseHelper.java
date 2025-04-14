@@ -1,5 +1,6 @@
 package MainForm.Utils;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -46,7 +47,7 @@ public class DatabaseHelper {
     
 
     public static String getFullname(String username, String password) {
-        String sql = "SELECT fullname FROM users WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (Connection con = DriverManager.getConnection(connectionUrl);
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
@@ -55,7 +56,20 @@ public class DatabaseHelper {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("fullname"); // Trả về fullname nếu tìm thấy
+                int id = rs.getInt("user_id"); 
+                String un = rs.getString("username"); 
+                String fn =rs.getString("fullname"); 
+                String nn = rs.getString("nickname"); 
+                String p = rs.getString("phone"); 
+                String ad = rs.getString("address"); 
+                String gen = rs.getString("gender"); 
+                String e = rs.getString("email"); 
+                
+                java.sql.Timestamp timestamp = rs.getTimestamp("created_at");
+                String createdAt = timestamp.toLocalDateTime().toString();
+                
+                
+                return id+"-"+un+"-"+"-"+fn+"-"+nn+"-"+p+"-"+ad+"-"+gen+"-"+e+"-"+createdAt;
             }
         } catch (SQLException e) {
             System.err.println("Loi: " + e.getMessage());

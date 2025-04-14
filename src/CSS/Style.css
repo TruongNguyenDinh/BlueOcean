@@ -79,5 +79,68 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-font-family: "Robot", sans-serif;
     -fx-font-size: 14px;
 }
+.task3button {
+  -fx-text-fill: white;
+  -fx-background-color: #003B46;
+  -fx-color: white;
+  -fx-border: none;
+  -fx-margin: 0;
+  -fx-padding: 0;
+  -fx-border-radius: 0;
+  -fx-background-radius: 0;
+  -fx-cursor: hand;
+  -fx-transition: background-color 0.3s ease;
+}
 
+.task3button:hover {
+  -fx-background-color: #00535F; /* Màu sáng hơn của #003B46 */
+}
+.task3buttonisON{
+  -fx-background-color: #00535F;
+  -fx-text-fill: white;
+  -fx-color: white;
+  -fx-border: none;
+  -fx-margin: 0;
+  -fx-padding: 0;
+  -fx-border-radius: 0;
+  -fx-background-radius: 0;
+  -fx-cursor: hand;
+}
+.openAppBtn {
+    -fx-background-color: #FF4742;
+    -fx-border-color: #FF4742;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 0px;
+    -fx-text-fill: white;
+    -fx-font-family: "Nunito", "Roboto", "Proxima Nova", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 14px 12px 14px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 1, 2);
+}
 
+.openAppBtn:hover {
+    -fx-background-color: #E03E3A;
+    -fx-text-fill: white;
+}
+
+.openAppBtn:pressed {
+    -fx-opacity: 0.5;
+}
+.listApps{
+    -fx-background-color: rgba(51, 102, 204, 0.2); 
+    -fx-background-radius: 8;
+}
+.listApps:hover{
+    -fx-background-color: rgba(51, 102, 204, 0.5);
+}
+.listSetting{
+    -fx-background-color: rgba(51, 102, 204, 0.2); 
+}
+.listSetting:hover{
+    -fx-background-color: rgba(51, 102, 204, 0.6);
+}
+.listSetting:pressed {
+    -fx-opacity: 0.5;
+}
