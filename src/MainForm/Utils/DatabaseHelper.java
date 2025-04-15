@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 
 public class DatabaseHelper {
     private static String fullname;
-    private  static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=123;encrypt=false;";
+    private  static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=123456789;encrypt=false;";
     
     public static boolean testConnection(){
         try (Connection con = DriverManager.getConnection(connectionUrl)){
