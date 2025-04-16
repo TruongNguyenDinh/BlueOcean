@@ -1,11 +1,14 @@
 package MainForm.Utils;
 
-import java.security.Timestamp;
+import BlueOceanScene.ReminderPanel.Reminder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author truong
@@ -29,7 +32,7 @@ public class DatabaseHelper {
     public static boolean isUserValid(String username, String password) {
         String sql = "SELECT COUNT(*) FROM users WHERE username =? AND password = ? ";
         try (Connection con = DriverManager.getConnection(connectionUrl);
-               PreparedStatement stmt = con.prepareStatement(sql) ){
+            PreparedStatement stmt = con.prepareStatement(sql) ){
             stmt.setString(1,username);
             stmt.setString(2,password);
             ResultSet rs = stmt.executeQuery();
@@ -127,6 +130,76 @@ public class DatabaseHelper {
             System.err.println("Loi: " + e.getMessage());
 //            e.printStackTrace();
 
+        }
+        return false;
+    }
+    public static List<Reminder> loadNotes(int user_id){
+        List<Reminder> notesList = new ArrayList<>();
+        String sql = "SELECT * FROM notes WHERE user_id = ?";
+        try(Connection con = DriverManager.getConnection(connectionUrl);
+                PreparedStatement stmt = con.prepareStatement(sql)){
+            stmt.setInt(1, user_id);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String message = rs.getString("content"); 
+                java.sql.Timestamp timestamp = rs.getTimestamp("reminder_time");
+                LocalDateTime dateTime = timestamp.toLocalDateTime();
+                notesList.add(new Reminder(message,dateTime,id)); // Thêm ghi chú vào danh sách
+                
+            }
+        }
+        catch(SQLException e){
+            System.err.println("Loi: " + e.getMessage());
+        }
+        return notesList;
+    }
+    public static void saveNotes(int id,String content,LocalDateTime date){
+        String sql = "INSERT INTO notes (user_id,content,reminder_time) VALUES (?,?,?)";
+        try (Connection con = DriverManager.getConnection(connectionUrl);
+                PreparedStatement stmt = con.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            stmt.setString(2, content);
+            java.sql.Timestamp  timestamp = java.sql.Timestamp.valueOf(date);
+            stmt.setTimestamp(3, timestamp);
+            int rows = stmt.executeUpdate();
+            if(rows>0){
+                System.out.print("Save OK");
+            }
+            
+        }
+        catch(SQLException e){
+            System.err.println("Loi: " + e.getMessage());
+        }
+    }
+    public static void deleteNotes(int userId,int id_reminder){
+        String sql="DELETE FROM notes WHERE user_id = ? AND id = ?";
+        try(Connection con = DriverManager.getConnection(connectionUrl);
+                PreparedStatement stmt = con.prepareStatement(sql)){
+            stmt.setInt(1, userId);
+            stmt.setInt(2,id_reminder);    
+            stmt.executeUpdate();
+        }
+        catch(SQLException e){
+            
+        }
+    }
+    public static boolean changeInfor(int userID,String nickname,String emai,String address,String phone,boolean gender){
+        String sql = "UPDATE users SET nickname = ?, phone = ?, address = ?, gender = ?, email = ? WHERE user_id = ?";
+        try(Connection conn = DriverManager.getConnection(connectionUrl);
+                PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setString(1,nickname);
+            stmt.setString(2,phone);
+            stmt.setString(3, address);
+            stmt.setBoolean(4, gender);
+            stmt.setString(5, emai);
+            stmt.setInt(6,userID );
+            int rowupdate = stmt.executeUpdate();
+            if(rowupdate>0) return true;
+         }
+        catch(SQLException e){
+           e.printStackTrace();
         }
         return false;
     }

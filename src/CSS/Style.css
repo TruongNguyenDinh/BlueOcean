@@ -144,3 +144,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .listSetting:pressed {
     -fx-opacity: 0.5;
 }
+.false_input{    
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}

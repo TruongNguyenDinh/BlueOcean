@@ -4,7 +4,6 @@
  */
 package MainForm.Views;
 
-import MainForm.Views.LogInView;
 import MainForm.Controllers.RegistorController;
 import AlertPkg.AlertMain;
 import javafx.application.Application;
@@ -140,6 +139,7 @@ public class RegisterView extends Application {
             String nickname = nicknameField.getText();
             if (password.equals(passwordCheck)&& !"".equals(password)){
                RegistorController rgc = new RegistorController(userName, password, phonenumber, email, fullname, nickname);
+               System.out.print(rgc.checkAllData());
                if(rgc.checkAllData()){
                    errorSending.setVisible(false);
                    errorInput.setVisible(false);

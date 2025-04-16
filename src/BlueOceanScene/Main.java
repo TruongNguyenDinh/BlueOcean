@@ -29,45 +29,50 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.StageStyle;
-
 
 /**
  *
  * @author truon
  */
 public class Main extends Application {
+
     private final NewsLayout newsLayout = new NewsLayout();
     private final AppsLayout appsLayout = new AppsLayout();
     private final InfoLayout infoLayout = new InfoLayout();
-    private static int id;
-    private static String username,fullname,nickname,phone,address,email;
+    public static int id;
+    private int ID;
+    private static String username, fullname, nickname, phone, address, email;
     private static boolean gender;
     private static LocalDateTime createdAt;
-    private static boolean newsOpens = true,apps = true,setting = true,info = true;
-    private double width,height;
+    private static boolean newsOpens = true, apps = true, setting = true, info = true, profileFg = true;
+    private double width, height;
     private HBox title_bar;
     private Pane bulletin_boardPane;
     private VBox group2;
     private Stage MainStage;
+    private ReminderPanel reminderPanel;
     private final List<String> paths = new ArrayList<>();
-    public Stage getStage(){
+
+    public Stage getStage() {
         return MainStage;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        openMainStage(id,username,fullname,nickname,phone,address,gender,email,createdAt);
+        openMainStage(id, username, fullname, nickname, phone, address, gender, email, createdAt);
     }
-    public void openMainStage (int id,String ussername,String fullname,String nickname,String phone,String address,boolean gender,String email,LocalDateTime dateTime){
+
+    public void openMainStage(int id, String ussername, String fullname, String nickname, String phone, String address, boolean gender, String email, LocalDateTime dateTime) {
+        reminderPanel = new ReminderPanel(id);
+        System.out.print("\nset ID " + id + "\n");
         paths.add("Opening Game of Thrones--GameofThrones.mp3");
         paths.add("Goodbye--Ramsey.mp3");
         paths.add("Ocean--Wanderlust(2023).mp3");
         MediaMusic.playPlaylist(paths);
         MediaMusic.callBackgroundMusic();
-        
+
         MainStage = new Stage();// Tạo stage chính
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
@@ -103,21 +108,29 @@ public class Main extends Application {
         //Add layout
         HBox newslayout = new HBox(newsLayout.newsLayout(scene)); //newsLayout
         HBox appslayout = new HBox(appsLayout.appsLayout(scene));
-        HBox infolayout = new HBox (infoLayout.infoLayout(scene));
-        HBox settinglayout = new HBox (SettingLayout.settinglayout(scene));
+        HBox infolayout = new HBox(infoLayout.infoLayout(scene));
+        HBox settinglayout = new HBox(SettingLayout.settinglayout(scene));
+        HBox profileLayout = new HBox(ProfileLayout.profilelayout(scene));
         //Remain Pane
-        Text labelNews = new Text("News");labelNews.setFill(Color.WHITE);
-        Rectangle bgLogo = new Rectangle();bgLogo.setFill(Color.web("003B46"));
-        Rectangle end_taskbar = new Rectangle();end_taskbar.setFill(Color.web("003B46"));
-        Button newsBtn = new Button(labelNews.getText()); newsBtn.getStyleClass().add("task3button");
-        Button appsBtn = new Button("Apps");appsBtn.getStyleClass().add("task3button");
-        Button infoBtn = new Button("Info");infoBtn.getStyleClass().add("task3button");
-        Button settingBtn = new Button("Setting");settingBtn.getStyleClass().add("task3button");
-        Button profile = new Button("Your Profile");profile.getStyleClass().add("task3button");
-        Button logoutBtn = new Button("Log out");logoutBtn.getStyleClass().add("task3button");
-        
-        
-        
+        Text labelNews = new Text("News");
+        labelNews.setFill(Color.WHITE);
+        Rectangle bgLogo = new Rectangle();
+        bgLogo.setFill(Color.web("003B46"));
+        Rectangle end_taskbar = new Rectangle();
+        end_taskbar.setFill(Color.web("003B46"));
+        Button newsBtn = new Button(labelNews.getText());
+        newsBtn.getStyleClass().add("task3button");
+        Button appsBtn = new Button("Apps");
+        appsBtn.getStyleClass().add("task3button");
+        Button infoBtn = new Button("Info");
+        infoBtn.getStyleClass().add("task3button");
+        Button settingBtn = new Button("Setting");
+        settingBtn.getStyleClass().add("task3button");
+        Button profile = new Button("Your Profile");
+        profile.getStyleClass().add("task3button");
+        Button logoutBtn = new Button("Log out");
+        logoutBtn.getStyleClass().add("task3button");
+
         // Tắt focus
         newsBtn.setFocusTraversable(false);
         appsBtn.setFocusTraversable(false);
@@ -125,14 +138,16 @@ public class Main extends Application {
         settingBtn.setFocusTraversable(false);
         logoutBtn.setFocusTraversable(false);
         profile.setFocusTraversable(false);
-        Rectangle main_title_bar = new Rectangle();main_title_bar.setFill(Color.AQUA);
-        Rectangle sub_title_bar = new Rectangle();sub_title_bar.setFill(Color.AQUAMARINE);
-        Rectangle title_bar_close = new Rectangle();title_bar_close.setFill(Color.BEIGE);
+        Rectangle main_title_bar = new Rectangle();
+        main_title_bar.setFill(Color.AQUA);
+        Rectangle sub_title_bar = new Rectangle();
+        sub_title_bar.setFill(Color.AQUAMARINE);
+        Rectangle title_bar_close = new Rectangle();
+        title_bar_close.setFill(Color.BEIGE);
         // Phân vùng 2_2 
-        Rectangle bulletin_board = new Rectangle(); bulletin_board.setFill(Color.WHITESMOKE);
-        
+        Rectangle bulletin_board = new Rectangle();
+        bulletin_board.setFill(Color.WHITESMOKE);
 
-        
         // Thiet lap vi tri chieu rong
         bgLogo.widthProperty().bind(scene.widthProperty().multiply(0.15));
         newsBtn.prefWidthProperty().bind(bgLogo.widthProperty());
@@ -162,25 +177,22 @@ public class Main extends Application {
         sub_title_bar.heightProperty().bind(main_title_bar.heightProperty());
         title_bar_close.heightProperty().bind(main_title_bar.heightProperty());
         bulletin_board.heightProperty().bind(scene.heightProperty().multiply(0.1));
-        
 
-        
-         //Bám scene
+        //Bám scene
         scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-            System.out.print("Height scene\n"+newHeight.doubleValue());
+            System.out.print("Height scene\n" + newHeight.doubleValue());
             height = newHeight.doubleValue(); //
-            bulletin_boardPane.setTranslateY(height*0.005);
-            newslayout.setTranslateY(height*0.008);
+            bulletin_boardPane.setTranslateY(height * 0.005);
+            newslayout.setTranslateY(height * 0.008);
             //
 
-            
         });
         scene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            System.out.print("Width scene\n"+newWidth.doubleValue());
+            System.out.print("Width scene\n" + newWidth.doubleValue());
             width = newWidth.doubleValue();//
-            title_bar.setTranslateX(width*0.05);
-            bulletin_boardPane.setTranslateX(width*0.005);
-         
+            title_bar.setTranslateX(width * 0.05);
+            bulletin_boardPane.setTranslateX(width * 0.005);
+
         });
 
         Text newsText = new Text("HELLO ");
@@ -189,113 +201,113 @@ public class Main extends Application {
         nickName.setTextFill(Color.CORAL);
         //Pane Button
         Pane logoBackground = new Pane(bgLogo);
-        Pane newsPane = new Pane(newsBtn,newsIcon);
-        newsPane.widthProperty().addListener((obs,oldVal,newVal)->{
-            newsIcon.setFitWidth(newVal.doubleValue()*0.08);
-            newsIcon.setTranslateX(newVal.doubleValue()*0.15);
+        Pane newsPane = new Pane(newsBtn, newsIcon);
+        newsPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            newsIcon.setFitWidth(newVal.doubleValue() * 0.08);
+            newsIcon.setTranslateX(newVal.doubleValue() * 0.15);
         });
-        newsPane.heightProperty().addListener((obs,oldVal,newVal)->{
-            newsIcon.setFitHeight(newVal.doubleValue()*0.34);
-            newsIcon.setTranslateY(newVal.doubleValue()*0.3);
+        newsPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            newsIcon.setFitHeight(newVal.doubleValue() * 0.34);
+            newsIcon.setTranslateY(newVal.doubleValue() * 0.3);
         });
-        Pane infoPane = new Pane(infoBtn,infoIcon);
-        infoPane.widthProperty().addListener((obs,oldVal,newVal)->{
-            infoIcon.setFitWidth(newVal.doubleValue()*0.08);
-            infoIcon.setTranslateX(newVal.doubleValue()*0.15);
+        Pane infoPane = new Pane(infoBtn, infoIcon);
+        infoPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            infoIcon.setFitWidth(newVal.doubleValue() * 0.08);
+            infoIcon.setTranslateX(newVal.doubleValue() * 0.15);
         });
-        infoPane.heightProperty().addListener((obs,oldVal,newVal)->{
-            infoIcon.setFitHeight(newVal.doubleValue()*0.34);
-            infoIcon.setTranslateY(newVal.doubleValue()*0.3);
+        infoPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            infoIcon.setFitHeight(newVal.doubleValue() * 0.34);
+            infoIcon.setTranslateY(newVal.doubleValue() * 0.3);
         });
         //
-        Pane appsPane = new Pane(appsBtn,appsIcon);
-        appsPane.widthProperty().addListener((obs,oldVal,newVal)->{
-            appsIcon.setFitWidth(newVal.doubleValue()*0.1);
-            appsIcon.setTranslateX(newVal.doubleValue()*0.15);
+        Pane appsPane = new Pane(appsBtn, appsIcon);
+        appsPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            appsIcon.setFitWidth(newVal.doubleValue() * 0.1);
+            appsIcon.setTranslateX(newVal.doubleValue() * 0.15);
         });
-        appsPane.heightProperty().addListener((obs,oldVal,newVal)->{
-            appsIcon.setFitHeight(newVal.doubleValue()*0.34);
-            appsIcon.setTranslateY(newVal.doubleValue()*0.3);
+        appsPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            appsIcon.setFitHeight(newVal.doubleValue() * 0.34);
+            appsIcon.setTranslateY(newVal.doubleValue() * 0.3);
         });
-        Pane settingPane = new Pane(settingBtn,settingIcon);
-        settingPane.widthProperty().addListener((obs,oldVal,newVal)->{
-            settingIcon.setFitWidth(newVal.doubleValue()*0.08);
-            settingIcon.setTranslateX(newVal.doubleValue()*0.15);
+        Pane settingPane = new Pane(settingBtn, settingIcon);
+        settingPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            settingIcon.setFitWidth(newVal.doubleValue() * 0.08);
+            settingIcon.setTranslateX(newVal.doubleValue() * 0.15);
         });
-        settingPane.heightProperty().addListener((obs,oldVal,newVal)->{
-            settingIcon.setFitHeight(newVal.doubleValue()*0.34);
-            settingIcon.setTranslateY(newVal.doubleValue()*0.3);
+        settingPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            settingIcon.setFitHeight(newVal.doubleValue() * 0.34);
+            settingIcon.setTranslateY(newVal.doubleValue() * 0.3);
         });
-        Pane profilePane = new Pane(profile,profileIcon);
-        profilePane.widthProperty().addListener((obs,oldVal,newVal)->{
-            profileIcon.setFitWidth(newVal.doubleValue()*0.1);
-            profileIcon.setTranslateX(newVal.doubleValue()*0.13);
+        Pane profilePane = new Pane(profile, profileIcon);
+        profilePane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            profileIcon.setFitWidth(newVal.doubleValue() * 0.1);
+            profileIcon.setTranslateX(newVal.doubleValue() * 0.13);
         });
-        profilePane.heightProperty().addListener((obs,oldVal,newVal)->{
-            profileIcon.setFitHeight(newVal.doubleValue()*0.45);
-            profileIcon.setTranslateY(newVal.doubleValue()*0.3);
+        profilePane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            profileIcon.setFitHeight(newVal.doubleValue() * 0.45);
+            profileIcon.setTranslateY(newVal.doubleValue() * 0.3);
         });
-        Pane logoutPane = new Pane(logoutBtn,logoutIcon);
-        logoutPane.widthProperty().addListener((obs,oldVal,newVal)->{
-            logoutIcon.setFitWidth(newVal.doubleValue()*0.08);
-            logoutIcon.setTranslateX(newVal.doubleValue()*0.15);
+        Pane logoutPane = new Pane(logoutBtn, logoutIcon);
+        logoutPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            logoutIcon.setFitWidth(newVal.doubleValue() * 0.08);
+            logoutIcon.setTranslateX(newVal.doubleValue() * 0.15);
         });
-        logoutPane.heightProperty().addListener((obs,oldVal,newVal)->{
-            logoutIcon.setFitHeight(newVal.doubleValue()*0.35);
-            logoutIcon.setTranslateY(newVal.doubleValue()*0.3);
+        logoutPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            logoutIcon.setFitHeight(newVal.doubleValue() * 0.35);
+            logoutIcon.setTranslateY(newVal.doubleValue() * 0.3);
         });
-        VBox task_bar = new VBox(logoBackground,newsPane,appsPane,infoPane,settingPane,profilePane,logoutPane,end_taskbar);//gom task3
-        
+        VBox task_bar = new VBox(logoBackground, newsPane, appsPane, infoPane, settingPane, profilePane, logoutPane, end_taskbar);//gom task3
+
         //Title
         Label mousePosition = new Label();
         mousePosition.setTextFill(Color.CRIMSON);
         mousePosition.setTranslateY(4);
         mousePosition.setTranslateX(2);
-        scene.addEventFilter(MouseEvent.MOUSE_MOVED,e->{
+        scene.addEventFilter(MouseEvent.MOUSE_MOVED, e -> {
             double x = e.getSceneX();
-            double y =e.getSceneY();
-            mousePosition.setText("X: "+x+" | "+"Y: "+y);
+            double y = e.getSceneY();
+            mousePosition.setText("X: " + x + " | " + "Y: " + y);
         });
-        Pane maintt = new Pane(main_title_bar,mousePosition);
-        
-        Label nickNameLabel = new Label("Nickname: "+ nickname);
+        Pane maintt = new Pane(main_title_bar, mousePosition);
+
+        Label nickNameLabel = new Label("Nickname: " + nickname);
         nickNameLabel.setTranslateX(2);
         nickNameLabel.setTranslateY(2);
-        Label idLabel = new Label("ID: "+id);
+        Label idLabel = new Label("ID: " + id);
         idLabel.setTranslateX(200);
         idLabel.setTranslateY(2);
-        Pane sub_maintt = new Pane(sub_title_bar,nickNameLabel,idLabel);
-        Pane maintt_close = new Pane(title_bar_close,close);
-        maintt_close.widthProperty().addListener((obs,oldVal,newVal)->{
-            close.setTranslateX(newVal.doubleValue()*0.4);
-            close.setFitWidth(newVal.doubleValue()*0.7);
+        Pane sub_maintt = new Pane(sub_title_bar, nickNameLabel, idLabel);
+        Pane maintt_close = new Pane(title_bar_close, close);
+        maintt_close.widthProperty().addListener((obs, oldVal, newVal) -> {
+            close.setTranslateX(newVal.doubleValue() * 0.4);
+            close.setFitWidth(newVal.doubleValue() * 0.7);
         });
-        maintt_close.heightProperty().addListener((obs,oldVal,newVal)->{
-            close.setLayoutY(newVal.doubleValue()*0.1);
-            close.setFitHeight(newVal.doubleValue()*0.7);
+        maintt_close.heightProperty().addListener((obs, oldVal, newVal) -> {
+            close.setLayoutY(newVal.doubleValue() * 0.1);
+            close.setFitHeight(newVal.doubleValue() * 0.7);
         });
-        maintt_close.setOnMouseClicked(e->{
+        maintt_close.setOnMouseClicked(e -> {
             AlertMain.checkLogOut(false, MainStage, Alert.AlertType.WARNING, "Chúng tôi sẽ nhớ bạn đấy :(", "Thoát", "Bạn có muốn thoát ứng dụng không?");
-            
+
         });
-        title_bar = new HBox(maintt,sub_maintt,maintt_close);
-        
-       //bulletin_board
-        bulletin_boardPane = new Pane(bulletin_board,newsText,nickName);//gom bulletin_board
-       // Bám 
-        bulletin_boardPane.widthProperty().addListener((obs,oldVal,newVal)->{
-            nickName.setLayoutX(bulletin_boardPane.getHeight()*0.35);
-            newsText.setLayoutX(bulletin_boardPane.getHeight()*0.35);
+        title_bar = new HBox(maintt, sub_maintt, maintt_close);
+
+        //bulletin_board
+        bulletin_boardPane = new Pane(bulletin_board, newsText, nickName);//gom bulletin_board
+        // Bám 
+        bulletin_boardPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            nickName.setLayoutX(bulletin_boardPane.getHeight() * 0.35);
+            newsText.setLayoutX(bulletin_boardPane.getHeight() * 0.35);
         });
-        bulletin_boardPane.heightProperty().addListener((obs,oldVal,newVal)->{
-            nickName.setLayoutY(bulletin_boardPane.getHeight()*0.35);
-            newsText.setLayoutY(bulletin_boardPane.getHeight()*0.35);
+        bulletin_boardPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            nickName.setLayoutY(bulletin_boardPane.getHeight() * 0.35);
+            newsText.setLayoutY(bulletin_boardPane.getHeight() * 0.35);
             nickName.setFont(FontManagement.Roboto(bulletin_boardPane.getHeight() * 0.35));
             newsText.setFont(FontManagement.Roboto(bulletin_boardPane.getHeight() * 0.2));
         });
         Group fakeGroup = new Group(newslayout, appslayout);
         fakeGroup.setVisible(false); // không hiển thị thật
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             fakeGroup.applyCss();
             fakeGroup.layout();
             double h = bulletin_boardPane.getHeight();
@@ -304,25 +316,27 @@ public class Main extends Application {
             nickName.setLayoutY(h * 0.35);
             newsText.setLayoutY(h * 0.35);
             nickName.setFont(FontManagement.Roboto(h * 0.35));
-            newsText.setFont(FontManagement.Roboto(h * 0.2)); 
+            newsText.setFont(FontManagement.Roboto(h * 0.2));
         });
         HBox news_layout = new HBox(task_bar);
-        group2 = new VBox(title_bar, bulletin_boardPane, newslayout); 
+        group2 = new VBox(title_bar, bulletin_boardPane, newslayout);
         news_layout.getChildren().add(group2);
-        
+
         newsBtn.getStyleClass().add("task3buttonisON");
         ////
         newsBtn.setOnMouseClicked(e -> {
             appsBtn.getStyleClass().remove("task3buttonisON");
             infoBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
+            profile.getStyleClass().remove("task3buttonisON");
             apps = true;
             info = true;
             setting = true;
-            if (newsOpens){
+            profileFg = true;
+            if (newsOpens) {
                 newsBtn.getStyleClass().add("task3buttonisON");
             }
-            
+
             newsOpens = false;
             news_layout.getChildren().remove(group2); // Xóa group2 cũ
             group2 = new VBox(title_bar, bulletin_boardPane, newslayout); // Tạo group2 mới
@@ -334,11 +348,13 @@ public class Main extends Application {
             newsBtn.getStyleClass().remove("task3buttonisON");
             infoBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
+            profile.getStyleClass().remove("task3buttonisON");
             setting = true;
             newsOpens = true;
             info = true;
-            
-            if(apps){
+            profileFg = true;
+
+            if (apps) {
                 appsBtn.getStyleClass().add("task3buttonisON");
             }
             apps = false;
@@ -350,10 +366,12 @@ public class Main extends Application {
             newsBtn.getStyleClass().remove("task3buttonisON");
             appsBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
+            profile.getStyleClass().remove("task3buttonisON");
             newsOpens = true;
             apps = true;
             setting = true;
-            if(info){
+            profileFg = true;
+            if (info) {
                 infoBtn.getStyleClass().add("task3buttonisON");
             }
             info = false;
@@ -365,10 +383,12 @@ public class Main extends Application {
             newsBtn.getStyleClass().remove("task3buttonisON");
             infoBtn.getStyleClass().remove("task3buttonisON");
             appsBtn.getStyleClass().remove("task3buttonisON");
+            profile.getStyleClass().remove("task3buttonisON");
             newsOpens = true;
             apps = true;
             info = true;
-            if(setting){
+            profileFg = true;
+            if (setting) {
                 settingBtn.getStyleClass().add("task3buttonisON");
             }
             setting = false;
@@ -376,14 +396,32 @@ public class Main extends Application {
             group2 = new VBox(title_bar, bulletin_boardPane, settinglayout); // Tạo group2 mới
             news_layout.getChildren().add(group2); // Thêm lại group2 mới
         });
-        logoutBtn.setOnMouseClicked(e->{
-            AlertMain.checkLogOut(true, MainStage, Alert.AlertType.WARNING, "Chúng tôi sẽ nhớ bạn đấy :(", "Đăng xuất", "Bạn có muốn đăng xuất ứng dụng không?"); 
-            
+        profile.setOnMouseClicked(e -> {
+            newsBtn.getStyleClass().remove("task3buttonisON");
+            infoBtn.getStyleClass().remove("task3buttonisON");
+            appsBtn.getStyleClass().remove("task3buttonisON");
+            settingBtn.getStyleClass().remove("task3buttonisON");
+            newsOpens = true;
+            apps = true;
+            info = true;
+            setting = true;
+            if (profileFg) {
+                profile.getStyleClass().add("task3buttonisON");
+            }
+            profileFg = false;
+            news_layout.getChildren().remove(group2); // Xóa group2 cũ
+            group2 = new VBox(title_bar, bulletin_boardPane, profileLayout); // Tạo group2 mới
+            news_layout.getChildren().add(group2); // Thêm lại group2 mới
+        });
+        logoutBtn.setOnMouseClicked(e -> {
+            AlertMain.checkLogOut(true, MainStage, Alert.AlertType.WARNING, "Chúng tôi sẽ nhớ bạn đấy :(", "Đăng xuất", "Bạn có muốn đăng xuất ứng dụng không?");
+
         });
         scene.getStylesheets().add(getClass().getResource("../CSS/Style.css").toExternalForm());
         MainPane.setLeft(news_layout);
         MainStage.show();
     }
+
     public void recreateStage(StageStyle style) {
         Platform.runLater(() -> {
             Stage oldStage = this.MainStage;
@@ -400,12 +438,12 @@ public class Main extends Application {
             this.MainStage = newStage;
         });
     }
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

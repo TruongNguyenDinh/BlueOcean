@@ -10,7 +10,7 @@ CREATE TABLE users (
     username NVARCHAR(50) UNIQUE NOT NULL,
     fullname NVARCHAR(50) NOT NULL,  
     nickname NVARCHAR(50) NOT NULL,
-    phone NVARCHAR(9) NOT NULL,  
+    phone NVARCHAR(10) NOT NULL,  
     address NVARCHAR(255),  -- Thêm địa chỉ
     gender BIT,  -- 1: Nam, 0: Nữ
     password NVARCHAR(255) NOT NULL,
@@ -19,6 +19,7 @@ CREATE TABLE users (
     created_at DATETIME DEFAULT GETDATE()
 );
 GO
+DROP TABLE users;
 
 -- 3. Tạo bảng Chat Rooms
 CREATE TABLE chat_rooms (
@@ -87,5 +88,14 @@ GO
 SELECT*FROM users;
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES
-('Truong', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 0);
+('Truong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 0, 'Truong123', 'truong@gmail.com', 0);
 GO
+SELECT*FROM notes;
+DELETE FROM notes;
+
+DROP TABLE notes;
+DROP TABLE room_members;
+DROP TABLE messages;
+DROP TABLE files;
+
+DROP TABLE users;

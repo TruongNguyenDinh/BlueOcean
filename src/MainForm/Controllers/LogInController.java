@@ -15,6 +15,7 @@ import MainForm.Utils.DatabaseHelper;
 import MainForm.Utils.checkInputData;
 import java.time.LocalDateTime;
 import javafx.application.Platform;
+import MainForm.Models.User;
 public class LogInController {
     private static int id;
     public static String username,fullname,nickname,phone,address,email;
@@ -22,7 +23,7 @@ public class LogInController {
     private static boolean gender;
     public static String password;
     private Stage loginStage;
-    private Main main = new Main();
+
 //    private MainScene mainScene = new MainScene();
     public LogInController(){}
     public  LogInController(Stage loginStage,String username,String password){
@@ -56,15 +57,17 @@ public class LogInController {
                 LogInController.email = parts[8];
                 LogInController.createdAt = LocalDateTime.parse(parts[9]);
                 System.out.print(fullname);
-                openChatApp();
-
+                User user = new User(id, username, fullname, nickname, phone, address, gender, email, createdAt);
+                openDashboard();
+                
             }
             //Cho vòa trong đây
             else {}
         }
     }
-        public void openChatApp() {
+        public void openDashboard() {
             Platform.runLater(() -> {
+                Main main = new Main();
                 loginStage.close(); // Đóng cửa sổ đăng nhập
                 main.openMainStage(id,username,fullname,nickname,phone,address,gender,email,createdAt); // Mở cửa sổ chính
 

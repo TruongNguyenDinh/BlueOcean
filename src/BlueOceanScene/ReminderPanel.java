@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
 package BlueOceanScene;
+import MainForm.Models.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.*;
 import javafx.geometry.*;
@@ -10,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import java.awt.Toolkit;
 import java.io.*;
-import java.nio.file.*;
 import java.time.*;
 import java.time.format.*;
 import java.util.*;
@@ -22,6 +22,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javax.sound.sampled.*;
 import javafx.util.Duration;
+
+import MainForm.Utils.DatabaseHelper;
 /**
  *
  * @author truon
@@ -29,30 +31,56 @@ import javafx.util.Duration;
 public class ReminderPanel {
     private static final ObservableList<Reminder> reminders = FXCollections.observableArrayList();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-    private final String SAVE_PATH = "reminders.txt";
     private Timer timer;
     private String msg;
+    private int id;
+
     private boolean remindersChanged= false;
             private static void sortRemindersByTime() {
             FXCollections.sort(reminders, Comparator.comparing(Reminder::getTime));
         }
+    public ReminderPanel(int id){
+        this.id = id;
+        System.out.println("ReminderPanel created with id = " + id);
+    }
 
     // Lớp Reminder giữ nguyên
     public static class Reminder {
         private final SimpleStringProperty message;
         private final LocalDateTime time;
         private BooleanProperty selected; 
-        
+        private boolean isModified;
+        private int id;
 
         public Reminder(String message, LocalDateTime time) {
             this.message = new SimpleStringProperty(message);
             this.time = time;
             this.selected = new SimpleBooleanProperty(false);
         }
-
+        public Reminder(String message, LocalDateTime time,int id) {
+            this.message = new SimpleStringProperty(message);
+            this.time = time;
+            this.selected = new SimpleBooleanProperty(false);
+            this.id = id;
+            this.isModified = false; 
+            this.message.addListener((obs,oldVal,newVal)->{
+                if(!newVal.equals(oldVal)){
+                    setModified(true);
+                }
+            });
+        }
+        
+        public int getId() {
+            return id;
+        }
+        public void setId(int id) {
+            this.id = id;
+        }
+        
         public String getMessage() {
             return message.get();
         }
+        
         public BooleanProperty selectedProperty() {
             return selected;
         }
@@ -60,7 +88,12 @@ public class ReminderPanel {
         public LocalDateTime getTime() {
             return time;
         }
-  
+        public boolean isModified() {
+            return isModified;
+        }
+        private void setModified(boolean modified) {
+            this.isModified = modified;
+        }
         public String toFileString() {
             return getMessage() + "||" + time.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         }
@@ -77,7 +110,7 @@ public class ReminderPanel {
     }
 
     // Phương thức trả về giao diện ReminderPanel
-    public BorderPane getReminderPane(LocalDate selectedDate) {
+    public BorderPane getReminderPane(LocalDate selectedDate,int id) {
         // Các thành phần giao diện
         TextField messageField = new TextField();
         messageField.setPromptText("Nhập ghi chú của bạn");
@@ -143,19 +176,22 @@ public class ReminderPanel {
             LocalDateTime reminderTime = LocalDateTime.of(date, LocalTime.of(hour, minute));
             reminders.add(new Reminder(msg, reminderTime));
             remindersChanged = true;
-            saveRemindersToFile();
+            saveRemindersToSQL(id);
             messageField.clear();
         });
 
         deleteBtn.setOnAction(e -> {
             Reminder selected = table.getSelectionModel().getSelectedItem();
             if (selected != null) {
-                reminders.remove(selected);
+                int reminderId = selected.getId();
+//                reminders.remove(selected);
+                System.out.print("User ID: "+User.getId()+" Note ID: "+this.id);
+                DatabaseHelper.deleteNotes(User.getId(), reminderId);
                 remindersChanged = true;
             }
         });
 
-        loadRemindersFromFile();
+        loadRemindersFromSQL(id);
 
         VBox timeBox = new VBox(5, datePicker, new HBox(5, hourComboBox, minuteComboBox));
         VBox inputBox = new VBox(10, messageField, timeBox, addBtn, deleteBtn);
@@ -191,12 +227,12 @@ public class ReminderPanel {
             }
         }, 0, 1000 * 30); // Kiểm tra mỗi 30s
     }
-    public VBox Notion() {
+    public VBox Notion(int id) {
         reminders.clear(); 
-        loadRemindersFromFile();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(20),event->{
+        loadRemindersFromSQL(id);
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5),event->{
 //            reminders.clear(); 
-            loadRemindersFromFile();
+            loadRemindersFromSQL(id);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -226,44 +262,48 @@ public class ReminderPanel {
         return vbox;
 }
     // Lưu nhắc nhở vào file khi cần
-    public void saveRemindersToFile() {
+    public void saveRemindersToSQL(int id) {
         if (!remindersChanged) {
             System.out.println("No changes to save.");
         }
         else{
-            System.out.println("Reminders saved to: " + Paths.get(SAVE_PATH).toAbsolutePath());
-            try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(Paths.get(SAVE_PATH)))) {
-                if(reminders!=null){
-                    for (Reminder r : reminders){
-                        writer.println(r.toFileString());
+            if(DatabaseHelper.testConnection()){
+                if(reminders !=null && !reminders.isEmpty()){
+                    System.out.print("\nUserID-- "+ id);
+                    for(Reminder r : reminders){
+                        if (r.getId() == 0) {
+                            // reminder mới, chưa có id -> insert
+                            DatabaseHelper.saveNotes(id, r.getMessage(), r.getTime());
+                        }
+//                        String message = r.getMessage();
+//                        LocalDateTime dateTime = r.getTime();
+//                        DatabaseHelper.saveNotes(id, message, dateTime);
                     }
+                     remindersChanged = false;
                 }
-                remindersChanged = false;
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            else{
+                System.out.print("Không có kết nối tới Database");
             }
         }
     }
 
     // Tải nhắc nhở từ file
-    private void loadRemindersFromFile() {
+    private void loadRemindersFromSQL(int id) {
         reminders.clear(); 
-        Path path = Paths.get(SAVE_PATH);
-        if (Files.exists(path)) {
-            try {
-                List<String> lines = Files.readAllLines(path);
-                for (String line : lines) {
-                    Reminder r =Reminder.fromFileString(line);
-                    if (r.getTime().isBefore(LocalDateTime.now())) {
+        List<Reminder> list = DatabaseHelper.loadNotes(id);
+        if(list!= null){
+            
+            for(Reminder r:list){
+                    if(r.getTime().isBefore(LocalDateTime.now())){
                         r.selectedProperty().set(true);
                     }
+                    r.setModified(false);
                     reminders.add(r);
-                }
-                sortRemindersByTime();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            sortRemindersByTime(); 
         }
+//      
     }
 
     // Phát âm thanh từ file WAV (tùy chọn)
@@ -282,6 +322,6 @@ public class ReminderPanel {
         if (timer != null) {
             timer.cancel();
         }
-        saveRemindersToFile();
+        saveRemindersToSQL(this.id);
     }
 }

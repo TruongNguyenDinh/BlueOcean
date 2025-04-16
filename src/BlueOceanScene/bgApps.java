@@ -5,6 +5,7 @@
 package BlueOceanScene;
 
 import static BlueOceanScene.AppsLayout.detailappbgPane;
+import MainForm.Models.User;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -52,7 +53,7 @@ public class bgApps{
          openApp.prefWidthProperty().bind(detailappbgPane.widthProperty().multiply(0.8));
          openApp.setOnMouseClicked(e->{
              Stage stage = new Stage();
-            BorderPane reminderPaneWithDate = reminderPanel.getReminderPane(null); 
+            BorderPane reminderPaneWithDate = reminderPanel.getReminderPane(null,User.getId()); 
             Scene newScene = new Scene(reminderPaneWithDate, 850, 300);
             stage.setScene(newScene);
             stage.setResizable(false);

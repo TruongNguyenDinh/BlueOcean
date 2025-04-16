@@ -4,9 +4,9 @@
  */
 package BlueOceanScene;
 
-import Font.FontManagement;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -28,7 +28,9 @@ public class SettingLayout {
     private static AnimationFx fx = new AnimationFx();
     private static HBox settingLayout;
     private static boolean isOpenSoundSetting = true;
+    private static Node volume = MucBackSetting.volume();
     public static HBox settinglayout(Scene scene){
+        volume.setId("volume");
         Label label = new Label("Không có gì để hiển thị");
         label.setTranslateY(80);
         label.setTranslateX(-10);
@@ -94,11 +96,12 @@ public class SettingLayout {
         StackPane graphTimeInfoPane = new StackPane(detailModebg,gear1,label,gear2);
         Sound.setOnAction(e ->{
             if (isOpenSoundSetting){
+                graphTimeInfoPane.getChildren().removeIf(node -> 
+                    "volume".equals(node.getId()));
                 gear1.setVisible(false);
                 label.setVisible(false);
                 gear2.setVisible(false);
-                graphTimeInfoPane.getChildren().add(MucBackSetting.volume());  
-                isOpenSoundSetting = false;
+                graphTimeInfoPane.getChildren().add(volume);  
             }
             
         });

@@ -1,4 +1,5 @@
 package BlueOceanScene;
+import MainForm.Models.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -140,7 +141,7 @@ public class CalendarView {
         label1.setOnMouseClicked((MouseEvent e) -> {
             Stage newStage = new Stage();
 //            VBox content = new VBox(new Label("Ngày đã chọn: " + date));
-            BorderPane reminderPaneWithDate = reminderPanel.getReminderPane(date); 
+            BorderPane reminderPaneWithDate = reminderPanel.getReminderPane(date,User.getId()); 
             Scene newScene = new Scene(reminderPaneWithDate, 850, 300);
             newStage.setScene(newScene);
             newStage.setResizable(false);

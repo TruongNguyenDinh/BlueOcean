@@ -6,6 +6,7 @@ package BlueOceanScene;
 
 import Font.FontManagement;
 import GalleryFactory.GalleryItemFactory;
+import MainForm.Models.User;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Pos;
@@ -40,7 +41,7 @@ public class NewsLayout {
     private Label timer;
     private ScrollPane scrollPane ;
     double itemHeight; 
-    private final ReminderPanel rm = new ReminderPanel();
+    private ReminderPanel rm;
     private final QuoteSlideshow quoteSlideshow = new QuoteSlideshow();
     private final ScrollPane scrollPaneNotion = new ScrollPane();
     private CalendarView calendarView;
@@ -71,7 +72,7 @@ public class NewsLayout {
         "https://web.facebook.com/PogDad",
         "https://www.youtube.com/watch?v=LsfFYwpDngs"
             
-    };
+    }; 
     public HBox newsLayout(Scene scene){
         imageView = new ImageView(new Image("Image/1.jpeg"));
         galleryContainer = new VBox(10);
@@ -263,8 +264,8 @@ public class NewsLayout {
        
        
        Label what = new Label("What should I do today ?");
-       
-       VBox notionVBox = rm.Notion();
+       rm = new ReminderPanel();
+       VBox notionVBox = rm.Notion(User.getId());
 
         scrollPaneNotion.setContent(notionVBox);
         scrollPaneNotion.setFitToWidth(true);

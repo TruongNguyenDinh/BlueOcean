@@ -4,8 +4,6 @@
  */
 package MainForm.Controllers;
 
-import static MainForm.Controllers.LogInController.password;
-import static MainForm.Controllers.LogInController.username;
 import MainForm.Utils.DatabaseHelper;
 import MainForm.Utils.checkInputData;
 import javafx.scene.Node;
@@ -89,14 +87,15 @@ public class RegistorController {
     // -> thêm 
     public static void main(String[] args){
         
-        String usernamE = "Truong5";
-        String  passworD = "Truong5";
-        String fullnamE = " Truong";
-        String phonenumbeR = "097980986";
-        String nicknamE = "truong1245";
-        String emaiL = "truong5@gmail.com";
+        String usernamE = "NhungNT";
+        String  passworD = "Truong123";
+        String fullnamE = "Ngu Thượng Nhung";
+        String phonenumbeR = "0362361299";
+        String nicknamE = "Ma Kiếm";
+        String emaiL = "Truong@gmai.com";
         RegistorController a = new RegistorController(usernamE,passworD,phonenumbeR,emaiL,fullnamE,nicknamE);
-        boolean k = a.sendData();
-        System.out.print(k);
+        boolean k = a.checkAllData();
+        boolean x = a.checkNickname();
+        System.out.print(x);
     }
 }
