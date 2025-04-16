@@ -1,4 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+# Ignore mdf and ldf
+database/DATA/BluceOcean.mdf
+database/DATA/BluceOcean_log.ldf
+>>>>>>> origin/chatapp
 # Ignore build and output folders
 /build/
 /dist/

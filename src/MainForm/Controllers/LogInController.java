@@ -23,7 +23,6 @@ public class LogInController {
     private static boolean gender;
     public static String password;
     private Stage loginStage;
-
 //    private MainScene mainScene = new MainScene();
     public LogInController(){}
     public  LogInController(Stage loginStage,String username,String password){
@@ -41,6 +40,7 @@ public class LogInController {
         return DatabaseHelper.isUserValid(username, password);
     }
     public String getFullname(){return LogInController.fullname;}
+
     public void getAccountId() {
        
         if (checkUsername() && checkPassword()) {
@@ -59,7 +59,6 @@ public class LogInController {
                 System.out.print(fullname);
                 User user = new User(id, username, fullname, nickname, phone, address, gender, email, createdAt);
                 openDashboard();
-                
             }
             //Cho vòa trong đây
             else {}
@@ -70,7 +69,6 @@ public class LogInController {
                 Main main = new Main();
                 loginStage.close(); // Đóng cửa sổ đăng nhập
                 main.openMainStage(id,username,fullname,nickname,phone,address,gender,email,createdAt); // Mở cửa sổ chính
-
             });
         }
     public static void main (String[] args){

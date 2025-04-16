@@ -1,4 +1,4 @@
-﻿-- 1. Tạo Database
+-- 1. Tạo Database
 CREATE DATABASE appchat;
 GO
 USE appchat;
@@ -15,7 +15,7 @@ CREATE TABLE users (
     gender BIT,  -- 1: Nam, 0: Nữ
     password NVARCHAR(255) NOT NULL,
     email NVARCHAR(100) UNIQUE NOT NULL,
-    status BIT DEFAULT 0, -- 1: Online, 0: Offline
+    status BIT , -- 1: Online, 0: Offline 
     created_at DATETIME DEFAULT GETDATE()
 );
 GO
@@ -66,6 +66,7 @@ CREATE TABLE room_members (
     FOREIGN KEY (room_id) REFERENCES chat_rooms(room_id)
 );
 GO
+<<<<<<< HEAD
 -- 7. Tạo bảng Notes
 CREATE TABLE notes (
     id INT IDENTITY(1,1) PRIMARY KEY,
@@ -76,6 +77,32 @@ CREATE TABLE notes (
 );
 GO
 -- 8. Thêm người dùng vào bảng users
+=======
+-- Bảng lưu thông tin trận đấu
+CREATE TABLE game_matches (
+    match_id INT IDENTITY(1,1) PRIMARY KEY,
+    player1_id INT NOT NULL,
+    player2_id INT NOT NULL,
+    winner_id INT NULL, -- NULL nếu hòa
+    match_date DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (player1_id) REFERENCES users(user_id),
+    FOREIGN KEY (player2_id) REFERENCES users(user_id),
+    FOREIGN KEY (winner_id) REFERENCES users(user_id)
+);
+
+-- Bảng lưu điểm xếp hạng của người chơi
+CREATE TABLE player_rankings (
+    user_id INT PRIMARY KEY,
+    points INT DEFAULT 1000, -- Điểm xếp hạng, mặc định 1000
+    wins INT DEFAULT 0,
+    losses INT DEFAULT 0,
+    draws INT DEFAULT 0,
+    last_played DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+-- 7. Thêm người dùng vào bảng users
+>>>>>>> origin/chatapp
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES 
 ('XuanNhat', 'Nguyen Xuan Nhat', 'Nhat', '097987653', 'Hanoi, Vietnam', 1, '123', 'xuannhat@gmail.com', 1),
@@ -83,10 +110,9 @@ VALUES
 ('PhucLe', 'Le The Phuc', 'Phuc', '034567891', 'Da Nang, Vietnam', 1, '789', 'phucle@gmail.com', 0),
 ('DinhTruong', 'Nguyen Dinh Truong', 'Truong', '097889901', 'Hai Phong, Vietnam', 1, '987', 'dinhtruong@gmail.com', 1),
 ('MaiLe', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, '563', 'maile@gmail.com', 1);
-
 GO
-SELECT*FROM users;
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
+<<<<<<< HEAD
 VALUES
 ('Truong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 0, 'Truong123', 'truong@gmail.com', 0);
 GO
@@ -99,3 +125,18 @@ DROP TABLE messages;
 DROP TABLE files;
 
 DROP TABLE users;
+=======
+VALUES 
+('Truong1', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong1', 'truo1ng@gmail.com', 1),
+('Minh', 'Le Minh', 'Minh', '090112233', 'Can Tho, Vietnam', 0, 'Minh', 'minh@gmail.com', 1),
+
+('Vuong', 'Le Vuong', 'Vuong', '090112253', 'Can Tho, Vietnam', 0, 'Vuong', 'vuong@gmail.com', 1),
+('Truong', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 1);
+
+SELECT*FROM users;
+
+INSERT INTO users (username, fullname, nickname, phone, address, password, email)
+VALUES 
+('Truong2', 'Le Mai', 'Mai', '090112234', 'Can Tho, Vietnam', 'Truong2', 'truong2@gmail.com');
+SELECT*FROM users;
+>>>>>>> origin/chatapp

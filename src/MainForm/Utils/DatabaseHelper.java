@@ -211,6 +211,10 @@ public class DatabaseHelper {
             System.out.print("Ket noi thanh cong ");
         }catch (SQLException e){
             System.err.println("Loi" + e.getMessage());
+
+/**
+ * Kết thực hiện kết nối database ở đây
+ */
         }
     }
 }
