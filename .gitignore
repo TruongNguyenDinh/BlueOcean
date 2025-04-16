@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ignore build and output folders
 /build/
 /dist/
@@ -25,3 +26,28 @@ manifest.mf
 # Ignore mdf and ldf
 database/DATA/BluceOcean.mdf
 database/DATA/BluceOcean_log.ldf
+=======
+# Ignore build and output folders
+/build/
+/dist/
+
+# Ignore temporary NetBeans files (chỉ bỏ qua các file cache, không bỏ nbproject/)
+nbproject/private/
+nbproject/Makefile-*.mk
+nbproject/Package-*.bash
+nbproject/configurations.xml
+
+# Ignore database files (nếu không phải file cấu hình cố định)
+
+
+# Ignore compiled Java classes
+*.class
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore build configuration (tùy chọn)
+build.xml
+manifest.mf
+>>>>>>> origin/RocketShoot
