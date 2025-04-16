@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class MainRocketShoot extends Application {
 
     private Scene menuScene;
     private Stage primaryStage;
@@ -170,9 +170,5 @@ public class Main extends Application {
         stage.getIcons().add(new Image(getClass().getResource("/game/image/startup.png").toExternalForm()));
 
         alert.showAndWait();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

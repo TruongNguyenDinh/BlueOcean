@@ -49,7 +49,6 @@ public class LogInView extends Application {
     
     // Quản lý phông chữ
     private Font pacifico, roboto;
-    private final FontManagement createFont = new FontManagement();
     
     // Factory tạo hình ảnh, văn bản, biểu tượng, hình khối
     private final CircleFactory circleFactory = new CircleFactory(); 
@@ -66,8 +65,8 @@ public class LogInView extends Application {
         loginStage = primaryStage;
         
         // Load font chữ
-        pacifico = createFont.Pacifico(70);
-        roboto = createFont.Roboto(15);
+        pacifico = FontManagement.Pacifico(70);
+        roboto = FontManagement.Roboto(15);
         
         // Load hình ảnh nền và logo
         ImageView img1 = img.createImg(0, 0, 1, 1000, 600, 1, 1, "Image/bglogin.jpg");
@@ -142,27 +141,33 @@ public class LogInView extends Application {
         loginButton.setLayoutY(250);
         loginButton.setDisable(true);
         loginButton.setOnAction(event -> {
-        lgc = new LogInController(loginStage, usernameField.getText(), passwordField.getText());
-        lgc.getAccountId();
-//            if(!un || !pw) {
-//                count++;
-//                textLable.get(7).setVisible(false);
-//                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
-//                        textLable.get(7).setVisible(true);
-//                }));
-//                timeline.setCycleCount(1);
-//                timeline.play();
-//                if (count == 5){
-//                    count =0;
-//                    openForget();
-//                    
-//                }
-//            }
-//            else textLable.get(7).setVisible(false);
-        });
-        //Set disable cho nút đăng nhập
-        usernameField.textProperty().addListener((obs,oldText,newText)->{
-            loginButton.setDisable(newText.trim().isEmpty());
+            String username = userNameText.getText();
+            if(!username.isEmpty()){
+                if(username.startsWith("/")){
+                    
+                }
+            }
+            lgc = new LogInController(loginStage, usernameField.getText(), passwordField.getText());
+            lgc.getAccountId();
+    //            if(!un || !pw) {
+    //                count++;
+    //                textLable.get(7).setVisible(false);
+    //                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
+    //                        textLable.get(7).setVisible(true);
+    //                }));
+    //                timeline.setCycleCount(1);
+    //                timeline.play();
+    //                if (count == 5){
+    //                    count =0;
+    //                    openForget();
+    //                    
+    //                }
+    //            }
+    //            else textLable.get(7).setVisible(false);
+            });
+            //Set disable cho nút đăng nhập
+            usernameField.textProperty().addListener((obs,oldText,newText)->{
+                loginButton.setDisable(newText.trim().isEmpty());
         });
         // Quên mật khẩu
         posRegisterText.setOnMouseClicked(event->openForget());

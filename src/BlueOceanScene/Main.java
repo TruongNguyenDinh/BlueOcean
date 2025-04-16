@@ -51,12 +51,15 @@ public class Main extends Application {
     private HBox title_bar;
     private Pane bulletin_boardPane;
     private VBox group2;
-    private Stage MainStage;
+    private Stage MainStage,stage;
     private ReminderPanel reminderPanel;
     private final List<String> paths = new ArrayList<>();
-
+    
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
     public Stage getStage() {
-        return MainStage;
+        return stage;
     }
 
     @Override
@@ -74,6 +77,8 @@ public class Main extends Application {
         MediaMusic.callBackgroundMusic();
 
         MainStage = new Stage();// Tạo stage chính
+        setStage(MainStage);
+        System.out.print(getStage());
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         MainStage.setX(bounds.getMinX());
@@ -89,6 +94,7 @@ public class Main extends Application {
         MainStage.setMaximized(true);
         MainStage.setResizable(false);
         MainStage.setScene(scene);
+        
         ////
         ImageView close = new ImageView(new Image("Image/close.png"));
         close.setPreserveRatio(true); //1

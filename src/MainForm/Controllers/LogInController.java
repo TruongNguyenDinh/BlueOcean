@@ -60,7 +60,6 @@ public class LogInController {
                 User user = new User(id, username, fullname, nickname, phone, address, gender, email, createdAt);
                 openDashboard();
             }
-            //Cho vòa trong đây
             else {}
         }
     }
