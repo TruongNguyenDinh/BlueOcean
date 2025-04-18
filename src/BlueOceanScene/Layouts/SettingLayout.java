@@ -2,35 +2,43 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.Layouts;
 
+import BlueOceanScene.Utils.AnimationFx;
+import BlueOceanScene.subSetting.LoginSetting;
+import BlueOceanScene.subSetting.MucBackSetting;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-
+import java.util.Random;
 /**
  *
  * @author truon
  */
 public class SettingLayout {
-    private static AnimationFx fx = new AnimationFx();
+    private static Random random = new Random();
+    private static final AnimationFx fx = new AnimationFx();
     private static HBox settingLayout;
-    private static boolean isOpenSoundSetting = true;
-    private static Node volume = MucBackSetting.volume();
+    private static final Node volume = MucBackSetting.volume();
+    private static final Node quickLog = LoginSetting.loginSetting();
+    private static List<Button> listButton;
+    private static StackPane modePane;
     public static HBox settinglayout(Scene scene){
         volume.setId("volume");
+        quickLog.setId("quickLogin");
         Label label = new Label("Không có gì để hiển thị");
         label.setTranslateY(80);
         label.setTranslateX(-10);
@@ -74,44 +82,53 @@ public class SettingLayout {
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE); // Cho phép giãn hết cỡ
-        // Thêm vài nội dung
-        gridPane.add(new Label("Username:"), 0, 0);
-        gridPane.add(new TextField(), 1, 0);
+
         
+        modePane = new StackPane();
+        Button login = new Button("Đăng nhập");
         Button Sound = new Button("Âm thanh");
-        Sound.setFocusTraversable(false);
-        Sound.setTranslateY(20);
-        Sound.getStyleClass().add("listSetting");
-        StackPane modePane = new StackPane(modeBg,Sound);
-        StackPane.setAlignment(Sound, Pos.TOP_LEFT);
-        Sound.prefWidthProperty().bind(modePane.widthProperty());
-        Sound.prefHeightProperty().bind(modePane.widthProperty().multiply(0.2));
-        modePane.widthProperty().addListener((obs,oldVal,newVal)->{
-//            Sound.prefWidth(newVal.doubleValue());
-        });
-        modePane.heightProperty().addListener((obs,oldVal,newVal)->{
-            Sound.prefHeight(newVal.doubleValue()*0.3);
-        });
+        listButton = List.of(login,Sound);
         
+        for(Button btn: listButton){
+            btn.setFocusTraversable(false);
+            btn.getStyleClass().add("listSetting");
+            btn.setMinWidth(modeBg.getWidth());
+            btn.prefWidthProperty().bind(modePane.widthProperty());
+            btn.prefHeightProperty().bind(modePane.heightProperty().multiply(0.1));
+            
+        }
+        VBox buttonBox = new VBox(login,Sound);
+        buttonBox.setSpacing(5);
+        buttonBox.setTranslateY(3);
+        modePane.getChildren().addAll(modeBg,buttonBox);
+        StackPane.setAlignment(buttonBox, Pos.TOP_LEFT);
+        
+        VBox listSettingBox = new VBox();
+        listSettingBox.setSpacing(1);
         StackPane graphTimeInfoPane = new StackPane(detailModebg,gear1,label,gear2);
+        
         Sound.setOnAction(e ->{
-            if (isOpenSoundSetting){
-                graphTimeInfoPane.getChildren().removeIf(node -> 
-                    "volume".equals(node.getId()));
-                gear1.setVisible(false);
-                label.setVisible(false);
-                gear2.setVisible(false);
-                graphTimeInfoPane.getChildren().add(volume);  
-            }
+            graphTimeInfoPane.getChildren().clear();
+            graphTimeInfoPane.getChildren().addAll(detailModebg,listSettingBox);
+            listSettingBox.getChildren().removeIf(node -> 
+                "volume".equals(node.getId()));
+            gear1.setVisible(false);
+            label.setVisible(false);
+            gear2.setVisible(false);
+            listSettingBox.getChildren().add(volume); 
+        });
+        login.setOnAction(e->{
+            graphTimeInfoPane.getChildren().clear();
+            graphTimeInfoPane.getChildren().addAll(detailModebg,listSettingBox);
+            listSettingBox.getChildren().removeIf(node -> 
+                "quickLogin".equals(node.getId()));
+            gear1.setVisible(false);
+            label.setVisible(false);
+            gear2.setVisible(false);
+            listSettingBox.getChildren().add(quickLog); 
             
         });
         
-        graphTimeInfoPane.widthProperty().addListener((obs,oldVal,newVal)->{
-        
-        });
-        graphTimeInfoPane.heightProperty().addListener((obs,oldVal,newVal)->{
-        
-        });
         settingLayout = new HBox(modePane,graphTimeInfoPane);
         return settingLayout;
     }  

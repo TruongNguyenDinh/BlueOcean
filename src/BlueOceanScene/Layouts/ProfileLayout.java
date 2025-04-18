@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.Layouts;
 
+import BlueOceanScene.Utils.AnimationFx;
+import BlueOceanScene.subProfile.previewSub;
 import Font.FontManagement;
 import MainForm.Models.User;
 import javafx.geometry.Insets;
@@ -91,7 +93,6 @@ public class ProfileLayout {
         fullNameField.setFocusTraversable(false);       // Không nhận focus qua TAB
         fullNameField.setMouseTransparent(true);  
         fullNameField.setMaxWidth(200);
-        fullNameField.setEditable(false);
         fullNameField.setTranslateY(-90);
         
         TextField idField = new TextField("ID: "+User.getId());

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.Utils;
 import MainForm.Models.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.*;
@@ -230,7 +230,7 @@ public class ReminderPanel {
     public VBox Notion(int id) {
         reminders.clear(); 
         loadRemindersFromSQL(id);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5),event->{
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30),event->{
 //            reminders.clear(); 
             loadRemindersFromSQL(id);
         }));
@@ -275,9 +275,6 @@ public class ReminderPanel {
                             // reminder mới, chưa có id -> insert
                             DatabaseHelper.saveNotes(id, r.getMessage(), r.getTime());
                         }
-//                        String message = r.getMessage();
-//                        LocalDateTime dateTime = r.getTime();
-//                        DatabaseHelper.saveNotes(id, message, dateTime);
                     }
                      remindersChanged = false;
                 }

@@ -1,5 +1,6 @@
-    package BlueOceanScene;
+    package BlueOceanScene.Utils;
 
+import BlueOceanScene.Models.Song;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import javafx.scene.media.MediaException;
  * @author truon
  */
 public class MediaMusic {
+    private static double currentVolume = 0.8;
     private static MediaPlayer mediaPlayer;
     private static int currentIndex = 0;
     private static List<Song> playlist = new ArrayList<>();
@@ -54,7 +56,7 @@ public class MediaMusic {
 
             Media media = new Media(currentSong.getFilepath());
                 mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.setVolume(0);
+                mediaPlayer.setVolume(currentVolume);
                 mediaPlayer.setOnEndOfMedia(() -> {
                 currentIndex = (currentIndex + 1) % playlist.size(); // Phát tiếp bài tiếp theo, vòng lặp
                 callBackgroundMusic();
@@ -73,8 +75,9 @@ public class MediaMusic {
         return song.getDisplayName(); // "Tên - Tác giả"
     }
     public static void setVolume1(double volume){
+        currentVolume = volume/100;
         if (mediaPlayer!=null){
-            mediaPlayer.setVolume(volume/100);
+            mediaPlayer.setVolume(currentVolume);
         }
         
     }

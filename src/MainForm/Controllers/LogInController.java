@@ -23,7 +23,6 @@ public class LogInController {
     private static boolean gender;
     public static String password;
     private Stage loginStage;
-//    private MainScene mainScene = new MainScene();
     public LogInController(){}
     public  LogInController(Stage loginStage,String username,String password){
         LogInController.username = username;
@@ -41,8 +40,7 @@ public class LogInController {
     }
     public String getFullname(){return LogInController.fullname;}
 
-    public void getAccountId() {
-       
+    public int getAccountId() {
         if (checkUsername() && checkPassword()) {
             if (find()) {
                String res =DatabaseHelper.getFullname(LogInController.username,LogInController.password);
@@ -57,11 +55,17 @@ public class LogInController {
                 LogInController.email = parts[8];
                 LogInController.createdAt = LocalDateTime.parse(parts[9]);
                 System.out.print(fullname);
-                User user = new User(id, username, fullname, nickname, phone, address, gender, email, createdAt);
+                User user = new User(id, username,password, fullname, nickname, phone, address, gender, email, createdAt);
                 openDashboard();
             }
-            else {}
+            else {
+                return 0;
+            }   
         }
+        else{
+            return 1;
+        }
+        return 1;
     }
         public void openDashboard() {
             Platform.runLater(() -> {
@@ -70,33 +74,4 @@ public class LogInController {
                 main.openMainStage(id,username,fullname,nickname,phone,address,gender,email,createdAt); // Mở cửa sổ chính
             });
         }
-    public static void main (String[] args){
-        LogInController.username = "Truong1123";
-        LogInController.password = "Truong123";
-        
-        String a = DatabaseHelper.getFullname(LogInController.username, LogInController.password);
-        String[] parts = a.split("-", 10);
-
-        int id1 = Integer.parseInt(parts[0]);
-        String username1 = parts[1];
-        String fullname1 = parts[2] + " " + parts[3]; // "Le Mai-Mai"
-        String nickname1 = parts[4];
-        String phone1 = parts[5];
-        String address1 = parts[6];
-        boolean gender1 = parts[7].equals("1");
-        String email1 = parts[8];
-        LocalDateTime dateTime1 = LocalDateTime.parse(parts[9]);
-
-        // In ra để kiểm tra
-        System.out.println("ID: " + id1);
-        System.out.println("Username: " + username1);
-        System.out.println("Fullname: " + fullname1);
-        System.out.println("Nickname: " + nickname1);
-        System.out.println("Phone: " + phone1);
-        System.out.println("Address: " + address1);
-        System.out.println("Email: " + email1);
-        System.out.println("Gender: " + gender1);
-        System.out.println("Created At: " + dateTime1);
-    }
-
 }

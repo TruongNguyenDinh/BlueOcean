@@ -102,7 +102,6 @@ CREATE TABLE player_rankings (
 );
 
 -- 7. Thêm người dùng vào bảng users
->>>>>>> origin/chatapp
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES 
 ('XuanNhat', 'Nguyen Xuan Nhat', 'Nhat', '097987653', 'Hanoi, Vietnam', 1, '123', 'xuannhat@gmail.com', 1),
@@ -112,10 +111,10 @@ VALUES
 ('MaiLe', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, '563', 'maile@gmail.com', 1);
 GO
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
-<<<<<<< HEAD
 VALUES
 ('Truong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 0, 'Truong123', 'truong@gmail.com', 0);
 GO
+SELECT * FROM users;
 SELECT*FROM notes;
 DELETE FROM notes;
 
@@ -125,18 +124,4 @@ DROP TABLE messages;
 DROP TABLE files;
 
 DROP TABLE users;
-=======
-VALUES 
-('Truong1', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong1', 'truo1ng@gmail.com', 1),
-('Minh', 'Le Minh', 'Minh', '090112233', 'Can Tho, Vietnam', 0, 'Minh', 'minh@gmail.com', 1),
 
-('Vuong', 'Le Vuong', 'Vuong', '090112253', 'Can Tho, Vietnam', 0, 'Vuong', 'vuong@gmail.com', 1),
-('Truong', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 1);
-
-SELECT*FROM users;
-
-INSERT INTO users (username, fullname, nickname, phone, address, password, email)
-VALUES 
-('Truong2', 'Le Mai', 'Mai', '090112234', 'Can Tho, Vietnam', 'Truong2', 'truong2@gmail.com');
-SELECT*FROM users;
->>>>>>> origin/chatapp

@@ -18,11 +18,12 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class  AnimationFx {
+    private Timeline logoTimeline;
    public AnimationFx(){}
    private double offset = 0;
    //Hiệu ứng nước chảy cho textlogo
    public void logoFx(Text content){
-       Timeline timeline = new Timeline(
+        logoTimeline = new Timeline(
             new KeyFrame(javafx.util.Duration.millis(50), e -> {
                 offset += 0.005; // Dịch chuyển màu từ từ để hiệu ứng mượt
                 if (offset > 5) offset = 0; // Reset vị trí nếu chạy hết vòng
@@ -40,9 +41,16 @@ public class  AnimationFx {
                 ));
             })
         );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        logoTimeline.setCycleCount(Timeline.INDEFINITE);
+        logoTimeline.play();
    }
+   public void stopLogoFx() {
+    if (logoTimeline != null) {
+        logoTimeline.stop(); // Dừng timeline
+        logoTimeline.getKeyFrames().clear(); // Xóa keyframes nếu muốn cleanup
+        logoTimeline = null; // Giải phóng biến nếu không dùng nữa
+    }
+}
    public void registerFx(AtomicBoolean  finished,Text content,Node...nodesToHide){
        RegistorController.Visiable(finished.get(), nodesToHide);
        TranslateTransition moveText = new TranslateTransition(Duration.seconds(2), content);
@@ -54,6 +62,7 @@ public class  AnimationFx {
         moveText.setOnFinished(e ->{
             finished.set(true);
             RegistorController.Visiable(finished.get(), nodesToHide);
+            moveText.setOnFinished(null);
         });
    }
    public void errorsShow(Text text){
@@ -63,6 +72,9 @@ public class  AnimationFx {
     }));
     timeline.setCycleCount(3);
     timeline.play(); 
+    timeline.setOnFinished(e -> {
+        timeline.stop(); 
+    });
    }
 }
 

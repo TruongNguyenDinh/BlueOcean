@@ -2,8 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.subSetting;
 
+import BlueOceanScene.Utils.MediaMusic;
+import javafx.geometry.Insets;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,8 +38,9 @@ public class MucBackSetting  {
         
         HBox root = new HBox(preroot);
         HBox.setHgrow(preroot, Priority.ALWAYS); // Cho phép VBox mở rộng
-        root.setTranslateX(20);
-        
+        root.setTranslateX(8);
+        root.setStyle("-fx-border-color: lightgray; -fx-border-width: 2; -fx-padding: 10 10 10 10;");
+        VBox.setMargin(title, new Insets(0, 0, 20, 0)); // Cách dưới 20px
         return root;
     }
 }

@@ -4,7 +4,8 @@
  */
 package AlertPkg;
 
-import BlueOceanScene.MediaMusic;
+import BlueOceanScene.Utils.MediaMusic;
+import MainForm.Views.ForgottenPasswordView;
 import MainForm.Views.LogInView;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -69,6 +70,37 @@ public class AlertMain{
                         ownerStage.close();
                         MediaMusic.stopMusic();
                         Platform.runLater(() -> new LogInView().start(new Stage()));
+                    }
+                    else{
+                        ownerStage.close();
+                    }
+                }
+                alertStage.close();
+            });
+        });
+    }
+    public static void checkFotgot(boolean isForgetOpen,Stage ownerStage, Alert.AlertType type, String title, String header, String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type, content, ButtonType.OK);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
+            if (ownerStage != null) {
+                alert.initModality(Modality.APPLICATION_MODAL); // Chặn cửa sổ chính
+                alert.initOwner(ownerStage);  
+            }
+            
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.setResizable(false);
+            alertStage.initStyle(StageStyle.DECORATED); // Kiểu nhỏ gọn, không có maximize/minimize
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    if (!isForgetOpen && ownerStage != null) {
+                        javafx.application.Platform.runLater(()->{
+                            ownerStage.setIconified(true);
+                            LogInView.setisRegisterOpen(true);
+                            new ForgottenPasswordView().start(new Stage());
+                        });
                     }
                     else{
                         ownerStage.close();

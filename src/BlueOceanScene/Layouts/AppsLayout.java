@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.Layouts;
 
+import BlueOceanScene.subApps.ListAppsIcon;
 import Font.FontManagement;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -44,7 +45,7 @@ public class AppsLayout {
     private final String[] appNames = {
       "Tic Tac Toe",
         "Note App",
-        "Duck Shooting",
+        "Rocket Shooting",
         "Flappy Bird"
     };
     public HBox appsLayout(Scene scene){

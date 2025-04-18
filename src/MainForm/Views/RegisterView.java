@@ -29,37 +29,50 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author truong
  */
 public class RegisterView extends Application {
-    private Font pacifico, roboto;
-    private Button buttonRegis;
-    private CheckBox yeno;
-    private List<Text> textLabels;
-    private List<Text> errors;
-    private List<TextField> inputFields;
     private Text agreeText;
-    private Text licenseText;
-    private Text haveAnAccount;
-    private Text textGoBack;
-    private final RectangleFactory rect = new RectangleFactory();
-    private final ImgFactory img = new ImgFactory();
-    private final TextLableFact label = new TextLableFact();
-    private final TextFieldFact field = new TextFieldFact();
-    private final FontManagement fmg = new FontManagement();
-    private final AnimationFx fx = new AnimationFx();
-    private final AtomicBoolean isVisible = new AtomicBoolean(false);
-    private Text errorSending;
-    private Text errorInput;
-    private Stage primaryStage;
     public void setAgreeText(Text agreeText) {
-        
         this.agreeText = agreeText;
     }
 
     @Override
     public void start(Stage registorStage) {
-        primaryStage =registorStage;
+        //Khởi tạo biến
+        Font pacifico,roboto;
+        Button buttonRegis ;
+        CheckBox yeno;
+        List<Text> textLabels,errors;
+        List<TextField> inputFields;
+        Text licenseText,errorSending,haveAnAccount,textGoBack,errorInput;
+        RectangleFactory rect ;
+        ImgFactory img;
+        TextLableFact label;
+        AtomicBoolean isVisible ;
+        AnimationFx fx ;
+        TextFieldFact field;
+        Pane root;
+        Scene scene;
+        
+        fx = new AnimationFx();
+        img = new ImgFactory();
+        root = new Pane();
+        rect = new RectangleFactory();
+        yeno = new CheckBox();
+        label = new TextLableFact();
+        field = new TextFieldFact();
+        isVisible = new AtomicBoolean(false);
+        buttonRegis = new Button();
+
+        buttonRegis.setText("Register");
+        buttonRegis.setLayoutX(500);
+        buttonRegis.setLayoutY(450);
+        buttonRegis.getStyleClass().add("buttonRegis");
+        buttonRegis.setVisible(false);
+        
+        Stage primaryStage = registorStage;
+        primaryStage.getIcons().add(ImgFactory.getIcon());
         // Load fonts
-        pacifico = fmg.Pacifico(70);
-        roboto = fmg.Roboto(15);
+        pacifico = FontManagement.Pacifico(70);
+        roboto = FontManagement.Roboto(15);
 
         // Ảnh 
         ImageView bgregistor = img.createImg(0, 0, 1, 1000, 600, 1, 1, "Image/bglogin.jpg");
@@ -69,9 +82,7 @@ public class RegisterView extends Application {
         Rectangle borderRegister = rect.createRectangle(600,400,"014f86",10, 10, 180,150, 0.5);
         // Tiêu đề
         Text registerText = label.createText(350, 300, "Register", pacifico, "a9d6e5");
-
         // Điều khoản
-        yeno = new CheckBox();
         yeno.setLayoutX(300);
         yeno.setLayoutY(415);
         yeno.setOnAction(e -> buttonRegis.setVisible(yeno.isSelected()));
@@ -86,47 +97,41 @@ public class RegisterView extends Application {
         TextField usernameField = field.createFieldData(300, 200, "Tài khoản đăng nhập","textFieldRegis");
         TextField passwordField = field.createFieldData(300, 250, "Tài khoản đăng nhập","textFieldRegis");
         TextField password_againField = field.createFieldData(300, 300, "Nhập lại mật khẩu","textFieldRegis");
-        TextField emailField = field.createFieldData(300, 350, "Email","textFieldRegis");
+        TextField emailField = field.createFieldData(400, 350, "Email","textFieldRegis");
         TextField fullnameField = field.createFieldData(500, 200, "Họ và tên","textFieldRegis");
         TextField phonenumberField = field.createFieldData(500, 250, "Số điện thoại","textFieldRegis");
         TextField nicknameField = field.createFieldData(500, 300, "Biệt danh","textFieldRegis");
-        TextField tagnameField = field.createFieldData(500, 350, "Tag Name","textFieldRegis");
         inputFields = List.of(
-            usernameField,passwordField,password_againField,emailField,fullnameField,phonenumberField,nicknameField,tagnameField
+            usernameField,passwordField,password_againField,emailField,fullnameField,phonenumberField,nicknameField
         );
         
         Text usernameText = label.createText(300, 195, "Tên đăng nhập");
         Text passwordText = label.createText(300, 245, "Mật khẩu");
         Text password_againText  = label.createText(300, 295, "Nhập lại mật khẩu");
-        Text emailText = label.createText(300, 345, "Email");
+        Text emailText = label.createText(400, 345, "Email");
         Text fullnameText = label.createText(500, 195, "Họ và tên");
         Text numberphoneText = label.createText(500, 245, "Số điện thoại");
         Text nicknameText = label.createText(500, 295, "Tên trong game");
-        Text tagnameText = label.createText(500, 345, "Tag Game");
         textLabels = List.of(
-            usernameText,passwordText,password_againText,emailText,fullnameText,numberphoneText,nicknameText,tagnameText
+            usernameText,passwordText,password_againText,emailText,
+            fullnameText,numberphoneText,nicknameText
         );
         
         //Các thông báo lỗi
         ////Lỗi nhập liệu
         errorInput = label.createText(260, 500,"""
-                                        (Lỗi!)-> Hai mật khẩu không giống nhau hoặc bị để trống !!!
-                                               """);
+            (Lỗi!)-> Hai mật khẩu không giống nhau hoặc bị để trống !!!
+            """);
         errorInput.getStyleClass().add("errorInput");
         errorInput.setVisible(false);
         //Lỗi gửi request
         errorSending = label.createText(350,500,"""
-                            (Lỗi!)-> Kết nối tới server
-                             """);
+            (Lỗi!)-> Kết nối tới server
+            """);
         errorSending.getStyleClass().add("errorInput");
         errorSending.setVisible(false);
         errors = List.of(errorInput,errorSending);
         // Nút đăng ký
-        buttonRegis = new Button("Register");
-        buttonRegis.setLayoutX(500);
-        buttonRegis.setLayoutY(450);
-        buttonRegis.getStyleClass().add("buttonRegis");
-        buttonRegis.setVisible(false);
         buttonRegis.setOnMouseClicked(e ->{
 //            closeRegister(registorStage);
             String userName = usernameField.getText();
@@ -135,49 +140,43 @@ public class RegisterView extends Application {
             String email = emailField.getText();
             String phonenumber  = phonenumberField.getText();
             String fullname = fullnameField.getText();
-       
             String nickname = nicknameField.getText();
+            
             if (password.equals(passwordCheck)&& !"".equals(password)){
-               RegistorController rgc = new RegistorController(userName, password, phonenumber, email, fullname, nickname);
-               System.out.print(rgc.checkAllData());
-               if(rgc.checkAllData()){
-                   errorSending.setVisible(false);
-                   errorInput.setVisible(false);
-                   rgc.sendData();
-                   closeRegister(registorStage);
-                   AlertMain.showAlert(true,primaryStage,Alert.AlertType.INFORMATION, 
-                      "Thông báo", "Chúc mừng", "Chúc mừng bạn đã đăng kí tài khoản thành công");
-                   ////
-                   ///tạo alter
-               }
-               else{
-                   AlertMain.showAlert(false,primaryStage,Alert.AlertType.ERROR, 
-                      "Thông báo", "Lỗi", "Không thể kết nối tới máy chủ");
-                   errorInput.setVisible(false);
-                   
-                   fx.errorsShow(errorSending);
-               }
+                RegistorController rgc = new RegistorController(userName, password, phonenumber, email, fullname, nickname);
+                if(rgc.checkAllData()){
+                    errorSending.setVisible(false);
+                    errorInput.setVisible(false);
+                    rgc.sendData();
+                    closeRegister(registorStage);
+                    AlertMain.showAlert(true,primaryStage,Alert.AlertType.INFORMATION, 
+                       "Thông báo", "Chúc mừng", "Chúc mừng bạn đã đăng kí tài khoản thành công");
+                }
+                else{
+                    AlertMain.showAlert(false,primaryStage,Alert.AlertType.ERROR, 
+                       "Thông báo", "Lỗi", "Lỗi dữ liệu đầu vào!");
+                    errorInput.setVisible(false);
+                    fx.errorsShow(errorSending);
+                }
             }
             else {
                 errorSending.setVisible(false);
                 fx.errorsShow(errorInput);
             }            
         });
-
         // Có tài khoản chưa?
         haveAnAccount = label.createText(300, 405, "I have had an account.", roboto, "ffffff");
-        
         // Nút quay lại
         textGoBack = label.createText(450, 405, "Go back", roboto, "ff0000");
-        
         textGoBack.setStyle("-fx-cursor:hand;");
         textGoBack.setOnMouseClicked(e ->closeRegister(registorStage));
+        
         // Hiện các phần tử khi chữ Registor chạy xong
         fx.registerFx(isVisible, registerText,yeno,licenseText,agreeText,haveAnAccount,textGoBack,
-                usernameField,passwordField,password_againField,emailField,fullnameField,phonenumberField,nicknameField,tagnameField,
-                usernameText,passwordText,password_againText,emailText,fullnameText,numberphoneText,nicknameText,tagnameText
-                );
-        Pane root = new Pane(
+            usernameField,passwordField,password_againField,emailField,fullnameField,phonenumberField,nicknameField,
+            usernameText,passwordText,password_againText,emailText,fullnameText,numberphoneText,nicknameText
+        );
+        root.getChildren().addAll(
             bgregistor, subBackground,wave, borderRegister, registerText,
             buttonRegis, textGoBack, haveAnAccount, yeno, licenseText, agreeText
         );
@@ -185,14 +184,15 @@ public class RegisterView extends Application {
         root.getChildren().addAll(textLabels);
         root.getChildren().addAll(errors);
 
-        Scene scene = new Scene(root, 1000, 600);
+        scene = new Scene(root, 1000, 600);
         scene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
+        
         registorStage.setTitle("Welcome to Blue Ocean!");
         registorStage.setScene(scene);
         registorStage.setResizable(false);
 //        registorStage.setOnCloseRequest(e -> closeRegister(registorStage));
         registorStage.show();
-
+        
         javafx.application.Platform.runLater(root::requestFocus);
     }
     private void closeRegister(Stage stage){

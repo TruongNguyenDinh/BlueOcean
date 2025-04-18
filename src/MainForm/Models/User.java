@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
  */
 public class User {
     public static int id;
-    private static String username,fullname,nickname,phone,address,email;
+    private static String username,fullname,nickname,phone,address,email,password;
     private static boolean gender;
     private static LocalDateTime dateTime;
     public User (){}
-    public User(int id,String username,String fullname,String nickname,String phone,String address,boolean gender,String email,LocalDateTime dateTime){
+    public User(int id,String username,String password,String fullname,String nickname,String phone,String address,boolean gender,String email,LocalDateTime dateTime){
         User.id = id;
         User.username = username;
         User.fullname = fullname;
@@ -27,6 +27,7 @@ public class User {
         User.gender = gender;
         User.email = email;
         User.dateTime = dateTime;
+        User.password = password;
     }
     public static int getId(){
         return id;
@@ -54,5 +55,8 @@ public class User {
     }
     public static LocalDateTime getDatetime(){
         return dateTime;
+    }
+    public static String getPassword(){
+        return password;
     }
 }

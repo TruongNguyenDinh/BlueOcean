@@ -4,6 +4,7 @@
  */
 package MainForm;
 
+import ImageFactory.ImgFactory;
 import MainForm.Views.LogInView;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -35,19 +36,18 @@ public class Main extends Application {
         // Đặt cửa sổ trong suốt, không viền
         splashStage.initStyle(StageStyle.TRANSPARENT);
         splashStage.setScene(splashScene);
+        splashStage.getIcons().add(ImgFactory.getIcon());
         splashStage.show();
 
-        // Chờ 3 giây trước khi mở cửa sổ đăng nhập
         PauseTransition delay = new PauseTransition(Duration.seconds(4));
         delay.setOnFinished(event -> {
             splashStage.close(); // Đóng màn hình splash
             javafx.application.Platform.runLater(() -> {
-                        splashStage.close();
-                        new LogInView().start(new Stage()); // Mở cửa sổ đăng nhập
-                    });
+                splashStage.close();
+                new LogInView().start(new Stage()); // Mở cửa sổ đăng nhập
+            });
 
         });
-        /// 
         delay.play();
     }
 

@@ -4,6 +4,7 @@
  */
 package MainForm.Views;
 
+import AlertPkg.AlertMain;
 import MainForm.Controllers.LogInController;
 import java.util.List;
 import javafx.application.Application;
@@ -29,39 +30,45 @@ import TextFactory.TextFieldFact;
 import Font.FontManagement;
 import IconFactoryPkg.IconFact;
 import IconFactoryPkg.IconSource;
+import MainForm.Models.HelpQuickLogin;
 import MainForm.Utils.AnimationFx;
+import MainForm.Utils.QuickLogin;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 /**
  *
  * @author truong
  */
 public class LogInView extends Application {
-    
-    // Trạng thái của cửa sổ đăng ký và quên mật khẩu
+    private int count=0;
+    private static Stage loginStage; // Tham chiếu đến cửa sổ đăng nhập
     private static boolean isRegisterOpen = false;
     private static boolean isForgetOpen = false;
-    private static Stage loginStage; // Tham chiếu đến cửa sổ đăng nhập
-    
-    // Danh sách các thành phần giao diện
-    private List<Text> textLable;
-    private List<ImageView> imageList;
-    private List<Rectangle> rectangleList;
-    private List<SVGPath> iconList;
-    
-    // Quản lý phông chữ
-    private Font pacifico, roboto;
-    
-    // Factory tạo hình ảnh, văn bản, biểu tượng, hình khối
-    private final CircleFactory circleFactory = new CircleFactory(); 
-    private final RectangleFactory rectFactory = new RectangleFactory();
-    private final ImgFactory img = new ImgFactory();
-    private final TextLableFact content = new TextLableFact();
-    private final TextLableFact LogoText = new TextLableFact();
-    private final TextFieldFact textField = new TextFieldFact();
-    private final IconFact icon = new IconFact();
-    
-    private LogInController lgc;
+    public static void setisRegisterOpen(boolean a){
+        LogInView.isForgetOpen = a;
+    }
     @Override
     public void start(Stage primaryStage) {
+        //Khởi tạo dữ liệu
+        
+        List<Text> textLable;
+        List<ImageView> imageList;
+        List<Rectangle> rectangleList;
+        List<SVGPath> iconList;
+        Font pacifico, roboto;
+        CircleFactory circleFactory = new CircleFactory();
+        RectangleFactory rectFactory = new RectangleFactory();
+        ImgFactory img = new ImgFactory();
+        TextLableFact content = new TextLableFact();
+        TextLableFact LogoText = new TextLableFact();
+        TextFieldFact textField = new TextFieldFact();
+        IconFact icon = new IconFact();
+        
+        
+        
         loginStage = primaryStage;
         
         // Load font chữ
@@ -95,10 +102,20 @@ public class LogInView extends Application {
         Text forgotPassText = content.createText(650,300,"I forgot my password.",roboto,"A9D6E5");
         Text registerText = content.createText(815,320,"Register",roboto,"ff0000");
         Text posRegisterText = content.createText(800,300,"Here !",roboto,"ff0000");
-        Text errorLoginText = content.createText(650,340,"Lỗi đăng nhập",roboto,"ff0000");
+        Text errorLoginText = content.createText(650,340,"Lỗi cú pháp đăng nhập",roboto,"ff0000");
+        Text notAccount = content.createText(650,340,"Tên đăng nhập hoặc mật khẩu sai",roboto,"ff0000");
+        Text errorTerminal = content.createText(650,340,"QuickLogin bắt đầu với dấu'/'",roboto,"ff0000");
+        Text dontTerminal = content.createText(650,340,"Sai QuickLogin",roboto,"ff0000");
+        
+        notAccount.setVisible(false);
+        dontTerminal.setVisible(false);
+        errorTerminal.setVisible(false);
         Text logoText = LogoText.createText(100,150,"Blue Ocean",pacifico,"BFFFF9"); 
         textLable = List.of(
-            userNameText,passwordText,logoText,notAccountText,registerText,forgotPassText,posRegisterText,errorLoginText
+            userNameText,passwordText,
+                logoText,notAccountText,registerText,forgotPassText,
+                posRegisterText,errorLoginText,notAccount,errorTerminal,
+                dontTerminal
         );
         
         // Hiệu ứng chuyển động nước
@@ -106,10 +123,8 @@ public class LogInView extends Application {
         lgfx.logoFx(logoText);
         
         // Trường nhập tài khoản
-        
         TextField usernameField = textField.createFieldData(650, 165, "Enter username", "loginField");
         PasswordField passwordField = textField.createFieldPassword(650, 215, "Enter password", "loginFieldPass");
-        
         // Chuyển đổi hiện / ẩn mật khẩu
         TextField showandhide = textField.createFieldData(650, 215, "Enter password", "loginField");
         showandhide.setVisible(false); 
@@ -141,34 +156,94 @@ public class LogInView extends Application {
         loginButton.setLayoutY(250);
         loginButton.setDisable(true);
         loginButton.setOnAction(event -> {
-            String username = userNameText.getText();
-            if(!username.isEmpty()){
-                if(username.startsWith("/")){
-                    
+            LogInController lgc = new LogInController(loginStage, usernameField.getText(), passwordField.getText());
+            switch (lgc.getAccountId()) {
+                case 0 -> {
+                    count++;
+                    dontTerminal.setVisible(false);
+                    errorTerminal.setVisible(false);
+                    errorLoginText.setVisible(false);
+                    notAccount.setVisible(false);
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
+                        notAccount.setVisible(true);
+                    }));
+                    timeline.setCycleCount(1);
+                    timeline.play();
+                    if(count==5){
+                        count = 0;
+                        AlertMain.checkFotgot(isForgetOpen, loginStage, Alert.AlertType.CONFIRMATION, "OOP!",
+                            "Có vẻ như đã có chút vấn đề với mật khẩu của bạn rồi !",
+                            "Bạn có muốn lấy lại mật khẩu không ?");
+                    }
+                   
+                }
+                case 1 -> {
+                    dontTerminal.setVisible(false);
+                    errorTerminal.setVisible(false);
+                    notAccount.setVisible(false);
+                    errorLoginText.setVisible(false);
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
+                        errorLoginText.setVisible(true);
+                    }));
+                    timeline.setCycleCount(1);
+                    timeline.play();
+                }
+                default -> {
+                    lgfx.stopLogoFx();
+                    notAccount.setVisible(false);
+                    errorLoginText.setVisible(false);
                 }
             }
-            lgc = new LogInController(loginStage, usernameField.getText(), passwordField.getText());
-            lgc.getAccountId();
-    //            if(!un || !pw) {
-    //                count++;
-    //                textLable.get(7).setVisible(false);
-    //                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
-    //                        textLable.get(7).setVisible(true);
-    //                }));
-    //                timeline.setCycleCount(1);
-    //                timeline.play();
-    //                if (count == 5){
-    //                    count =0;
-    //                    openForget();
-    //                    
-    //                }
-    //            }
-    //            else textLable.get(7).setVisible(false);
-            });
-            //Set disable cho nút đăng nhập
-            usernameField.textProperty().addListener((obs,oldText,newText)->{
-                loginButton.setDisable(newText.trim().isEmpty());
         });
+            //Set disable cho nút đăng nhập
+        usernameField.textProperty().addListener((obs,oldText,newText)->{
+            loginButton.setDisable(newText.trim().isEmpty());
+        });
+        passwordField.setOnKeyPressed(event->{
+            if(event.getCode()==KeyCode.ENTER){
+                loginButton.fire();
+            }
+        });
+        usernameField.setOnKeyPressed(event ->{
+            if(event.getCode()==KeyCode.ENTER){
+                String quicklogin = usernameField.getText();
+                if(quicklogin.startsWith("/")){
+                    errorTerminal.setVisible(false);
+                    dontTerminal.setVisible(false);
+                    notAccount.setVisible(false);
+                    errorLoginText.setVisible(false);
+                    QuickLogin qk = new QuickLogin(quicklogin);
+                    if(qk.checkQuickLogin()){
+                        usernameField.setText(HelpQuickLogin.getInstance().getUsername());
+                        passwordField.setText(HelpQuickLogin.getInstance().getPassword());
+                        loginButton.fire();
+                    }
+                    else{
+                        errorTerminal.setVisible(false);
+                        dontTerminal.setVisible(false);
+                        notAccount.setVisible(false);
+                        errorLoginText.setVisible(false);
+                        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
+                            dontTerminal.setVisible(true);
+                        }));
+                        timeline.setCycleCount(1);
+                        timeline.play();
+                    }
+                }
+                else{
+                    errorTerminal.setVisible(false);
+                    dontTerminal.setVisible(false);
+                    notAccount.setVisible(false);
+                    errorLoginText.setVisible(false);
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100),e->{
+                        errorTerminal.setVisible(true);
+                    }));
+                    timeline.setCycleCount(1);
+                    timeline.play();
+                }
+            }
+        });
+            
         // Quên mật khẩu
         posRegisterText.setOnMouseClicked(event->openForget());
         
@@ -193,6 +268,7 @@ public class LogInView extends Application {
         //Load style
         loginScene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
         loginStage.setTitle("Blue Screen Client");
+        loginStage.getIcons().add(ImgFactory.getIcon());
         loginStage.setResizable(false);
         loginStage.setScene(loginScene);
         loginStage.show();
@@ -218,7 +294,7 @@ public class LogInView extends Application {
     }
     private void openForget(){
         // Kiểm tra để tránh mở nhiều registor
-        if(isForgetOpen == false){
+        if(!isForgetOpen){
             javafx.application.Platform.runLater(()->{
                 loginStage.setIconified(true);
                 isForgetOpen = true;

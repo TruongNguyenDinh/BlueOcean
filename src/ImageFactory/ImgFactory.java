@@ -24,4 +24,8 @@ public class ImgFactory implements ImageInterface{
         img.setFitWidth(fw);
         return img;
     }
+    public static Image getIcon(){
+        Image icon =  new Image("Image/BlueOcean2.png");
+        return icon;
+    }
 }

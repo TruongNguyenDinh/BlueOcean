@@ -22,6 +22,13 @@ import javafx.scene.image.ImageView;
 
 import Font.FontManagement;
 import AlertPkg.AlertMain;
+import BlueOceanScene.Layouts.AppsLayout;
+import BlueOceanScene.Layouts.InfoLayout;
+import BlueOceanScene.Utils.MediaMusic;
+import BlueOceanScene.Layouts.NewsLayout;
+import BlueOceanScene.Layouts.ProfileLayout;
+import BlueOceanScene.Utils.ReminderPanel;
+import BlueOceanScene.Layouts.SettingLayout;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +38,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.StageStyle;
-
+import MainForm.Utils.AnimationFx;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.StackPane;
 /**
  *
  * @author truon
  */
 public class Main extends Application {
-
     private final NewsLayout newsLayout = new NewsLayout();
     private final AppsLayout appsLayout = new AppsLayout();
     private final InfoLayout infoLayout = new InfoLayout();
@@ -54,7 +62,7 @@ public class Main extends Application {
     private Stage MainStage,stage;
     private ReminderPanel reminderPanel;
     private final List<String> paths = new ArrayList<>();
-    
+    private final AnimationFx fx = new AnimationFx();
     public void setStage(Stage stage){
         this.stage = stage;
     }
@@ -75,7 +83,6 @@ public class Main extends Application {
         paths.add("Ocean--Wanderlust(2023).mp3");
         MediaMusic.playPlaylist(paths);
         MediaMusic.callBackgroundMusic();
-
         MainStage = new Stage();// Tạo stage chính
         setStage(MainStage);
         System.out.print(getStage());
@@ -170,7 +177,7 @@ public class Main extends Application {
         bulletin_board.widthProperty().bind(scene.widthProperty().multiply(0.9));
         // Thiet lap vi tri chieu dai
         // Task3
-        bgLogo.heightProperty().bind(scene.heightProperty().multiply(0.1));
+        bgLogo.heightProperty().bind(scene.heightProperty().multiply(0.11));
         newsBtn.prefHeightProperty().bind(scene.heightProperty().multiply(0.06));
         appsBtn.prefHeightProperty().bind(scene.heightProperty().multiply(0.06));
         infoBtn.prefHeightProperty().bind(scene.heightProperty().multiply(0.06));
@@ -206,7 +213,16 @@ public class Main extends Application {
         Label nickName = new Label(fullname);
         nickName.setTextFill(Color.CORAL);
         //Pane Button
-        Pane logoBackground = new Pane(bgLogo);
+        Text logo = new Text("Blue Ocean");
+        logo.setFont(FontManagement.Pacifico(40));
+        fx.logoFx(logo);
+        DropShadow ds = new DropShadow();
+        ds.setOffsetX(0);
+        ds.setOffsetY(0);
+        ds.setRadius(25);
+        ds.setColor(Color.web("#5A8F93")); // màu sáng viền
+        logo.setEffect(ds);
+        StackPane logoBackground = new StackPane(bgLogo,logo);
         Pane newsPane = new Pane(newsBtn, newsIcon);
         newsPane.widthProperty().addListener((obs, oldVal, newVal) -> {
             newsIcon.setFitWidth(newVal.doubleValue() * 0.08);

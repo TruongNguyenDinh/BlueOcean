@@ -23,6 +23,7 @@ public class RegistorController {
         RegistorController.email = email;
         RegistorController.nickname = nickname;
     }
+    
     public static void Visiable(boolean isVisible,Node...nodes){
         for(Node node:nodes){
             if(node != null){
@@ -30,6 +31,7 @@ public class RegistorController {
             }
         }
     }
+    
     private boolean checkUsername(){
         return checkInputData.isValidUserName(RegistorController.userName);
     }
@@ -45,48 +47,26 @@ public class RegistorController {
     private boolean checkEmail(){
         return checkInputData.isValidEmail(RegistorController.email);
     }
-
     private boolean checkNickname(){
         return checkInputData.isValidNameInGame(RegistorController.nickname);
     }    
-    //// Phương thức gửi đến dữ liệu đến database
      private boolean find() {
         return DatabaseHelper.testConnection();
     }
+    
     public boolean sendData(){
-        // Ktra nếu kết nối csdl được thì gửi 
         if (find()){
-           boolean success = DatabaseHelper.sendData(userName, password, phonenumber, email, fullname, nickname);
-           if(success){
-               System.out.print("Ok");
-               return true;
-           }else {
-               System.out.print("NOT OK");
-               return false;
-           }
+            return DatabaseHelper.sendData(userName, password, phonenumber, email, fullname, nickname);
         }
-        //giả sử gửi được dữ liệu
         return false;
     }
-   
-    //// Template
+    //// Templat
+    /// @return e
     public boolean checkAllData(){
-        
-        if(checkUsername()&&checkPassword()&&checkPhonenumber()&&checkFullname()
-                &&checkEmail()&&checkNickname())
-            
-        {
-            System.out.print("OK");
-            
-            return true;
-        }
-        
-        else return false;
-     }
-    // Mục tiêu: tìm xem có username trùng không ?
-    // -> thêm 
+        return checkUsername()&&checkPassword()&&checkPhonenumber()&&checkFullname()
+                &&checkEmail()&&checkNickname();
+    }
     public static void main(String[] args){
-        
         String usernamE = "NhungNT";
         String  passworD = "Truong123";
         String fullnamE = "Ngu Thượng Nhung";

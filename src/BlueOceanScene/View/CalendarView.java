@@ -1,4 +1,5 @@
-package BlueOceanScene;
+package BlueOceanScene.View;
+import BlueOceanScene.Utils.ReminderPanel;
 import MainForm.Models.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

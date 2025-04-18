@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.Models;
 
 /**
  *
@@ -10,9 +10,9 @@ package BlueOceanScene;
  */
 public class Song {
     
-    private String title;
-    private String artist;
-    private String filepath;
+    private final String title;
+    private final String artist;
+    private final String filepath;
 
     public Song(String title, String artist, String filepath) {
         this.title = title;

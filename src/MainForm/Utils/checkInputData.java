@@ -34,4 +34,7 @@ public class checkInputData {
     public static boolean  isValidTagName(String tagName){
         return tagName !=null && tagName.trim().matches("\\w{1,6}");
     }
+    public static boolean isValidQuickLogin(String string){
+        return string!= null && string.trim().matches("[a-zA-Z0-9]{0,7}");
+    }
 }

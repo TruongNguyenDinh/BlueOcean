@@ -2,8 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
-package BlueOceanScene;
+package BlueOceanScene.Layouts;
 
+import BlueOceanScene.Utils.AnimationFx;
+import BlueOceanScene.Utils.MediaMusic;
+import BlueOceanScene.Utils.QuoteSlideshow;
+import BlueOceanScene.Utils.ReminderPanel;
+import BlueOceanScene.View.CalendarView;
 import Font.FontManagement;
 import GalleryFactory.GalleryItemFactory;
 import MainForm.Models.User;
