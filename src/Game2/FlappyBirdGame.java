@@ -52,8 +52,8 @@ public class FlappyBirdGame extends Canvas {
     private AnimationTimer gameLoop;
     private long gameStartTime = 0;
     private long lastPipeTime = 0;
-    private final long pipeInterval = 1_500_000_000;
-    private final long initialDelay = 2_000_000_000;
+    private final long pipeInterval = 1_500_000_000; // 1.5 giây
+    private final long initialDelay = 2_000_000_000; // 2 giây
     
     private final Random random = new Random();
     private final GraphicsContext gc;
@@ -74,23 +74,19 @@ public class FlappyBirdGame extends Canvas {
         initializeGame();
     }
     
-    // Setter cho callback game over
     public void setOnGameOver(Consumer<Integer> callback) {
         this.gameOverCallback = callback;
     }
     
     private void loadImages() {
         try {
-            // Use File.separator for platform independence
             String resourcePath = "src" + File.separator + "Game2" + File.separator + "resources" + File.separator;
             
-            // Use file path for local development
             File bgFile = new File(resourcePath + "flappybirdbg.png");
             File birdFile = new File(resourcePath + "flappybird.png"); 
             File topPipeFile = new File(resourcePath + "toppipe.png");
             File bottomPipeFile = new File(resourcePath + "bottompipe.png");
             
-            // Load images from file paths
             backgroundImg = new Image(bgFile.toURI().toString());
             birdImg = new Image(birdFile.toURI().toString());
             topPipeImg = new Image(topPipeFile.toURI().toString());
@@ -99,13 +95,11 @@ public class FlappyBirdGame extends Canvas {
             System.out.println("Images loaded successfully");
         } catch (Exception e) {
             System.err.println("Error loading images: " + e.getMessage());
-            // Create placeholder images if loading fails
             createPlaceholderImages();
         }
     }
     
     private void createPlaceholderImages() {
-        // Create simple colored rectangles as placeholders
         int width = 100;
         int height = 100;
         
@@ -132,14 +126,12 @@ public class FlappyBirdGame extends Canvas {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                // Khởi tạo thời điểm bắt đầu trò chơi nếu chưa có
                 if (gameStartTime == 0) {
                     gameStartTime = now;
                     lastPipeTime = now;
                 }
                 
-                // Chỉ tạo ống sau một khoảng thời gian nhất định kể từ khi bắt đầu trò chơi
-                if (now - gameStartTime > initialDelay && now - lastPipeTime > pipeInterval) {
+                if (now - gameStartTime > initialDelay && now - lastPipeTime >= pipeInterval) {
                     placePipes();
                     lastPipeTime = now;
                 }
@@ -172,11 +164,11 @@ public class FlappyBirdGame extends Canvas {
         int maxTopHeight = -100;
         int topPipeY = random.nextInt(maxTopHeight - minTopHeight + 1) + minTopHeight;
         
-        Pipe topPipe = new Pipe(topPipeImg, pipeX, topPipeY, pipeWidth, pipeHeight);
+        Pipe topPipe = new Pipe(topPipeImg, pipeX, topPipeY, pipeWidth, pipeHeight, true);
         pipes.add(topPipe);
         
         int bottomPipeY = topPipeY + pipeHeight + openingSpace;
-        Pipe bottomPipe = new Pipe(bottomPipeImg, pipeX, bottomPipeY, pipeWidth, pipeHeight);
+        Pipe bottomPipe = new Pipe(bottomPipeImg, pipeX, bottomPipeY, pipeWidth, pipeHeight, false);
         pipes.add(bottomPipe);
     }
     
@@ -202,10 +194,13 @@ public class FlappyBirdGame extends Canvas {
                 continue;
             }
             
-            // Check if pipe is passed for scoring
-            if (!pipe.passed && bird.x > pipe.x + pipe.width) {
-                score += 1; // Thay đổi thành 1 điểm cho mỗi cặp ống
+            // Check if pipe is passed for scoring (chỉ tính điểm cho ống trên)
+            if (pipe.isTopPipe && !pipe.passed && bird.x > pipe.x + pipe.width) {
+                score += 1; // Cộng 1 điểm cho mỗi cặp ống
                 pipe.passed = true;
+                // Đánh dấu ống dưới tương ứng (nếu có) để tránh tính điểm kép
+                markPairedPipeAsPassed(pipe);
+                System.out.println("Cộng 1 điểm, score = " + score + ", pipe.x = " + pipe.x);
             }
             
             // Check for collision
@@ -218,6 +213,16 @@ public class FlappyBirdGame extends Canvas {
         if (bird.y + bird.height > boardHeight) {
             bird.y = boardHeight - bird.height;
             gameOver = true;
+        }
+    }
+    
+    private void markPairedPipeAsPassed(Pipe topPipe) {
+        // Tìm ống dưới tương ứng (cùng tọa độ x)
+        for (Pipe pipe : pipes) {
+            if (!pipe.isTopPipe && pipe.x == topPipe.x && !pipe.passed) {
+                pipe.passed = true;
+                break;
+            }
         }
     }
     
@@ -251,7 +256,6 @@ public class FlappyBirdGame extends Canvas {
     }
     
     private boolean improvedCollision(Bird bird, Pipe pipe) {
-        // Giảm kích thước hitbox của chim để phù hợp hơn với hình ảnh thực tế
         int hitboxMargin = 5;
         int birdHitboxX = bird.x + hitboxMargin;
         int birdHitboxY = bird.y + hitboxMargin;
@@ -266,13 +270,11 @@ public class FlappyBirdGame extends Canvas {
     
     public void handleKeyPress(KeyEvent e) {
         if (e.getCode() == KeyCode.SPACE) {
-            // Jump
             velocityY = jumpForce;
             isFirstStart = false;
         }
     }
     
-    // Game object classes
     private static class Bird {
         Image img;
         int x;
@@ -296,13 +298,15 @@ public class FlappyBirdGame extends Canvas {
         int width;
         int height;
         boolean passed = false;
+        boolean isTopPipe;
         
-        Pipe(Image img, int x, int y, int width, int height) {
+        Pipe(Image img, int x, int y, int width, int height, boolean isTopPipe) {
             this.img = img;
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
+            this.isTopPipe = isTopPipe;
         }
     }
 }

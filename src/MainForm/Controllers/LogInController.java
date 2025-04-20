@@ -57,7 +57,7 @@ public class LogInController {
                 LogInController.email = parts[8];
                 LogInController.createdAt = LocalDateTime.parse(parts[9]);
                 System.out.print(fullname);
-                User user = new User(id, username, fullname, nickname, phone, address, gender, email, createdAt);
+                User user = new User(id, username,password, fullname, nickname, phone, address, gender, email, createdAt);
                 openDashboard();
             }
             else {}

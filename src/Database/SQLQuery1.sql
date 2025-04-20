@@ -19,55 +19,7 @@ CREATE TABLE users (
     created_at DATETIME DEFAULT GETDATE()
 );
 GO
-DROP TABLE users;
 
--- 3. Tạo bảng Chat Rooms
-CREATE TABLE chat_rooms (
-    room_id INT IDENTITY(1,1) PRIMARY KEY,
-    room_name NVARCHAR(100) NOT NULL,
-    created_at DATETIME DEFAULT GETDATE()
-);
-GO
-
--- 4. Tạo bảng Files
-CREATE TABLE files (
-    file_id INT IDENTITY(1,1) PRIMARY KEY,
-    file_name NVARCHAR(255) NOT NULL,
-    file_path NVARCHAR(500) NOT NULL,
-    uploaded_by INT NOT NULL,
-    uploaded_at DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (uploaded_by) REFERENCES users(user_id)
-);
-GO
-
--- 5. Tạo bảng Messages (sau khi chat_rooms đã tồn tại)
-CREATE TABLE messages (
-    message_id INT IDENTITY(1,1) PRIMARY KEY,
-    sender_id INT NOT NULL,
-    receiver_id INT NULL,  -- NULL nếu tin nhắn thuộc về nhóm
-    room_id INT NULL,  -- NULL nếu tin nhắn riêng tư
-    content NVARCHAR(MAX) NOT NULL,
-    file_id INT NULL,  -- Nếu có file đính kèm
-    sent_at DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (sender_id) REFERENCES users(user_id),
-    FOREIGN KEY (receiver_id) REFERENCES users(user_id),
-    FOREIGN KEY (room_id) REFERENCES chat_rooms(room_id),
-    FOREIGN KEY (file_id) REFERENCES files(file_id)
-);
-GO
-
--- 6. Tạo bảng Room Members
-CREATE TABLE room_members (
-    member_id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT NOT NULL,
-    room_id INT NOT NULL,
-    joined_at DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (room_id) REFERENCES chat_rooms(room_id)
-);
-GO
-<<<<<<< HEAD
--- 7. Tạo bảng Notes
 CREATE TABLE notes (
     id INT IDENTITY(1,1) PRIMARY KEY,
     user_id INT NOT NULL,
@@ -76,8 +28,6 @@ CREATE TABLE notes (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 GO
--- 8. Thêm người dùng vào bảng users
-=======
 -- Bảng lưu thông tin trận đấu
 CREATE TABLE game_matches (
     match_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -101,42 +51,25 @@ CREATE TABLE player_rankings (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- 7. Thêm người dùng vào bảng users
->>>>>>> origin/chatapp
+
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES 
-('XuanNhat', 'Nguyen Xuan Nhat', 'Nhat', '097987653', 'Hanoi, Vietnam', 1, '123', 'xuannhat@gmail.com', 1),
-('bob', 'An Hoang Anh', 'Hoang', '098765432', 'Ho Chi Minh City, Vietnam', 1, '456', 'bob@gmail.com', 0),
-('PhucLe', 'Le The Phuc', 'Phuc', '034567891', 'Da Nang, Vietnam', 1, '789', 'phucle@gmail.com', 0),
-('DinhTruong', 'Nguyen Dinh Truong', 'Truong', '097889901', 'Hai Phong, Vietnam', 1, '987', 'dinhtruong@gmail.com', 1),
-('MaiLe', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, '563', 'maile@gmail.com', 1);
+('XuanNhat', 'Nguyen Xuan Nhat', 'Nhat', '0979876535', 'Hanoi, Vietnam', 1, '123', 'xuannhat@gmail.com', 1),
+('bob', 'An Hoang Anh', 'Hoang', '0987654327', 'Ho Chi Minh City, Vietnam', 1, '456', 'bob@gmail.com', 0),
+('PhucLe', 'Le The Phuc', 'Phuc', '0345678917', 'Da Nang, Vietnam', 1, '789', 'phucle@gmail.com', 0),
+('DinhTruong', 'Nguyen Dinh Truong', 'Truong', '0978899019', 'Hai Phong, Vietnam', 1, '987', 'dinhtruong@gmail.com', 1),
+('MaiLe', 'Le Mai', 'Mai', '0901122336', 'Can Tho, Vietnam', 0, '563', 'maile@gmail.com', 1);
 GO
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
-<<<<<<< HEAD
-VALUES
-('Truong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 0, 'Truong123', 'truong@gmail.com', 0);
+VALUES 
+('Truong1', 'Le Mai', 'Mai', '0901122332', 'Can Tho, Vietnam', 0, 'Truong1', 'truo1ng@gmail.com', 1),
+('Minh', 'Le Minh', 'Minh', '0901122331', 'Can Tho, Vietnam', 0, 'Minh', 'minh@gmail.com', 1),
+
+('Vuong', 'Le Vuong', 'Vuong', '0901122533', 'Can Tho, Vietnam', 0, 'Vuong', 'vuong@gmail.com', 1),
+('Truong', 'Le Mai', 'Mai', '0901122332', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 1),
+('Truong1124', N'Ngô Thượng Nhung', N'Kiếm Ma', '0362361299', N'Hải Phòng', 0, 'Truong123', 'truong220@gmail.com',0);
 GO
-SELECT*FROM notes;
-DELETE FROM notes;
-
-DROP TABLE notes;
-DROP TABLE room_members;
-DROP TABLE messages;
-DROP TABLE files;
-
-DROP TABLE users;
-=======
-VALUES 
-('Truong1', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong1', 'truo1ng@gmail.com', 1),
-('Minh', 'Le Minh', 'Minh', '090112233', 'Can Tho, Vietnam', 0, 'Minh', 'minh@gmail.com', 1),
-
-('Vuong', 'Le Vuong', 'Vuong', '090112253', 'Can Tho, Vietnam', 0, 'Vuong', 'vuong@gmail.com', 1),
-('Truong', 'Le Mai', 'Mai', '090112233', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 1);
-
 SELECT*FROM users;
+DELETE FROM users;
 
-INSERT INTO users (username, fullname, nickname, phone, address, password, email)
-VALUES 
-('Truong2', 'Le Mai', 'Mai', '090112234', 'Can Tho, Vietnam', 'Truong2', 'truong2@gmail.com');
-SELECT*FROM users;
->>>>>>> origin/chatapp
+
