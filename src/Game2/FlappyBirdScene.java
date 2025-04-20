@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Game2;
 
+import MainForm.Models.User;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -19,32 +18,38 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 public class FlappyBirdScene {
     private final Stage primaryStage;
+    private Scene loginScene;
     private Scene menuScene;
     private Scene gameScene;
+    private Scene rankingScene;
     private final int boardWidth;
     private final int boardHeight;
     private FlappyBirdGame game;
     private int highScore = 0;
     private final String propertiesFile = "flappybird.properties";
     private Image backgroundImg;
+    private DatabaseConnection db;
+    private int currentUserId = -1;
+    private String currentFullname; // Thay currentUsername bằng currentFullname
 
     public FlappyBirdScene(Stage primaryStage, int width, int height) {
         this.primaryStage = primaryStage;
         this.boardWidth = width;
         this.boardHeight = height;
+        this.db = new DatabaseConnection();
         
-        // Tải ảnh nền
         loadBackgroundImage();
-        
-        // Tạo menu và tải điểm cao nhất
         loadHighScore();
-        createMenuScene();
+        createLoginScene();
+        
     }
 
     private void loadBackgroundImage() {
@@ -55,13 +60,11 @@ public class FlappyBirdScene {
             System.out.println("Background image loaded successfully");
         } catch (Exception e) {
             System.err.println("Error loading background image: " + e.getMessage());
-            // Tạo ảnh nền mặc định nếu không tải được
             backgroundImg = createDefaultBackground();
         }
     }
 
     private Image createDefaultBackground() {
-        // Tạo một nền xanh dương đơn giản 
         Canvas canvas = new Canvas(boardWidth, boardHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.SKYBLUE);
@@ -98,11 +101,8 @@ public class FlappyBirdScene {
         }
     }
 
-    private void createMenuScene() {
-        // Tạo layout chính
+    private void createLoginScene() {
         StackPane root = new StackPane();
-        
-        // Thêm ảnh nền
         BackgroundImage bgImage = new BackgroundImage(
             backgroundImg, 
             BackgroundRepeat.NO_REPEAT, 
@@ -111,39 +111,155 @@ public class FlappyBirdScene {
             new BackgroundSize(100, 100, true, true, true, true)
         );
         root.setBackground(new Background(bgImage));
-        
-        // Tạo layout cho các thành phần menu
+
+        VBox loginBox = new VBox(20);
+        loginBox.setAlignment(Pos.CENTER);
+        loginBox.setMaxWidth(300);
+
+        Label titleLabel = new Label("ĐĂNG NHẬP");
+        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 36));
+        titleLabel.setTextFill(Color.WHITE);
+        titleLabel.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0, 0, 0);");
+
+        TextField usernameField = new TextField();
+        usernameField.setText(User.getUsername());
+        usernameField.setPromptText("Nhập tài khoản ");
+        usernameField.setMaxWidth(200);
+        usernameField.setStyle("-fx-font-size: 16; -fx-padding: 10;");
+
+        PasswordField passwordField = new PasswordField();
+        passwordField.setText(User.getPassword());
+        passwordField.setPromptText("Nhập mật khẩu");
+        passwordField.setMaxWidth(200);
+        passwordField.setStyle("-fx-font-size: 16; -fx-padding: 10;");
+
+        Label errorLabel = new Label();
+        errorLabel.setTextFill(Color.RED);
+        errorLabel.setFont(Font.font("Arial", 14));
+
+        Button loginButton = createStyledButton("Đăng nhập");
+                  
+         System.out.println("BTN " + MainFlappyBird.getbtn());
+        loginButton.setOnAction(e -> {
+            System.out.println("Here");
+            String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();
+            if (username.isEmpty() || password.isEmpty()) {
+                errorLabel.setText("Vui lòng nhập đầy đủ tên tài khoản và mật khẩu!");
+                return;
+            }
+            DatabaseConnection.UserValidationResult result = db.validateUserWithPassword(username, password);
+            if (result.getUserId() != -1) {
+                currentUserId = result.getUserId();
+                currentFullname = result.getFullname(); // Lưu fullname
+                createMenuScene();
+                primaryStage.setScene(menuScene);
+            } else {
+                errorLabel.setText("Tài khoản hoặc mật khẩu không đúng!");
+            }
+        });
+        Platform.runLater(() -> {
+            if (MainFlappyBird.getbtn()) {
+            loginButton.fire();
+            }
+        });
+        loginBox.getChildren().addAll(titleLabel, usernameField, passwordField, errorLabel, loginButton);
+        root.getChildren().add(loginBox);
+        loginScene = new Scene(root, boardWidth, boardHeight);
+    }
+
+    private void createMenuScene() {
+        StackPane root = new StackPane();
+        BackgroundImage bgImage = new BackgroundImage(
+            backgroundImg, 
+            BackgroundRepeat.NO_REPEAT, 
+            BackgroundRepeat.NO_REPEAT, 
+            BackgroundPosition.CENTER, 
+            new BackgroundSize(100, 100, true, true, true, true)
+        );
+        root.setBackground(new Background(bgImage));
+
         VBox menuBox = new VBox(20);
         menuBox.setAlignment(Pos.CENTER);
         menuBox.setMaxWidth(300);
-        
-        // Thêm tiêu đề
+
         Label titleLabel = new Label("FLAPPY BIRD");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 36));
         titleLabel.setTextFill(Color.WHITE);
         titleLabel.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 5, 0, 0, 0);");
-             
-        // Tạo nút bắt đầu
-        Button startButton = createStyledButton("Bắt đầu ");
+
+        Label welcomeLabel = new Label("Chào, " + (currentFullname != null ? currentFullname : "Người chơi")); // Hiển thị fullname
+        welcomeLabel.setFont(Font.font("Arial", 25));
+        welcomeLabel.setTextFill(Color.WHITE);
+
+        Button startButton = createStyledButton("Bắt đầu");
         startButton.setOnAction(e -> startGame());
-        // Tạo nút reset điểm cao nhất
-        Button resetHighScoreButton = createStyledButton("Cài lại điểm số ");
+
+        Button rankingButton = createStyledButton("Xếp hạng");
+        rankingButton.setOnAction(e -> showRankingScene());
+
+        Button resetHighScoreButton = createStyledButton("Cài lại điểm số");
         resetHighScoreButton.setOnAction(e -> {
-        highScore = 0;
-        saveHighScore();
+            highScore = 0;
+            saveHighScore();
         });
-        // Tạo nút thoát
+
+        Button resetRankingsButton = createStyledButton("Reset Xếp Hạng");
+        resetRankingsButton.setOnAction(e -> {
+            db.resetRankings();
+            showRankingScene();
+        });
+
         Button exitButton = createStyledButton("Thoát");
         exitButton.setOnAction(e -> primaryStage.close());
-        
-        // Thêm tất cả vào layout menu
-        menuBox.getChildren().addAll(titleLabel, startButton,resetHighScoreButton, exitButton);
-        
-        // Thêm menu vào root
+
+        menuBox.getChildren().addAll(titleLabel, welcomeLabel, startButton, rankingButton, resetHighScoreButton, resetRankingsButton, exitButton);
         root.getChildren().add(menuBox);
-        
-        // Tạo scene và thiết lập cho stage
         menuScene = new Scene(root, boardWidth, boardHeight);
+    }
+
+    private void showRankingScene() {
+        StackPane root = new StackPane();
+        BackgroundImage bgImage = new BackgroundImage(
+            backgroundImg, 
+            BackgroundRepeat.NO_REPEAT, 
+            BackgroundRepeat.NO_REPEAT, 
+            BackgroundPosition.CENTER, 
+            new BackgroundSize(100, 100, true, true, true, true)
+        );
+        root.setBackground(new Background(bgImage));
+
+        VBox rankingBox = new VBox(10);
+        rankingBox.setAlignment(Pos.CENTER);
+        rankingBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 20; -fx-background-radius: 10;");
+        rankingBox.setMaxWidth(300);
+
+        Label titleLabel = new Label("BẢNG XẾP HẠNG");
+        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+        titleLabel.setTextFill(Color.WHITE);
+
+        List<String> rankings = db.getRankings();
+        if (rankings.isEmpty()) {
+            Label emptyLabel = new Label("Chưa có xếp hạng!");
+            emptyLabel.setFont(Font.font("Arial", 18));
+            emptyLabel.setTextFill(Color.WHITE);
+            rankingBox.getChildren().add(emptyLabel);
+        } else {
+            for (String rank : rankings) {
+                Label rankLabel = new Label(rank);
+                rankLabel.setFont(Font.font("Arial", 18));
+                rankLabel.setTextFill(Color.WHITE);
+                rankingBox.getChildren().add(rankLabel);
+            }
+        }
+
+        Button backButton = createStyledButton("Quay lại");
+        backButton.setOnAction(e -> primaryStage.setScene(menuScene));
+
+        rankingBox.getChildren().addAll(titleLabel, backButton);
+        root.getChildren().add(rankingBox);
+        rankingScene = new Scene(root, boardWidth, boardHeight);
+        primaryStage.setScene(rankingScene);
     }
 
     private Button createStyledButton(String text) {
@@ -155,7 +271,6 @@ public class FlappyBirdScene {
                       "-fx-background-radius: 5;");
         button.setPrefWidth(200);
         
-        // Hover effect
         button.setOnMouseEntered(e -> 
             button.setStyle("-fx-background-color: #45a049; " +
                          "-fx-text-fill: white; " +
@@ -178,7 +293,9 @@ public class FlappyBirdScene {
                 highScore = score;
                 saveHighScore();
             }
-            // Thêm nút để quay lại menu
+            if (currentUserId != -1) {
+                db.updateScore(currentUserId, score);
+            }
             showGameOverMenu(score);
         });
         
@@ -194,47 +311,36 @@ public class FlappyBirdScene {
     }
 
     private void showGameOverMenu(int finalScore) {
-        // Tạo overlay cho menu game over
         StackPane gameOverRoot = new StackPane();
         gameOverRoot.setPrefSize(boardWidth, boardHeight);
         
-        // Tạo panel cho menu game over
         VBox gameOverBox = new VBox(15);
         gameOverBox.setAlignment(Pos.CENTER);
         gameOverBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 20; -fx-background-radius: 10;");
         gameOverBox.setMaxWidth(300);
         gameOverBox.setMaxHeight(250);
         
-        // Thêm tiêu đề
         Label gameOverLabel = new Label("Game Over");
         gameOverLabel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
         gameOverLabel.setTextFill(Color.WHITE);
         
-        // Thêm điểm số
         Label scoreLabel = new Label("Điểm: " + finalScore);
         scoreLabel.setFont(Font.font("Arial", 20));
         scoreLabel.setTextFill(Color.WHITE);
         
-        // Thêm điểm cao nhất
         Label highScoreLabel = new Label("Điểm cao nhất: " + highScore);
         highScoreLabel.setFont(Font.font("Arial", 20));
         highScoreLabel.setTextFill(Color.WHITE);
         
-        // Tạo nút chơi lại
         Button replayButton = createStyledButton("Chơi lại");
         replayButton.setOnAction(e -> startGame());
         
-        // Tạo nút về menu chính
         Button menuButton = createStyledButton("Quay lại Menu");
         menuButton.setOnAction(e -> primaryStage.setScene(menuScene));
         
-        // Thêm tất cả vào panel game over
         gameOverBox.getChildren().addAll(gameOverLabel, scoreLabel, highScoreLabel, replayButton, menuButton);
-        
-        // Thêm overlay vào game
         gameOverRoot.getChildren().add(gameOverBox);
         
-        // Thêm overlay vào scene game hiện tại
         Pane gamePane = (Pane) gameScene.getRoot();
         gamePane.getChildren().add(gameOverRoot);
     }
@@ -242,7 +348,7 @@ public class FlappyBirdScene {
     public void show() {
         primaryStage.setTitle("Flappy Bird");
         primaryStage.setResizable(false);
-        primaryStage.setScene(menuScene);
+        primaryStage.setScene(loginScene);
         primaryStage.show();
     }
 }

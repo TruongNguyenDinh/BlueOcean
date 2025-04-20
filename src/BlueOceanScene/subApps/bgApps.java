@@ -161,6 +161,7 @@ public class bgApps{
             Stage flappyStage = new Stage();
             try {
                 MainFlappyBird flappyApp = new MainFlappyBird();
+                MainFlappyBird.setbtn(true);
                 flappyApp.start(flappyStage);  // Tạo stage riêng và khởi động game
             } catch (Exception e) {
                 e.printStackTrace();

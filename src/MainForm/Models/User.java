@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
  * @author truon
  */
 public class User {
+    
     public static int id;
     private static String username,fullname,nickname,phone,address,email,password;
     private static boolean gender;

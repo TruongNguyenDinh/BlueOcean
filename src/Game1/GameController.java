@@ -3,22 +3,57 @@ package Game1;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.Random;
 
 public class GameController {
     private final Button[][] buttons = new Button[3][3];
     private boolean playerXTurn = true;
-    private final Text statusText = new Text("Lượt: X");
+    private final Text statusText = new Text("TURN: X");
     private final String mode;
 
     public GameController(Stage stage, String mode) {
         this.mode = mode;
+
+        StackPane root = new StackPane();
+
+        // Background blue
+        URL imageUrl = getClass().getResource("/Game1/hinhnen.png");
+        if (imageUrl != null) {
+            ImageView imageView = new ImageView(new Image(imageUrl.toExternalForm()));
+            imageView.setFitWidth(400);
+            imageView.setFitHeight(500);
+            imageView.setPreserveRatio(false);
+            imageView.setEffect(new GaussianBlur(20));
+            root.getChildren().add(imageView);
+        } else {
+            System.out.println("Background image not found");
+        }
+
+        // Overlay
+        Rectangle overlay = new Rectangle(400, 500, Color.rgb(0, 0, 0, 0.4));
+        root.getChildren().add(overlay);
+
+        // Neon font
+        Font font;
+        try {
+            font = Font.loadFont(getClass().getResourceAsStream("/Game1/fonts/Boldonse-Regular.ttf"), 15);
+            if (font == null) throw new Exception("Font is null");
+        } catch (Exception e) {
+            System.out.println("Font error, using default: " + e.getMessage());
+            font = Font.font("Roboto", 10);
+        }
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
@@ -29,24 +64,38 @@ public class GameController {
             for (int col = 0; col < 3; col++) {
                 Button button = new Button("");
                 button.setPrefSize(100, 100);
+                button.setStyle("-fx-font-size: 24px; -fx-background-color: rgba(255,255,255,0.1); -fx-border-color: cyan; -fx-border-radius: 5;");
+                button.setTextFill(Color.WHITE);
+                button.setFont(font);
+                DropShadow glow = new DropShadow(10, Color.CYAN);
+                button.setEffect(glow);
+
                 final int r = row, c = col;
                 button.setOnAction(e -> handleMove(r, c));
                 buttons[row][col] = button;
+                buttons[row][col].setFont(Font.font("Roboto",20));
                 grid.add(button, col, row);
             }
         }
 
-        HBox controls = new HBox(20);
-        controls.setAlignment(Pos.CENTER);
-        Button retry = new Button("CHƠI LẠI");
-        Button menu = new Button("QUAY LẠI");
+        // Neon status text
+        statusText.setFont(font);
+        statusText.setFill(Color.WHITE);
+        statusText.setEffect(new DropShadow(10, Color.LIME));
+
+        // Control buttons
+        Button retry = createNeonButton("REPLAY", "#00ffff", font);
+        Button menu = createNeonButton("BACK TO MENU", "#ff4d4d", font);
         retry.setOnAction(e -> new GameController(stage, mode));
         menu.setOnAction(e -> new MenuScene(stage));
-        controls.getChildren().addAll(retry, menu);
 
-        VBox root = new VBox(20);
-        root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(grid, statusText, controls);
+        HBox controls = new HBox(20, retry, menu);
+        controls.setAlignment(Pos.CENTER);
+
+        VBox vbox = new VBox(20, grid, statusText, controls);
+        vbox.setAlignment(Pos.CENTER);
+
+        root.getChildren().add(vbox);
 
         Scene scene = new Scene(root, 400, 500);
         stage.setTitle("Tic Tac Toe");
@@ -54,26 +103,54 @@ public class GameController {
         stage.show();
     }
 
-    // Sửa phương thức handleMove() để loại bỏ ranking
+    private Button createNeonButton(String text, String glowColor, Font font) {
+        Button button = new Button(text);
+        button.setFont(font);
+        button.setTextFill(Color.WHITE);
+        button.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 15; -fx-background-radius: 15; -fx-padding: 10 20;");
+        DropShadow neonGlow = new DropShadow();
+        neonGlow.setColor(Color.web(glowColor));
+        neonGlow.setRadius(20);
+        neonGlow.setSpread(0.6);
+        button.setEffect(neonGlow);
+
+        button.setOnMouseEntered(e -> {
+            button.setStyle("-fx-background-color: rgba(255,255,255,0.1); -fx-border-color: white; -fx-border-radius: 15;");
+            button.setScaleX(1.05);
+            button.setScaleY(1.05);
+        });
+
+        button.setOnMouseExited(e -> {
+            button.setStyle("-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 15;");
+            button.setScaleX(1.0);
+            button.setScaleY(1.0);
+        });
+
+        return button;
+    }
+
+    // Game logic handlers
     private void handleMove(int row, int col) {
         if (!buttons[row][col].getText().isEmpty()) return;
-
         buttons[row][col].setText(playerXTurn ? "X" : "O");
-        
+        buttons[row][col].setTextFill(Color.WHITE);
+        DropShadow glow = new DropShadow(20, playerXTurn ? Color.web("#00ffff") : Color.web("#ff66cc"));
+        glow.setSpread(0.7);
+        buttons[row][col].setEffect(glow);
         if (checkWin()) {
-            statusText.setText("Người chơi " + (playerXTurn ? "X" : "O") + " thắng!");
+            statusText.setText("PLAYER " + (playerXTurn ? "X" : "O") + " WINS!");
             disableAllButtons();
             return;
         }
 
         if (isFull()) {
-            statusText.setText("Hòa!");
+            statusText.setText("DRAW!");
             disableAllButtons();
             return;
         }
 
         playerXTurn = !playerXTurn;
-        statusText.setText("Lượt: " + (playerXTurn ? "X" : "O"));
+        statusText.setText("TURN: " + (playerXTurn ? "X" : "O"));
 
         if (!playerXTurn && !mode.equals("PVP")) {
             int[] move = getBotMove();
@@ -84,15 +161,11 @@ public class GameController {
     }
 
     private int[] getBotMove() {
-        switch (mode) {
-            case "EASY" -> {
-                return getRandomMove();
-            }
-            case "HARD" -> {
-                return getBestMove();
-            }
-        }
-        return null;
+        return switch (mode) {
+            case "EASY" -> getRandomMove();
+            case "HARD" -> getBestMove();
+            default -> null;
+        };
     }
 
     private int[] getRandomMove() {
@@ -180,4 +253,4 @@ public class GameController {
                 && buttons[0][2].getText().equals(buttons[1][1].getText())
                 && buttons[1][1].getText().equals(buttons[2][0].getText());
     }
-}
+} 
