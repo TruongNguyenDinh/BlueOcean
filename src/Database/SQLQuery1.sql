@@ -51,11 +51,7 @@ CREATE TABLE player_rankings (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-<<<<<<< HEAD
 -- 7. Thêm người dùng vào bảng users
-=======
-
->>>>>>> origin/final1
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES 
 ('XuanNhat', 'Nguyen Xuan Nhat', 'Nhat', '0979876535', 'Hanoi, Vietnam', 1, '123', 'xuannhat@gmail.com', 1),
@@ -65,7 +61,6 @@ VALUES
 ('MaiLe', 'Le Mai', 'Mai', '0901122336', 'Can Tho, Vietnam', 0, '563', 'maile@gmail.com', 1);
 GO
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
-<<<<<<< HEAD
 VALUES
 ('Truong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 0, 'Truong123', 'truong@gmail.com', 0);
 GO
@@ -79,17 +74,5 @@ DROP TABLE messages;
 DROP TABLE files;
 
 DROP TABLE users;
-=======
-VALUES 
-('Truong1', 'Le Mai', 'Mai', '0901122332', 'Can Tho, Vietnam', 0, 'Truong1', 'truo1ng@gmail.com', 1),
-('Minh', 'Le Minh', 'Minh', '0901122331', 'Can Tho, Vietnam', 0, 'Minh', 'minh@gmail.com', 1),
 
-('Vuong', 'Le Vuong', 'Vuong', '0901122533', 'Can Tho, Vietnam', 0, 'Vuong', 'vuong@gmail.com', 1),
-('Truong', 'Le Mai', 'Mai', '0901122332', 'Can Tho, Vietnam', 0, 'Truong', 'truong@gmail.com', 1),
-('Truong1124', N'Ngô Thượng Nhung', N'Kiếm Ma', '0362361299', N'Hải Phòng', 0, 'Truong123', 'truong220@gmail.com',0);
-GO
-SELECT*FROM users;
-DELETE FROM users;
-
->>>>>>> origin/final1
 
