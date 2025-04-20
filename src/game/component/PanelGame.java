@@ -120,7 +120,7 @@ public class PanelGame extends Canvas {
             public void run() {
                 Platform.runLater(PanelGame.this::addRockets);
             }
-        }, 0, 2000); // Tốc độ xuất hiện rocket cố định (1 giây)
+        }, 0, 2000); // Tốc độ xuất hiện rocket cố định (2 giây)
     }
 
     private void startGameLoop() {

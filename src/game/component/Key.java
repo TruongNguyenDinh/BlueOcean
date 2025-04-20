@@ -52,8 +52,8 @@ public class Key {
         return key_w.get();
     }
 
-    public void setKey_w(boolean key_space) {
-        this.key_w.set(key_space);
+    public void setKey_w(boolean key_w) {
+        this.key_w.set(key_w);
     }
 
     public BooleanProperty key_spaceProperty() {

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DatabaseHelper {
     private static String fullname;
-    private  static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=truong;encrypt=false;";   
+    private  static final String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=appchat;user=sa;password=123456789;encrypt=false;";   
     // Phương thức getConnection 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(connectionUrl);
