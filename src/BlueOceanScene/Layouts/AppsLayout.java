@@ -6,6 +6,7 @@ package BlueOceanScene.Layouts;
 
 import BlueOceanScene.subApps.ListAppsIcon;
 import Font.FontManagement;
+import LanguagePackage.LanguageManager;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,13 +30,8 @@ import javafx.scene.text.Text;
  */
 public class AppsLayout {
     public static StackPane detailappbgPane;
-    private HBox appsLayout;
-    private Text logoText;
-    private FlowPane AppsPane = new FlowPane();
-    private VBox AppPane;
-    private final ListAppsIcon appsIcon = new ListAppsIcon();
-    private StackPane stolocbgPane;
     public static Scene argScene; 
+    public static HBox appsLayout = new HBox(); 
     private final String[] imgPaths = {
         "Image/Intro TicTacToe/logoTTT.png",
         "Image/NoteApp/NoteLogo.png",
@@ -49,8 +45,16 @@ public class AppsLayout {
         "Flappy Bird"
     };
     public HBox appsLayout(Scene scene){
+        Text logoText;
+        FlowPane AppsPane;
+        VBox AppPane;
+        ListAppsIcon appsIcon = new ListAppsIcon();
         argScene = scene;
         AppsPane = new FlowPane();
+        StackPane stolocbgPane;
+        
+        
+        
         ImageView bgApp = new ImageView(new Image("Image/BackGroundApps/BgAll.jpg"));
         Rectangle stolocbg = new Rectangle();stolocbg.setFill(Color.WHITESMOKE);
         Rectangle gridApps = new Rectangle();gridApps.setFill(Color.ANTIQUEWHITE);
@@ -92,7 +96,7 @@ public class AppsLayout {
                 terminal.requestFocus(); // Tự động focus lại
             }
         });
-        terminal.setPromptText("What can I help you ?");
+        terminal.setPromptText(LanguageManager.get("BO.appslayout.terminal"));
         stolocbgPane= new StackPane(stolocbg);
         for(int i = 0;i<imgPaths.length;i++){
                 AppPane = appsIcon.showApps(stolocbgPane.widthProperty(), 
@@ -113,7 +117,7 @@ public class AppsLayout {
         stolocbgPane.getChildren().add(AppsPane);
         stolocbgPane.getChildren().add(terminal);
         StackPane.setAlignment(terminal, Pos.BOTTOM_CENTER);
-        logoText = new Text("Blue Ocean's Apps");
+        logoText = new Text(LanguageManager.get("BO.appslayout.logoText"));
         MainForm.Utils.AnimationFx lgfx = new MainForm.Utils.AnimationFx();
         lgfx.logoFx(logoText);   // Cho hình ảnh resize mượt hơn
 
@@ -140,6 +144,10 @@ public class AppsLayout {
     public Pane noteAppDetail(){
         Pane root = new Pane();
         return root;
+    }
+    
+    public static void clearAppsLayout(){
+        detailappbgPane.getChildren().clear();
     }
     
     

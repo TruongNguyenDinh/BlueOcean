@@ -5,11 +5,11 @@
 package BlueOceanScene.Layouts;
 
 import Font.FontManagement;
+import LanguagePackage.LanguageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -29,7 +29,7 @@ public class InfoLayout {
     private HBox infoLayout;
     public HBox infoLayout(Scene scene){
         
-        Text authorT = new Text("Author\n");
+        Text authorT = new Text(LanguageManager.get("BO.infoLayout.authorT"));
         Text authorT1 = new Text("Nguyen Dinh Truong\n\n");
         Text authorT2 = new Text("Le The Phuc\n\n");
         Text authorT3 = new Text("Nguyen Xuan Nhat\n\n");
@@ -67,9 +67,7 @@ public class InfoLayout {
         gridPane.setVgap(10);
         gridPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE); // Cho phép giãn hết cỡ
         // Thêm vài nội dung
-        gridPane.add(new Label("Username:"), 0, 0);
-        gridPane.add(new TextField(), 1, 0);
-        
+
         TextFlow authorBox = new TextFlow();
         authorBox.setTextAlignment(TextAlignment.CENTER);
         authorBox.setPadding(new Insets(10));
@@ -92,17 +90,8 @@ public class InfoLayout {
         authorBox.getChildren().add(authorT1);
         authorBox.getChildren().add(authorT2);
         authorBox.getChildren().add(authorT3);
-//        StackPane.setAlignment(gridPane, Pos.TOP_LEFT);
-        
-//        Button openAppsBtn = new Button("Open");
-//        openAppsBtn.getStyleClass().add("openAppBtn");
-//        StackPane.setMargin(openAppsBtn, new Insets(0, 0, 0, 10)); // cách phải 10px, dưới 10px
-        
+
         StackPane graphTimeInfoPane = new StackPane(infoStatus);
-//        StackPane detailappbgPane = new StackPane(detailappbg,openAppsBtn);
-//        openAppsBtn.prefWidthProperty().bind(detailappbgPane.widthProperty().multiply(0.9));
-//        StackPane.setAlignment(openAppsBtn, Pos.BOTTOM_LEFT);
-//        appLayout = new HBox(stolocbgPane,detailappbgPane);
         infoLayout = new HBox(authurInfoPane,graphTimeInfoPane);
         return infoLayout;
     }  

@@ -29,6 +29,7 @@ import BlueOceanScene.Layouts.NewsLayout;
 import BlueOceanScene.Layouts.ProfileLayout;
 import BlueOceanScene.Utils.ReminderPanel;
 import BlueOceanScene.Layouts.SettingLayout;
+import LanguagePackage.LanguageManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,6 @@ public class Main extends Application {
 
     public void openMainStage(int id, String ussername, String fullname, String nickname, String phone, String address, boolean gender, String email, LocalDateTime dateTime) {
         reminderPanel = new ReminderPanel(id);
-        System.out.print("\nset ID " + id + "\n");
         paths.add("Opening Game of Thrones--GameofThrones.mp3");
         paths.add("Goodbye--Ramsey.mp3");
         paths.add("Ocean--Wanderlust(2023).mp3");
@@ -85,7 +85,6 @@ public class Main extends Application {
         MediaMusic.callBackgroundMusic();
         MainStage = new Stage();// Tạo stage chính
         setStage(MainStage);
-        System.out.print(getStage());
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         MainStage.setX(bounds.getMinX());
@@ -125,7 +124,7 @@ public class Main extends Application {
         HBox settinglayout = new HBox(SettingLayout.settinglayout(scene));
         HBox profileLayout = new HBox(ProfileLayout.profilelayout(scene));
         //Remain Pane
-        Text labelNews = new Text("News");
+        Text labelNews = new Text(LanguageManager.get("BO.labelNews"));
         labelNews.setFill(Color.WHITE);
         Rectangle bgLogo = new Rectangle();
         bgLogo.setFill(Color.web("003B46"));
@@ -133,15 +132,15 @@ public class Main extends Application {
         end_taskbar.setFill(Color.web("003B46"));
         Button newsBtn = new Button(labelNews.getText());
         newsBtn.getStyleClass().add("task3button");
-        Button appsBtn = new Button("Apps");
+        Button appsBtn = new Button(LanguageManager.get("BO.appsBtn"));
         appsBtn.getStyleClass().add("task3button");
-        Button infoBtn = new Button("Info");
+        Button infoBtn = new Button(LanguageManager.get("BO.infoBtn"));
         infoBtn.getStyleClass().add("task3button");
-        Button settingBtn = new Button("Setting");
+        Button settingBtn = new Button(LanguageManager.get("BO.settingBtn"));
         settingBtn.getStyleClass().add("task3button");
-        Button profile = new Button("Your Profile");
+        Button profile = new Button(LanguageManager.get("BO.profile"));
         profile.getStyleClass().add("task3button");
-        Button logoutBtn = new Button("Log out");
+        Button logoutBtn = new Button(LanguageManager.get("BO.logoutBtn"));
         logoutBtn.getStyleClass().add("task3button");
 
         // Tắt focus
@@ -193,7 +192,6 @@ public class Main extends Application {
 
         //Bám scene
         scene.heightProperty().addListener((obs, oldHeight, newHeight) -> {
-            System.out.print("Height scene\n" + newHeight.doubleValue());
             height = newHeight.doubleValue(); //
             bulletin_boardPane.setTranslateY(height * 0.005);
             newslayout.setTranslateY(height * 0.008);
@@ -201,14 +199,13 @@ public class Main extends Application {
 
         });
         scene.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-            System.out.print("Width scene\n" + newWidth.doubleValue());
             width = newWidth.doubleValue();//
             title_bar.setTranslateX(width * 0.05);
             bulletin_boardPane.setTranslateX(width * 0.005);
 
         });
 
-        Text newsText = new Text("HELLO ");
+        Text newsText = new Text(LanguageManager.get("BO.newsText"));
         newsText.setFill(Color.CORNFLOWERBLUE);
         Label nickName = new Label(fullname);
         nickName.setTextFill(Color.CORAL);
@@ -292,7 +289,7 @@ public class Main extends Application {
         });
         Pane maintt = new Pane(main_title_bar, mousePosition);
 
-        Label nickNameLabel = new Label("Nickname: " + nickname);
+        Label nickNameLabel = new Label(LanguageManager.get("BO.nickNameLabel") + nickname);
         nickNameLabel.setTranslateX(2);
         nickNameLabel.setTranslateY(2);
         Label idLabel = new Label("ID: " + id);
@@ -309,7 +306,10 @@ public class Main extends Application {
             close.setFitHeight(newVal.doubleValue() * 0.7);
         });
         maintt_close.setOnMouseClicked(e -> {
-            AlertMain.checkLogOut(false, MainStage, Alert.AlertType.WARNING, "Chúng tôi sẽ nhớ bạn đấy :(", "Thoát", "Bạn có muốn thoát ứng dụng không?");
+            AlertMain.checkLogOut(false, MainStage, Alert.AlertType.WARNING,
+                    LanguageManager.get("alert.checkLogOut.title"),
+                    LanguageManager.get("alert.checkLogOut.header"),
+                    LanguageManager.get("alert.checkLogOut.content"));
 
         });
         title_bar = new HBox(maintt, sub_maintt, maintt_close);
@@ -351,6 +351,7 @@ public class Main extends Application {
             infoBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
             profile.getStyleClass().remove("task3buttonisON");
+            ProfileLayout.ProfileFX.stopRotation();
             apps = true;
             info = true;
             setting = true;
@@ -371,6 +372,7 @@ public class Main extends Application {
             infoBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
             profile.getStyleClass().remove("task3buttonisON");
+            ProfileLayout.ProfileFX.stopRotation();
             setting = true;
             newsOpens = true;
             info = true;
@@ -389,6 +391,7 @@ public class Main extends Application {
             appsBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
             profile.getStyleClass().remove("task3buttonisON");
+            ProfileLayout.ProfileFX.stopRotation();
             newsOpens = true;
             apps = true;
             setting = true;
@@ -406,6 +409,7 @@ public class Main extends Application {
             infoBtn.getStyleClass().remove("task3buttonisON");
             appsBtn.getStyleClass().remove("task3buttonisON");
             profile.getStyleClass().remove("task3buttonisON");
+            ProfileLayout.ProfileFX.startRotation();
             newsOpens = true;
             apps = true;
             info = true;
@@ -423,6 +427,7 @@ public class Main extends Application {
             infoBtn.getStyleClass().remove("task3buttonisON");
             appsBtn.getStyleClass().remove("task3buttonisON");
             settingBtn.getStyleClass().remove("task3buttonisON");
+            ProfileLayout.ProfileFX.startRotation();
             newsOpens = true;
             apps = true;
             info = true;
@@ -436,7 +441,10 @@ public class Main extends Application {
             news_layout.getChildren().add(group2); // Thêm lại group2 mới
         });
         logoutBtn.setOnMouseClicked(e -> {
-            AlertMain.checkLogOut(true, MainStage, Alert.AlertType.WARNING, "Chúng tôi sẽ nhớ bạn đấy :(", "Đăng xuất", "Bạn có muốn đăng xuất ứng dụng không?");
+            AlertMain.checkLogOut(true, MainStage, Alert.AlertType.WARNING,
+                    LanguageManager.get("alert.checkLogOut.title"),
+                    LanguageManager.get("alert.checkLogOut.header1"),
+                    LanguageManager.get("alert.checkLogOut.content1"));
 
         });
         scene.getStylesheets().add(getClass().getResource("../CSS/Style.css").toExternalForm());

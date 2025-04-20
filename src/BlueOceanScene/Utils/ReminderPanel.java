@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
  */
 package BlueOceanScene.Utils;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.User;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.*;
@@ -41,7 +42,6 @@ public class ReminderPanel {
         }
     public ReminderPanel(int id){
         this.id = id;
-        System.out.println("ReminderPanel created with id = " + id);
     }
 
     // Lớp Reminder giữ nguyên
@@ -113,7 +113,7 @@ public class ReminderPanel {
     public BorderPane getReminderPane(LocalDate selectedDate,int id) {
         // Các thành phần giao diện
         TextField messageField = new TextField();
-        messageField.setPromptText("Nhập ghi chú của bạn");
+        messageField.setPromptText(LanguageManager.get("BO.ReminderPanel.messageField"));
         messageField.setFocusTraversable(false);
         DatePicker datePicker = new DatePicker();
         datePicker.setFocusTraversable(false);
@@ -126,14 +126,14 @@ public class ReminderPanel {
             filteredReminders.setPredicate(r -> r.getTime().toLocalDate().equals(selectedDate));
         }
         TableView<Reminder> table = new TableView<>(filteredReminders);
-        TableColumn<Reminder, String> messageCol = new TableColumn<>("Nội dung");
+        TableColumn<Reminder, String> messageCol = new TableColumn<>(LanguageManager.get("BO.ReminderPanel.messageCol"));
         messageCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getMessage()));
         messageCol.setPrefWidth(500);
         datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
             if (newDate != null) {
                 filteredReminders.setPredicate(r -> r.getTime().toLocalDate().equals(newDate));
             } else {
-                filteredReminders.setPredicate(r -> true); // Hiển thị tất cả nếu không chọn ngày
+                filteredReminders.setPredicate(r -> true);
             }
         });
 
@@ -154,14 +154,14 @@ public class ReminderPanel {
         minuteComboBox.setValue(0);
         
 
-        TableColumn<Reminder, String> timeCol = new TableColumn<>("Thời gian");
+        TableColumn<Reminder, String> timeCol = new TableColumn<>(LanguageManager.get("BO.ReminderPanel.timeCol"));
         timeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTime().format(formatter)));
         timeCol.setPrefWidth(150);
 
         table.getColumns().addAll(messageCol, timeCol);
 
-        Button addBtn = new Button("Thêm nhắc nhở");
-        Button deleteBtn = new Button("Xóa");
+        Button addBtn = new Button(LanguageManager.get("BO.ReminderPanel.addBtn"));
+        Button deleteBtn = new Button(LanguageManager.get("BO.ReminderPanel.deleteBtn"));
         addBtn.setFocusTraversable(false);
         deleteBtn.setFocusTraversable(false);
         addBtn.setOnAction(e -> {
@@ -185,7 +185,6 @@ public class ReminderPanel {
             if (selected != null) {
                 int reminderId = selected.getId();
 //                reminders.remove(selected);
-                System.out.print("User ID: "+User.getId()+" Note ID: "+this.id);
                 DatabaseHelper.deleteNotes(User.getId(), reminderId);
                 remindersChanged = true;
             }
@@ -246,13 +245,13 @@ public class ReminderPanel {
         VBox vbox = new VBox(10); // VBox chứa các nhiệm vụ, khoảng cách 10px giữa các dòng
         vbox.setPadding(new Insets(10));
         
-        TableColumn<Reminder, String> messageCol = new TableColumn<>("Nội dung");
+        TableColumn<Reminder, String> messageCol = new TableColumn<>(LanguageManager.get("BO.ReminderPanel.messageCol"));
         messageCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getMessage()));
         
-        TableColumn<Reminder, String> timeCol = new TableColumn<>("Thời gian");
+        TableColumn<Reminder, String> timeCol = new TableColumn<>(LanguageManager.get("BO.ReminderPanel.timeCol"));
         timeCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTime().format(formatter)));
         
-        TableColumn<Reminder, Boolean> checkBoxCol = new TableColumn<>("Trạng thái");
+        TableColumn<Reminder, Boolean> checkBoxCol = new TableColumn<>(LanguageManager.get("BO.ReminderPanel.checkBoxCol"));
         checkBoxCol.setCellValueFactory(data -> data.getValue().selectedProperty());
         checkBoxCol.setCellFactory(tc -> new CheckBoxTableCell<>());
         table.getColumns().addAll(messageCol, timeCol,checkBoxCol);
@@ -264,12 +263,10 @@ public class ReminderPanel {
     // Lưu nhắc nhở vào file khi cần
     public void saveRemindersToSQL(int id) {
         if (!remindersChanged) {
-            System.out.println("No changes to save.");
         }
         else{
             if(DatabaseHelper.testConnection()){
                 if(reminders !=null && !reminders.isEmpty()){
-                    System.out.print("\nUserID-- "+ id);
                     for(Reminder r : reminders){
                         if (r.getId() == 0) {
                             // reminder mới, chưa có id -> insert
@@ -280,7 +277,6 @@ public class ReminderPanel {
                 }
             }
             else{
-                System.out.print("Không có kết nối tới Database");
             }
         }
     }

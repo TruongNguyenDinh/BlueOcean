@@ -63,7 +63,6 @@ public class QuoteSlideshow  {
         heightProperty.addListener((obs,oldVal,newVal)->{
             root.setPrefHeight(newVal.doubleValue()*0.7);
             updateTopicFont(currentHeightProperty.get());
-            System.out.println("Height changed: " + newVal);
         });
         showNextQuotes();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(30),e->showNextQuotes()));
@@ -73,7 +72,7 @@ public class QuoteSlideshow  {
     }
     private void showNextQuotes() {
         if(quotes.isEmpty()){
-            quoteText.setText("Something did not work :( ");
+            quoteText.setText("Something did not work ");
         }
         
         FadeTransition fadeOutTopic = new FadeTransition(Duration.seconds(1),topicLabel);
@@ -142,7 +141,6 @@ public class QuoteSlideshow  {
     }
     private void updateTopicFont(double height) {
         double size = height * 0.07;
-        System.out.println("Updating font size to: " + size);
         quoteText.setFont(FontManagement.Roboto(height*0.1));
         topicLabel.setFont(FontManagement.Roboto(height*0.15));
         authorText.setFont(FontManagement.Roboto(height*0.07));

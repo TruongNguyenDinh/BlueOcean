@@ -21,6 +21,7 @@ import TextFactory.TextFieldFact;
 import TextFactory.TextLableFact;
 import ImageFactory.ImgFactory;
 import Font.FontManagement;
+import LanguagePackage.LanguageManager;
 import MainForm.Utils.AnimationFx;
 import MainForm.TermsandLicense;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -62,7 +63,7 @@ public class RegisterView extends Application {
         isVisible = new AtomicBoolean(false);
         buttonRegis = new Button();
 
-        buttonRegis.setText("Register");
+        buttonRegis.setText(LanguageManager.get("register.logo"));
         buttonRegis.setLayoutX(500);
         buttonRegis.setLayoutY(450);
         buttonRegis.getStyleClass().add("buttonRegis");
@@ -81,37 +82,37 @@ public class RegisterView extends Application {
         Rectangle subBackground = rect.createRectangle(980,580,"012a4a",10, 10, 10,10, 0.9);
         Rectangle borderRegister = rect.createRectangle(600,400,"014f86",10, 10, 180,150, 0.5);
         // Tiêu đề
-        Text registerText = label.createText(350, 300, "Register", pacifico, "a9d6e5");
+        Text registerText = label.createText(350, 300,LanguageManager.get("register.logo"), pacifico, "a9d6e5");
         // Điều khoản
         yeno.setLayoutX(300);
         yeno.setLayoutY(415);
         yeno.setOnAction(e -> buttonRegis.setVisible(yeno.isSelected()));
         
-        agreeText = label.createText(320, 430, "Tôi đồng ý với các", roboto, "ffffff");
+        agreeText = label.createText(320, 430,LanguageManager.get("register.agree"), roboto, "ffffff");
         
-        licenseText = label.createText(445, 430, "điều khoản và giấy phép.", roboto, "ff0000");
+        licenseText = label.createText(445, 430,LanguageManager.get("register.tal"), roboto, "ff0000");
         licenseText.setStyle("-fx-cursor: hand;");
         licenseText.setOnMouseClicked(e -> TermsandLicense.openFile());
 
         // Form đăng ký
-        TextField usernameField = field.createFieldData(300, 200, "Tài khoản đăng nhập","textFieldRegis");
-        TextField passwordField = field.createFieldData(300, 250, "Tài khoản đăng nhập","textFieldRegis");
-        TextField password_againField = field.createFieldData(300, 300, "Nhập lại mật khẩu","textFieldRegis");
-        TextField emailField = field.createFieldData(400, 350, "Email","textFieldRegis");
-        TextField fullnameField = field.createFieldData(500, 200, "Họ và tên","textFieldRegis");
-        TextField phonenumberField = field.createFieldData(500, 250, "Số điện thoại","textFieldRegis");
-        TextField nicknameField = field.createFieldData(500, 300, "Biệt danh","textFieldRegis");
+        TextField usernameField = field.createFieldData(300, 200,LanguageManager.get("user.username.promt"),"textFieldRegis");
+        TextField passwordField = field.createFieldData(300, 250, LanguageManager.get("pass.pass.promt"),"textFieldRegis");
+        TextField password_againField = field.createFieldData(300, 300,LanguageManager.get("user.pass.npassa"),"textFieldRegis");
+        TextField emailField = field.createFieldData(400, 350,LanguageManager.get("user.email.promt"),"textFieldRegis");
+        TextField fullnameField = field.createFieldData(500, 200,LanguageManager.get("user.fullname.promt"),"textFieldRegis");
+        TextField phonenumberField = field.createFieldData(500, 250,LanguageManager.get("user.phone.promt"),"textFieldRegis");
+        TextField nicknameField = field.createFieldData(500, 300,LanguageManager.get("user.nickname.promt"),"textFieldRegis");
         inputFields = List.of(
             usernameField,passwordField,password_againField,emailField,fullnameField,phonenumberField,nicknameField
         );
         
-        Text usernameText = label.createText(300, 195, "Tên đăng nhập");
-        Text passwordText = label.createText(300, 245, "Mật khẩu");
-        Text password_againText  = label.createText(300, 295, "Nhập lại mật khẩu");
-        Text emailText = label.createText(400, 345, "Email");
-        Text fullnameText = label.createText(500, 195, "Họ và tên");
-        Text numberphoneText = label.createText(500, 245, "Số điện thoại");
-        Text nicknameText = label.createText(500, 295, "Tên trong game");
+        Text usernameText = label.createText(300, 195,LanguageManager.get("user.username"));
+        Text passwordText = label.createText(300, 245,LanguageManager.get("user.pass"));
+        Text password_againText  = label.createText(300, 295,LanguageManager.get("user.pass.npassa"));
+        Text emailText = label.createText(400, 345,LanguageManager.get("user.email"));
+        Text fullnameText = label.createText(500, 195,LanguageManager.get("user.fullname"));
+        Text numberphoneText = label.createText(500, 245,LanguageManager.get("user.phone"));
+        Text nicknameText = label.createText(500, 295,LanguageManager.get("user.nickname"));
         textLabels = List.of(
             usernameText,passwordText,password_againText,emailText,
             fullnameText,numberphoneText,nicknameText
@@ -119,15 +120,11 @@ public class RegisterView extends Application {
         
         //Các thông báo lỗi
         ////Lỗi nhập liệu
-        errorInput = label.createText(260, 500,"""
-            (Lỗi!)-> Hai mật khẩu không giống nhau hoặc bị để trống !!!
-            """);
+        errorInput = label.createText(260, 500,LanguageManager.get("register.wrong"));
         errorInput.getStyleClass().add("errorInput");
         errorInput.setVisible(false);
         //Lỗi gửi request
-        errorSending = label.createText(350,500,"""
-            (Lỗi!)-> Kết nối tới server
-            """);
+        errorSending = label.createText(350,500,LanguageManager.get("register.sv"));
         errorSending.getStyleClass().add("errorInput");
         errorSending.setVisible(false);
         errors = List.of(errorInput,errorSending);
@@ -150,11 +147,15 @@ public class RegisterView extends Application {
                     rgc.sendData();
                     closeRegister(registorStage);
                     AlertMain.showAlert(true,primaryStage,Alert.AlertType.INFORMATION, 
-                       "Thông báo", "Chúc mừng", "Chúc mừng bạn đã đăng kí tài khoản thành công");
+                       LanguageManager.get("alert.titleOK"),
+                       LanguageManager.get("alert.conn"),
+                       LanguageManager.get("alert.success"));
                 }
                 else{
                     AlertMain.showAlert(false,primaryStage,Alert.AlertType.ERROR, 
-                       "Thông báo", "Lỗi", "Lỗi dữ liệu đầu vào!");
+                       LanguageManager.get("alert.titleOK"),
+                       LanguageManager.get("alert.conn"),
+                       LanguageManager.get("alert.false"));
                     errorInput.setVisible(false);
                     fx.errorsShow(errorSending);
                 }
@@ -165,9 +166,9 @@ public class RegisterView extends Application {
             }            
         });
         // Có tài khoản chưa?
-        haveAnAccount = label.createText(300, 405, "I have had an account.", roboto, "ffffff");
+        haveAnAccount = label.createText(300, 405,LanguageManager.get("register.ihhaa"), roboto, "ffffff");
         // Nút quay lại
-        textGoBack = label.createText(450, 405, "Go back", roboto, "ff0000");
+        textGoBack = label.createText(450, 405,LanguageManager.get("register.goback"), roboto, "ff0000");
         textGoBack.setStyle("-fx-cursor:hand;");
         textGoBack.setOnMouseClicked(e ->closeRegister(registorStage));
         
@@ -187,7 +188,7 @@ public class RegisterView extends Application {
         scene = new Scene(root, 1000, 600);
         scene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
         
-        registorStage.setTitle("Welcome to Blue Ocean!");
+        registorStage.setTitle(LanguageManager.get("register.title"));
         registorStage.setScene(scene);
         registorStage.setResizable(false);
 //        registorStage.setOnCloseRequest(e -> closeRegister(registorStage));

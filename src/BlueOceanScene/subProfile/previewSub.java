@@ -5,6 +5,7 @@
 package BlueOceanScene.subProfile;
 
 import Font.FontManagement;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.User;
 import MainForm.Utils.checkInputData;
 import javafx.application.Platform;
@@ -42,7 +43,7 @@ public class previewSub  {
         avtBox.setAlignment(Pos.TOP_CENTER); // căn giữa ngang
 
         
-        Text user = new Text("User");
+        Text user = new Text(LanguageManager.get("user.user"));
         user.setFont(FontManagement.Roboto(15));
         
         TextField idField = new TextField();
@@ -65,7 +66,7 @@ public class previewSub  {
         group1.setSpacing(45); // khoảng cách 10 pixels giữa các phần tử con
 
         
-        Text fullname = new Text("FullName");
+        Text fullname = new Text(LanguageManager.get("user.fullname1"));
         fullname.setFont(FontManagement.Roboto(15));
         
         TextField fullNameField = new TextField();
@@ -84,7 +85,7 @@ public class previewSub  {
     }
     public static HBox updatenickname(String str){
         HBox root = new HBox();   
-        Text nickname = new Text("NickName");
+        Text nickname = new Text(LanguageManager.get("user.nickname1"));
         nickname.setFont(FontManagement.Roboto(15));
         
         TextField nickNameField = new TextField(str);
@@ -110,7 +111,7 @@ public class previewSub  {
     public static HBox updategender(String str){
         HBox root = new HBox();
         
-        Text gender = new Text("Gender");
+        Text gender = new Text(LanguageManager.get("user.gender"));
         gender.setFont(FontManagement.Roboto(15));
         
         TextField genderField = new TextField(str);
@@ -126,7 +127,7 @@ public class previewSub  {
     public static HBox updatephone(String str){
         HBox root = new HBox();
         
-        Text phonenumber = new Text("Phone");
+        Text phonenumber = new Text(LanguageManager.get("user.phone1"));
         phonenumber.setFont(FontManagement.Roboto(15));
         
         TextField phoneField = new TextField(str);
@@ -137,7 +138,6 @@ public class previewSub  {
         phoneField.setMinWidth(200);
         phoneField.setEditable(false);
         root.getChildren().addAll(phonenumber,phoneField);
-        System.out.print(checkInputData.isValidFullName(str));
         if(!checkInputData.isValidNumberPhone(str)){
             phoneField.getStyleClass().add("false_input");
             previewSub.setFlag(true);
@@ -155,7 +155,7 @@ public class previewSub  {
     public static HBox updateaddress(String str){
         HBox root = new HBox();
         
-        Text address = new Text("Address");
+        Text address = new Text(LanguageManager.get("user.address"));
         address.setFont(FontManagement.Roboto(15));
         
         TextField addressField = new TextField(str);
@@ -173,7 +173,7 @@ public class previewSub  {
     public static HBox updateemail(String str){
         HBox root = new HBox();
         
-        Text email = new Text("Email");
+        Text email = new Text(LanguageManager.get("user.email"));
         email.setFont(FontManagement.Roboto(15));
         
         TextField emailField = new TextField(str);

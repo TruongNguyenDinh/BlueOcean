@@ -1,5 +1,6 @@
 package BlueOceanScene.View;
 import BlueOceanScene.Utils.ReminderPanel;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -61,7 +62,8 @@ public class CalendarView {
         });
         yearBox.setOnAction(e -> updateCalendar());
 
-        HBox top = new HBox(10, new Label("Tháng:"), monthBox, new Label("Năm:"), yearBox);
+        HBox top = new HBox(10, new Label(LanguageManager.get("BO.CalendarView.top1")),
+                monthBox, new Label(LanguageManager.get("BO.CalendarView.top2")), yearBox);
         top.setAlignment(Pos.CENTER);
         root.setTop(top);
 
@@ -149,7 +151,7 @@ public class CalendarView {
             newStage.setOnCloseRequest(close->{
                 reminderPanel.stop();
             });
-            newStage.setTitle("Thông tin ngày");
+            newStage.setTitle(LanguageManager.get("BO.CalendarView.info"));
             newStage.show();
         });
 

@@ -5,6 +5,7 @@
 package BlueOceanScene.subSetting;
 
 import BlueOceanScene.Utils.MediaMusic;
+import LanguagePackage.LanguageManager;
 import javafx.geometry.Insets;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
@@ -20,7 +21,7 @@ import javafx.scene.text.Text;
 public class MucBackSetting  {
     public static HBox volume(){
         VBox preroot = new VBox();
-        Text title = new Text("Âm nhạc nền");
+        Text title = new Text(LanguageManager.get("BO.MucBackSetting.title"));
         Slider volumeSlider = new Slider(0, 100, 80); // 0.0 = tắt tiếng, 1.0 = max
          volumeSlider.setShowTickLabels(true);
             volumeSlider.setShowTickMarks(true);

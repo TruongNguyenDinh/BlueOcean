@@ -1,4 +1,8 @@
-    package BlueOceanScene.Utils;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMain.java to edit this template
+ */
+package BlueOceanScene.Utils;
 
 import BlueOceanScene.Models.Song;
 import java.io.File;
@@ -25,7 +29,6 @@ public class MediaMusic {
     public static void playPlaylist(List<String> filePaths) {
         playlist.clear();
         if (filePaths == null || filePaths.isEmpty()) {
-            System.err.println("Playlist is empty!");
             return;
         }
         for(String file:filePaths){
@@ -66,7 +69,6 @@ public class MediaMusic {
             // Phát nhạc
             mediaPlayer.play();
         } catch (MediaException e) {
-            System.err.println("Error loading music: " + e.getMessage());
         }
     }
     public static String getCurrentSongName() {

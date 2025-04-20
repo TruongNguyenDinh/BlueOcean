@@ -7,6 +7,7 @@ package BlueOceanScene.Layouts;
 import BlueOceanScene.Utils.AnimationFx;
 import BlueOceanScene.subSetting.LoginSetting;
 import BlueOceanScene.subSetting.MucBackSetting;
+import LanguagePackage.LanguageManager;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -39,7 +40,7 @@ public class SettingLayout {
     public static HBox settinglayout(Scene scene){
         volume.setId("volume");
         quickLog.setId("quickLogin");
-        Label label = new Label("Không có gì để hiển thị");
+        Label label = new Label(LanguageManager.get("BO.profilelayout.label"));
         label.setTranslateY(80);
         label.setTranslateX(-10);
         label.setFont(Font.font(20));
@@ -85,8 +86,8 @@ public class SettingLayout {
 
         
         modePane = new StackPane();
-        Button login = new Button("Đăng nhập");
-        Button Sound = new Button("Âm thanh");
+        Button login = new Button(LanguageManager.get("BO.settinglayout.login"));
+        Button Sound = new Button(LanguageManager.get("BO.settinglayout.Sound"));
         listButton = List.of(login,Sound);
         
         for(Button btn: listButton){

@@ -30,6 +30,7 @@ import TextFactory.TextFieldFact;
 import Font.FontManagement;
 import IconFactoryPkg.IconFact;
 import IconFactoryPkg.IconSource;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.HelpQuickLogin;
 import MainForm.Utils.AnimationFx;
 import MainForm.Utils.QuickLogin;
@@ -96,16 +97,16 @@ public class LogInView extends Application {
         Circle avt2 = circleFactory.createCircle(750, 90, 45, "2a6f97", 1);
         
         //// TextLable
-        Text userNameText = content.createText(650,160,"Username");
-        Text passwordText = content.createText(650,210,"Password");
-        Text notAccountText = content.createText(650,320,"Don't have an account ?",roboto,"BFFFF9");
-        Text forgotPassText = content.createText(650,300,"I forgot my password.",roboto,"A9D6E5");
-        Text registerText = content.createText(815,320,"Register",roboto,"ff0000");
-        Text posRegisterText = content.createText(800,300,"Here !",roboto,"ff0000");
-        Text errorLoginText = content.createText(650,340,"Lỗi cú pháp đăng nhập",roboto,"ff0000");
-        Text notAccount = content.createText(650,340,"Tên đăng nhập hoặc mật khẩu sai",roboto,"ff0000");
-        Text errorTerminal = content.createText(650,340,"QuickLogin bắt đầu với dấu'/'",roboto,"ff0000");
-        Text dontTerminal = content.createText(650,340,"Sai QuickLogin",roboto,"ff0000");
+        Text userNameText = content.createText(650,160,LanguageManager.get("user.username"));
+        Text passwordText = content.createText(650,210,LanguageManager.get("user.pass"));
+        Text notAccountText = content.createText(650,320,LanguageManager.get("login.registerIntro"),roboto,"BFFFF9");
+        Text forgotPassText = content.createText(650,300,LanguageManager.get("login.forgot"),roboto,"A9D6E5");
+        Text registerText = content.createText(815,320,LanguageManager.get("register.logo"),roboto,"ff0000");
+        Text posRegisterText = content.createText(800,300,LanguageManager.get("login.here"),roboto,"ff0000");
+        Text errorLoginText = content.createText(650,340,LanguageManager.get("login.LGsyntax"),roboto,"ff0000");
+        Text notAccount = content.createText(650,340,LanguageManager.get("login.LGwrong"),roboto,"ff0000");
+        Text errorTerminal = content.createText(650,340,LanguageManager.get("login.QLerror"),roboto,"ff0000");
+        Text dontTerminal = content.createText(650,340,LanguageManager.get("login.QLwrong"),roboto,"ff0000");
         
         notAccount.setVisible(false);
         dontTerminal.setVisible(false);
@@ -123,10 +124,10 @@ public class LogInView extends Application {
         lgfx.logoFx(logoText);
         
         // Trường nhập tài khoản
-        TextField usernameField = textField.createFieldData(650, 165, "Enter username", "loginField");
-        PasswordField passwordField = textField.createFieldPassword(650, 215, "Enter password", "loginFieldPass");
+        TextField usernameField = textField.createFieldData(650, 165,LanguageManager.get("login.promtUN"), "loginField");
+        PasswordField passwordField = textField.createFieldPassword(650, 215,LanguageManager.get("login.promtPW"), "loginFieldPass");
         // Chuyển đổi hiện / ẩn mật khẩu
-        TextField showandhide = textField.createFieldData(650, 215, "Enter password", "loginField");
+        TextField showandhide = textField.createFieldData(650, 215,LanguageManager.get("login.promtPW"), "loginField");
         showandhide.setVisible(false); 
         ToggleButton showPasswordButton = new ToggleButton("👁");
         showPasswordButton.setLayoutX(805);
@@ -150,7 +151,7 @@ public class LogInView extends Application {
         showandhide.textProperty().addListener((obs, oldText, newText) -> passwordField.setText(newText));
         
         // Nút đăng nhập
-        Button loginButton = new Button("Đăng nhập");
+        Button loginButton = new Button(LanguageManager.get("login.button"));
         loginButton.getStyleClass().add("loginButton");
         loginButton.setLayoutX(745);
         loginButton.setLayoutY(250);
@@ -172,8 +173,8 @@ public class LogInView extends Application {
                     if(count==5){
                         count = 0;
                         AlertMain.checkFotgot(isForgetOpen, loginStage, Alert.AlertType.CONFIRMATION, "OOP!",
-                            "Có vẻ như đã có chút vấn đề với mật khẩu của bạn rồi !",
-                            "Bạn có muốn lấy lại mật khẩu không ?");
+                            LanguageManager.get("alert.errorLG"),
+                            LanguageManager.get("alert.suggestLG"));
                     }
                    
                 }
@@ -267,7 +268,7 @@ public class LogInView extends Application {
         Scene loginScene = new Scene(loginPane, 1000, 600);
         //Load style
         loginScene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
-        loginStage.setTitle("Blue Screen Client");
+        loginStage.setTitle(LanguageManager.get("login.title"));
         loginStage.getIcons().add(ImgFactory.getIcon());
         loginStage.setResizable(false);
         loginStage.setScene(loginScene);

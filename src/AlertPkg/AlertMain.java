@@ -21,7 +21,6 @@ public class AlertMain{
             alert.setTitle(title);
             alert.setHeaderText(header);
             
-            // ✅ Nếu có cửa sổ chính, đặt làm cha
             if (ownerStage != null) {
                 alert.initModality(Modality.APPLICATION_MODAL); // Chặn cửa sổ chính
                 alert.initOwner(ownerStage);
@@ -55,7 +54,6 @@ public class AlertMain{
             alert.setTitle(title);
             alert.setHeaderText(header);
             alert.getButtonTypes().setAll(ButtonType.OK, ButtonType.CANCEL);
-            System.out.print(ownerStage!=null);
             if (ownerStage != null) {
                 alert.initModality(Modality.APPLICATION_MODAL); // Chặn cửa sổ chính
                 alert.initOwner(ownerStage);  

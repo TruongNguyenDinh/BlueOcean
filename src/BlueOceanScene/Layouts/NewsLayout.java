@@ -11,6 +11,7 @@ import BlueOceanScene.Utils.ReminderPanel;
 import BlueOceanScene.View.CalendarView;
 import Font.FontManagement;
 import GalleryFactory.GalleryItemFactory;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.User;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -54,7 +55,8 @@ public class NewsLayout {
     private final String[] imagePaths = {
         "Image/1.jpeg",
         "Image/2.jpeg",
-        "Image/3.jpeg"
+        "Image/3.jpeg",
+        "Image/4.png"
     };
     private final String[] galleyPaths = {
       "Image/gallery.jpeg",  
@@ -92,7 +94,11 @@ public class NewsLayout {
         Rectangle info_client = new Rectangle();info_client.setFill(Color.WHITESMOKE);
         Rectangle bg_quote_client = new Rectangle();bg_quote_client.setFill(Color.web("66b5ad"));
         Rectangle bg_info_client = new Rectangle();bg_info_client.setFill(Color.web("66a5ad"));
+        bg_info_client.setArcWidth(10);
+        bg_info_client.setArcHeight(10);
         Rectangle bg_music_client = new Rectangle();bg_music_client.setFill(Color.web("66A5AD"));
+        bg_music_client.setArcWidth(10);
+        bg_music_client.setArcHeight(10);
         // Phân vùng 2_3:2
         ImageView afternoon = new ImageView(new Image("Image/Day/morning.jpg"));
         Rectangle date_time = new Rectangle();date_time.setFill(Color.WHITESMOKE);
@@ -104,7 +110,7 @@ public class NewsLayout {
         calendarUI = calendarView.createCalendar(scene.heightProperty(),date_time.widthProperty());
         
         ///Text
-       Label music_backgoundText = new Label("You're listening: " ); // 1
+       Label music_backgoundText = new Label(LanguageManager.get("BO.newsLayout.music_backgoundText")); // 1
        Label current_music = new Label(MediaMusic.getCurrentSongName());
        current_music.setWrapText(true);
        current_music.setMaxWidth(300);
@@ -180,10 +186,6 @@ public class NewsLayout {
            
        });
        
-       //Calendar 
-//        CalendarView calendarView = new CalendarView();
-//        BorderPane calendarUI = calendarView.createCalendar(friend_list.heightProperty());
-        System.out.print(imageView);
        Pane imgPane = new Pane(img_slide,imageView);
        img_slide.widthProperty().addListener((obs,oldVal,newVal)->{
            imageView.setFitWidth(newVal.doubleValue());
@@ -192,7 +194,7 @@ public class NewsLayout {
            imageView.setFitHeight(newVal.doubleValue());
        });
        AnimationFx.createSlideshowAnimation(imageView, imagePaths);
-       Text noitice = new Text("New Events");
+       Text noitice = new Text(LanguageManager.get("BO.newsLayout.noitice"));
        noitice.setFill(Color.DARKCYAN);
        imgEventPane = new Pane(bg_img_slide,noitice,imgPane);
        
@@ -268,7 +270,7 @@ public class NewsLayout {
        });
        
        
-       Label what = new Label("What should I do today ?");
+       Label what = new Label(LanguageManager.get("BO.newsLayout.what"));
        rm = new ReminderPanel();
        VBox notionVBox = rm.Notion(User.getId());
 
@@ -296,7 +298,7 @@ public class NewsLayout {
 
        
        
-       Label news = new Label("News");
+       Label news = new Label(LanguageManager.get("BO.newsLayout.news"));
        news.setTextFill(Color.SADDLEBROWN);
        
        newsListPane = new Pane(news_list,news);

@@ -5,6 +5,7 @@
 package BlueOceanScene.subSetting;
 
 import BlueOceanScene.Utils.WriterQuickLogin;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.User;
 import MainForm.Utils.checkInputData;
 import javafx.beans.property.SimpleStringProperty;
@@ -25,11 +26,14 @@ import javafx.scene.text.Text;
  */
 public class LoginSetting {   
     private static Node saveNode = null;
+    private static Node cancelNode = null;
     public static VBox loginSetting(){
         VBox root;
-        Button setup = new Button("Thiết lập");
+        Button setup = new Button(LanguageManager.get("BO.LoginSetting.setup"));
         setup.setFocusTraversable(false);
-        Button save = new Button("Lưu");
+        Button save = new Button(LanguageManager.get("BO.LoginSetting.save"));
+        save.setFocusTraversable(false);
+        Button cancel = new Button(LanguageManager.get("BO.LoginSetting.cancel"));
         save.setFocusTraversable(false);
         
         TextField quickLogin = new TextField();
@@ -42,20 +46,25 @@ public class LoginSetting {
         setup.setOnAction(event->{
             quickLogin.setEditable(true);
             quickLogin.setMouseTransparent(false);
+            quickLogin.setPromptText(LanguageManager.get("BO.LoginSetting.quickLogin"));
         });
-        Text intro =  new Text("Đăng nhập nhanh");
+        Text intro =  new Text(LanguageManager.get("BO.LoginSetting.intro"));
         HBox introHBox = new HBox(intro);
         introHBox.setSpacing(10);
         StringProperty symbol = new SimpleStringProperty();
-        quickLogin.setPromptText("Nhập lệnh đăng nhập nhanh");
+        quickLogin.setPromptText(LanguageManager.get("BO.LoginSetting.quickLogin1"));
         quickLogin.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal == null || newVal.isEmpty()) return;
             // Bỏ hết dấu `/` rồi thêm lại một cái ở đầu
                 String cleaned = newVal.replace("/"+User.getId()+".", "");
                 if(checkInputData.isValidQuickLogin(cleaned)){
                     saveNode = group1.lookup("saveBtn");
+                    cancelNode = group1.lookup("cancelBtn");
                     if(saveNode!=null){
                         group1.getChildren().remove(save);
+                    }
+                    if(cancelNode!=null){
+                        group1.getChildren().remove(cancel);
                     }
                     String result = "/"+User.getId()+"." + cleaned;
                     // Chỉ set lại nếu khác để tránh lặp vô hạn
@@ -71,29 +80,39 @@ public class LoginSetting {
                 group1.getChildren().add(save);
                 save.setId("saveBtn");
             }
+            if (!group1.getChildren().contains(cancel)) {
+                group1.getChildren().add(cancel);
+                cancel.setId("cancelBtn");
+            }
         });
         
         save.setOnAction(event->{
             quickLogin.setEditable(false);              
             quickLogin.setFocusTraversable(false);      
             quickLogin.setMouseTransparent(true);
-            quickLogin.clear();
+            
             saveNode = group1.lookup("saveBtn");
             if(saveNode!=null){
                     group1.getChildren().remove(save);
             }
-            if(WriterQuickLogin.writer(quickLogin.getText())){
-                
-            }
-            else{
-                
-            }
+            WriterQuickLogin.writer(quickLogin.getText());
+            quickLogin.clear();
+            group1.getChildren().removeAll(save, cancel);
         });
+        cancel.setOnAction(event -> {
+            quickLogin.setEditable(false);              
+            quickLogin.setFocusTraversable(false);      
+            quickLogin.setMouseTransparent(true);
+            quickLogin.clear();
+
+            group1.getChildren().removeAll(save, cancel);
+        });
+
         
         HBox helpFinal = new HBox();
-        Text helpSymbolPart1 = new Text("Để đăng nhập nhanh bạn hãy gõ - ");
-        Text helpSymbolPart2 = new Text(" - ở mục tài khoản");
-        Text note = new Text("👉 Chú ý: Bạn có thể nhập tối đa 7 kí tự");
+        Text helpSymbolPart1 = new Text(LanguageManager.get("BO.LoginSetting.helpSymbolPart1"));
+        Text helpSymbolPart2 = new Text(LanguageManager.get("BO.LoginSetting.helpSymbolPart2"));
+        Text note = new Text(LanguageManager.get("BO.LoginSetting.note"));
         symbol.bind(quickLogin.textProperty());
         Text symbol_ = new Text();
         symbol_.setFill(Color.RED);

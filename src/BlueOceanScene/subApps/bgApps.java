@@ -21,6 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import Game2.MainFlappyBird;
+import LanguagePackage.LanguageManager;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
@@ -62,28 +63,24 @@ public class bgApps{
         switch (i){
             case 1 -> {
                 imageView = new ImageView(new Image("Image/BackGroundApps/TicTacToe.jpg"));
-                name.setText("Tic Tac Toe");
-                detail.setText("Tic Tac Toe là trò chơi 2 người, mỗi bên lần lượt đánh dấu X hoặc O trên bảng 3x3.\n"
-                        + " Ai xếp được 3 ký hiệu liên tiếp theo hàng, cột hoặc chéo sẽ thắng. Đơn giản, nhanh, mà cực kỳ chiến thuật!");
+                name.setText(LanguageManager.get("BO.bgApps.tictactoe.name"));
+                detail.setText(LanguageManager.get("BO.bgApps.tictactoe.detail"));
                 
             }
             case 2 -> {
                 imageView = new ImageView(new Image("Image/BackGroundApps/Note.jpg"));
-                name.setText("Note App");
-                detail.setText("Note App là một ứng dụng ghi chú đơn giản, giúp bạn nhanh chóng lưu lại ý tưởng,\n"
-                        + "công việc và lời nhắc hằng ngày. Giao diện tối giản, dễ sử dụng, hỗ trợ tạo, chỉnh sửa và quản lý ghi chú một cách trực quan.");
+                name.setText(LanguageManager.get("BO.bgApps.noteapp.name"));
+                detail.setText(LanguageManager.get("BO.bgApps.noteapp.detail"));
             }
             case 3 ->{
                 imageView = new ImageView(new Image("Image/BackGroundApps/FlappyBird.jpg"));
-                name.setText("FlappyBird");
-                detail.setText("Bay không dễ – nhất là với cánh chim nhỏ xíu!\n"
-                        + "Flappy Bird thử thách phản xạ và sự kiên nhẫn của bạn qua từng cú chạm đơn giản mà... gây ức chế không tưởng!");
+                name.setText(LanguageManager.get("BO.bgApps.rocketshooting.name"));
+                detail.setText(LanguageManager.get("BO.bgApps.rocketshooting.detail"));
             }
             case 4 -> {
                 imageView = new ImageView(new Image("Image/BackGroundApps/RocketShooting.jpg"));
-                name.setText("Rocket Shooting");
-                detail.setText("Khởi động tên lửa, vào chế độ chiến đấu!\n"
-                        + "Trong Rocket Shooting, chỉ có một quy tắc: bắn trước – sống sót sau!");
+                name.setText(LanguageManager.get("BO.bgApps.flappybird.name"));
+                detail.setText(LanguageManager.get("BO.bgApps.flappybird.detail"));
             }
         } 
         name.setFont(FontManagement.Pacifico(60));
@@ -156,7 +153,7 @@ public class bgApps{
         stage.setOnCloseRequest(close->{
             reminderPanel.stop();
         });
-        stage.setTitle("Thông tin ngày");
+        stage.setTitle(LanguageManager.get("BO.CalendarView.info"));
         stage.show();
     }
     private static void launchingApp4() {

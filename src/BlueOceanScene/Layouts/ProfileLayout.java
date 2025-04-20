@@ -7,6 +7,7 @@ package BlueOceanScene.Layouts;
 import BlueOceanScene.Utils.AnimationFx;
 import BlueOceanScene.subProfile.previewSub;
 import Font.FontManagement;
+import LanguagePackage.LanguageManager;
 import MainForm.Models.User;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,19 +29,15 @@ import MainForm.Models.UserTemps;
 import MainForm.Utils.DatabaseHelper;
 import java.util.HashSet;
 import java.util.Set;
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 /**
  *
  * @author truon
  */
 public class ProfileLayout {
-    private static AnimationFx fx = new AnimationFx();
+    public static final AnimationFx ProfileFX = new AnimationFx();
     private static HBox settingLayout;
     private static StackPane detailPane;
     private static VBox previewPane;
@@ -57,7 +54,7 @@ public class ProfileLayout {
     }
     public static HBox profilelayout(Scene scene){
         
-        Label label = new Label("Không có gì để hiển thị");
+        Label label = new Label(LanguageManager.get("BO.profilelayout.label"));
         label.setTranslateY(80);
         label.setTranslateX(-10);
         label.setFont(Font.font(20));
@@ -67,7 +64,7 @@ public class ProfileLayout {
         gear1.setFitWidth(300);
         gear1.setFitHeight(200);
         gear1.setScaleY(-1);
-        fx.rotation(gear1,1);
+        ProfileFX.rotation(gear1,1);
         
         ImageView gear2 = new ImageView(new Image("Image/Gear/gear2.png"));
         gear2.setPreserveRatio(true);
@@ -75,7 +72,7 @@ public class ProfileLayout {
         gear2.setFitHeight(150);
         gear2.setTranslateX(-120);
         gear2.setRotate(20);
-        fx.rotation(gear2,0);
+        ProfileFX.rotation(gear2,0);
         
         Circle avt = new Circle(100,Color.BLANCHEDALMOND);
         avt.setTranslateY(-250);
@@ -114,9 +111,10 @@ public class ProfileLayout {
         nickNameField.setTranslateY(-50);
         
         ComboBox genderField = new ComboBox();
-        if(User.getGender()) genderField.setValue("Nam");
-        else genderField.setValue("Nữ");
-        genderField.getItems().addAll("Nam","Nữ");
+        if(User.getGender()) genderField.setValue(LanguageManager.get("BO.profilelayout.genderField.male"));
+        else genderField.setValue(LanguageManager.get("BO.profilelayout.genderField.female"));
+        genderField.getItems().addAll(LanguageManager.get("BO.profilelayout.genderField.male"),
+                LanguageManager.get("BO.profilelayout.genderField.female"));
         genderField.setEditable(false);               // Không cho gõ
         genderField.setFocusTraversable(false);       // Không nhận focus qua TAB
         genderField.setMouseTransparent(true);  
@@ -151,50 +149,51 @@ public class ProfileLayout {
         emailField.setEditable(false);
         emailField.setTranslateY(110);
         
-        Text user = new Text("User");
+        Text user = new Text(LanguageManager.get("user.user"));
         user.setTranslateX(-172);
         user.setTranslateY(-130);
         user.setFont(FontManagement.Roboto(15));
         
-        Text fullname = new Text("FullName");
+        Text fullname = new Text(LanguageManager.get("user.fullname"));
         fullname.setTranslateX(-155);
         fullname.setTranslateY(-90);
         fullname.setFont(FontManagement.Roboto(15));
         
-        Text nickname = new Text("NickName");
+        Text nickname = new Text(LanguageManager.get("user.nickname1"));
         nickname.setTranslateX(-152);
         nickname.setTranslateY(-50);
         nickname.setFont(FontManagement.Roboto(15));
         
-        Text gender = new Text("Gender");
+        Text gender = new Text(LanguageManager.get("user.gender"));
         gender.setTranslateX(-162);
         gender.setTranslateY(-10);
         gender.setFont(FontManagement.Roboto(15));
         
-        Text phonenumber = new Text("Phone");
+        Text phonenumber = new Text(LanguageManager.get("user.phone1"));
         phonenumber.setTranslateX(-165);
         phonenumber.setTranslateY(30);
         phonenumber.setFont(FontManagement.Roboto(15));
         
-        Text address = new Text("Address");
+        Text address = new Text(LanguageManager.get("user.address"));
         address.setTranslateX(-160);
         address.setTranslateY(70);
         address.setFont(FontManagement.Roboto(15));
         
-        Text email = new Text("Email");
+        Text email = new Text(LanguageManager.get("user.email"));
         email.setTranslateX(-170);
         email.setTranslateY(110);
         email.setFont(FontManagement.Roboto(15));
         
-        Button editBtn = new Button("Edit");
+        Button editBtn = new Button(LanguageManager.get("BO.profilelayout.editBtn"));
         editBtn.setTranslateY(150);
         editBtn.setTranslateX(-80);
         editBtn.setFocusTraversable(false);
 
-        Button saveBtn = new Button("Save");
+        Button saveBtn = new Button(LanguageManager.get("BO.profilelayout.saveBtn"));
         saveBtn.setTranslateX(80);
         saveBtn.setTranslateY(150);
         saveBtn.setFocusTraversable(false);
+        
 
         
         Rectangle detailBG = new Rectangle();detailBG.setFill(Color.WHITESMOKE);
@@ -215,12 +214,14 @@ public class ProfileLayout {
             settingLayout.setTranslateX(width*0.005);
         });
         
-        Label previewText =  new Label("PREVIEW >>>");
+        Label previewText =  new Label(LanguageManager.get("BO.profilelayout.previewText"));
         StackPane.setAlignment(previewText, Pos.TOP_LEFT);
         StackPane.setMargin(previewText, new Insets(20));
         previewText.setStyle("-fx-font-weight: bold; -fx-font-size: 20px;");
 //        previewText.setFont(Font.font(25));
-        Label notice = new Label("Hey "+User.getFullname()+", your profile will be updated in the next time you login !");
+        Label notice = new Label(LanguageManager.get("BO.profilelayout.notice1")+
+                User.getFullname()+
+                LanguageManager.get("BO.profilelayout.notice2"));
         notice.setStyle(" -fx-font-size: 25px;-fx-text-fill: green;");
         notice.setWrapText(true);
         notice.setMaxWidth(700);
@@ -241,7 +242,6 @@ public class ProfileLayout {
         
         StackPane nothingInfoPane = new StackPane(nothingBg,gear1,label,gear2);
         previewPane = previewSub.getRoot();
-//        previewPane.getChildren().add(previewSub.Preview());
         previewPane.setTranslateY(15);
         previewPane.setTranslateX(-70);
         previewPane.setMaxWidth(50);
@@ -256,9 +256,9 @@ public class ProfileLayout {
         
         });
         editBtn.setOnAction(e->{
+            previewPane.getChildren().clear();
             nothingInfoPane.getChildren().clear();
             nothingInfoPane.getChildren().add(nothingBg);
-            previewPane.getChildren().clear();
             previewPane.getChildren().add(previewSub.Preview());
             nickNameField.setEditable(true);
             nickNameField.setMouseTransparent(false);
@@ -338,7 +338,6 @@ public class ProfileLayout {
                         previewPane.getChildren().remove(adr);
                     }
                     HBox address1 = new HBox(previewSub.updateaddress(newVal));
-                    System.out.println("new Val: "+newVal);
                     address1.setId("addressBox");
                     previewPane.getChildren().add(address1);
                     userTemps.setAddress(newVal);
@@ -418,9 +417,6 @@ public class ProfileLayout {
     }
     private static boolean fillData(){
         
-        // Debug giá trị
-        System.out.println("userTemps.getAddress(): " + userTemps.getAddress());
-        
         String nickname = (userTemps.getNickname() != null && !userTemps.getNickname().isEmpty()) 
                     ? userTemps.getNickname() 
                     : User.getNickname();
@@ -435,8 +431,6 @@ public class ProfileLayout {
                 ? userTemps.getAddress()
                 : User.getAddress();
         int id = User.getId();
-        System.out.println("userTemps.getAddress(): " + userTemps.getAddress());
-        System.out.println("userTemps.getPhone(): " + userTemps.getPhone());
         return DatabaseHelper.changeInfor(
                 id, 
                 nickname,
@@ -445,17 +439,4 @@ public class ProfileLayout {
                 phone,
                 gender);
     } 
-    private void status(Label label){
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(5), e->{
-            FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), label);
-            fadeOut.setFromValue(1.0);
-            fadeOut.setToValue(0.0);
-
-            // Tạo hiệu ứng fade in
-            FadeTransition fadeIn = new FadeTransition(Duration.seconds(1), label);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-        
-        }));
-    }
 }
