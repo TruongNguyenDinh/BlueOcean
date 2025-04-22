@@ -53,6 +53,7 @@ public class RegisterView extends Application {
         Pane root;
         Scene scene;
         
+        
         fx = new AnimationFx();
         img = new ImgFactory();
         root = new Pane();
@@ -154,7 +155,7 @@ public class RegisterView extends Application {
                 else{
                     AlertMain.showAlert(false,primaryStage,Alert.AlertType.ERROR, 
                        LanguageManager.get("alert.titleOK"),
-                       LanguageManager.get("alert.conn"),
+                       LanguageManager.get("alert.conn1"),
                        LanguageManager.get("alert.false"));
                     errorInput.setVisible(false);
                     fx.errorsShow(errorSending);
@@ -191,7 +192,7 @@ public class RegisterView extends Application {
         registorStage.setTitle(LanguageManager.get("register.title"));
         registorStage.setScene(scene);
         registorStage.setResizable(false);
-//        registorStage.setOnCloseRequest(e -> closeRegister(registorStage));
+        registorStage.setOnCloseRequest(e -> closeRegister(registorStage));
         registorStage.show();
         
         javafx.application.Platform.runLater(root::requestFocus);

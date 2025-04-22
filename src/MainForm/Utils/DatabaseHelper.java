@@ -101,24 +101,22 @@ public class DatabaseHelper {
         }
         
     } 
-    public static boolean accoutExist(String username, String phonenumber) {
-        String sql = "SELECT 1 FROM users WHERE username = ? AND phone = ? ";
+    public static String getEmailIfAccountExists(String username, String phonenumber) {
+        String sql = "SELECT email FROM users WHERE username = ? AND phone = ?";
         try (Connection con = DriverManager.getConnection(connectionUrl);
-               PreparedStatement stmt = con.prepareStatement(sql) ){
-            stmt.setString(1,username);
-            stmt.setString(2,phonenumber);
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.setString(2, phonenumber);
             ResultSet rs = stmt.executeQuery();
-            if (rs.next()){
-                return rs.getInt(1)>0;
+            if (rs.next()) {
+                return rs.getString("email"); // Trả lại email nếu tồn tại
             }
         } catch (SQLException e) {
-            // Xử lý lỗi kết nối
-            System.err.println("Loi: " + e.getMessage());
-//            e.printStackTrace();
-
+            System.err.println("Lỗi: " + e.getMessage());
         }
-        return false;
+        return null; // Không có tài khoản
     }
+
     public static boolean changePassword(String username, String phonenumber, String newpassword) {
         String sql = "UPDATE users SET password = ? WHERE username = ? AND phone = ? ";
         try (Connection con = DriverManager.getConnection(connectionUrl);
@@ -132,7 +130,6 @@ public class DatabaseHelper {
             // Xử lý lỗi kết nối
             System.err.println("Loi: " + e.getMessage());
 //            e.printStackTrace();
-
         }
         return false;
     }

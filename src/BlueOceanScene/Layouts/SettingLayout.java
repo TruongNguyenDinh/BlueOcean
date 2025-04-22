@@ -5,6 +5,7 @@
 package BlueOceanScene.Layouts;
 
 import BlueOceanScene.Utils.AnimationFx;
+import BlueOceanScene.subSetting.AdvancedSetting;
 import BlueOceanScene.subSetting.LoginSetting;
 import BlueOceanScene.subSetting.MucBackSetting;
 import LanguagePackage.LanguageManager;
@@ -35,11 +36,14 @@ public class SettingLayout {
     private static HBox settingLayout;
     private static final Node volume = MucBackSetting.volume();
     private static final Node quickLog = LoginSetting.loginSetting();
+    private static final AdvancedSetting adv = new AdvancedSetting();
+    private static final Node advancedSetting = adv.advancedSetting();
     private static List<Button> listButton;
     private static StackPane modePane;
     public static HBox settinglayout(Scene scene){
         volume.setId("volume");
         quickLog.setId("quickLogin");
+        advancedSetting.setId("advancedSetting");
         Label label = new Label(LanguageManager.get("BO.profilelayout.label"));
         label.setTranslateY(80);
         label.setTranslateX(-10);
@@ -88,7 +92,8 @@ public class SettingLayout {
         modePane = new StackPane();
         Button login = new Button(LanguageManager.get("BO.settinglayout.login"));
         Button Sound = new Button(LanguageManager.get("BO.settinglayout.Sound"));
-        listButton = List.of(login,Sound);
+        Button advanced = new Button(LanguageManager.get("BO.settinglayout.advanced"));
+        listButton = List.of(login,Sound,advanced);
         
         for(Button btn: listButton){
             btn.setFocusTraversable(false);
@@ -98,7 +103,7 @@ public class SettingLayout {
             btn.prefHeightProperty().bind(modePane.heightProperty().multiply(0.1));
             
         }
-        VBox buttonBox = new VBox(login,Sound);
+        VBox buttonBox = new VBox(login,Sound,advanced);
         buttonBox.setSpacing(5);
         buttonBox.setTranslateY(3);
         modePane.getChildren().addAll(modeBg,buttonBox);
@@ -113,6 +118,7 @@ public class SettingLayout {
             graphTimeInfoPane.getChildren().addAll(detailModebg,listSettingBox);
             listSettingBox.getChildren().removeIf(node -> 
                 "volume".equals(node.getId()));
+                
             gear1.setVisible(false);
             label.setVisible(false);
             gear2.setVisible(false);
@@ -129,6 +135,18 @@ public class SettingLayout {
             listSettingBox.getChildren().add(quickLog); 
             
         });
+        advanced.setOnAction(e->{
+            graphTimeInfoPane.getChildren().clear();
+            graphTimeInfoPane.getChildren().addAll(detailModebg,listSettingBox);
+            listSettingBox.getChildren().removeIf(node -> 
+                "advancedSetting".equals(node.getId()));
+            gear1.setVisible(false);
+            label.setVisible(false);
+            gear2.setVisible(false);
+            listSettingBox.getChildren().add(advancedSetting); 
+            
+        });
+        
         
         settingLayout = new HBox(modePane,graphTimeInfoPane);
         return settingLayout;

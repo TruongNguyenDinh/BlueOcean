@@ -1,6 +1,5 @@
 package Game1;
 
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -44,7 +43,7 @@ public class MenuScene {
             font = Font.loadFont(getClass().getResourceAsStream("/Game1/fonts/Boldonse-Regular.ttf"), 15);
             if (font == null) throw new Exception("Font null");
         } catch (Exception e) {
-            System.out.println("Lỗi font, dùng mặc định: " + e.getMessage());
+//            System.out.println("Lỗi font, dùng mặc định: " + e.getMessage());
             font = Font.font("Roboto", 10);
         }
 

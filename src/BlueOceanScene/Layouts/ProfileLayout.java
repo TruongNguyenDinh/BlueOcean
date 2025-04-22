@@ -422,11 +422,14 @@ public class ProfileLayout {
                     : User.getNickname();
         String email = (userTemps.getEmail() !=null && !userTemps.getEmail().isEmpty())
                 ? userTemps.getEmail()
-                : User.getNickname();
+                : User.getEmail();
         String phone = (userTemps.getPhone()!= null && !userTemps.getPhone().isEmpty())
                 ? userTemps.getPhone()
                 :User.getPhone();
-        boolean gender = userTemps.getGender();
+        Boolean gender = userTemps.getGender();
+        if(gender==null){
+            
+        }
         String address = (userTemps.getAddress()!=null && !userTemps.getAddress().isEmpty())
                 ? userTemps.getAddress()
                 : User.getAddress();

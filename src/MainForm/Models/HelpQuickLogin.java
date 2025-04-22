@@ -18,6 +18,8 @@ public class HelpQuickLogin {
     private final StringProperty username = new SimpleStringProperty();
     private final StringProperty password = new SimpleStringProperty();
     
+    // HelpQuickLogin instance  ; 
+    // HelpQuickLogin instance = new HelpQuickLogin();  -> B
     // Ngăn khởi tạo từ class khác
     private HelpQuickLogin(){}
     

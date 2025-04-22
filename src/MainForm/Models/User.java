@@ -51,6 +51,10 @@ public class User {
     public static boolean getGender(){
         return gender;
     }
+    
+    public static void setEmail(String email){
+        User.email = email;
+    }
     public static String getEmail(){
         return email;
     }

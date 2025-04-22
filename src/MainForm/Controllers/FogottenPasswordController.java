@@ -31,13 +31,13 @@ public class FogottenPasswordController {
     public String getPhonenumber(){
         return phoneNumber;
     }
-    public boolean checkYesNo() {
+    public String checkYesNo() {
         if (checkInputData.isValidUserName(this.userName) &&
             checkInputData.isValidNumberPhone(this.phoneNumber)){
-            return DatabaseHelper.accoutExist(this.userName, this.phoneNumber); 
+            return DatabaseHelper.getEmailIfAccountExists(this.userName, this.phoneNumber); 
         }
         else{
-            return false;
+            return null;
         } 
     }
     public boolean changePassword(String userName, String phoneNumber, String newPassword){

@@ -62,7 +62,7 @@ VALUES
 GO
 INSERT INTO users (username, fullname, nickname, phone, address, gender, password, email, status)
 VALUES
-('Truong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 0, 'Truong123', 'truong@gmail.com', 0);
+('NTruong1124', 'Ngô Thượng Nhung', 'Kiếm Ma', '0362361299', 'Hải Phòng', 1, 'Truong123', 'truongnd1124@gmail.com', 0);
 GO
 SELECT * FROM users;
 SELECT*FROM notes;

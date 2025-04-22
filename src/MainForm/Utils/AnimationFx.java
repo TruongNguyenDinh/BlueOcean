@@ -44,16 +44,17 @@ public class  AnimationFx {
         logoTimeline.setCycleCount(Timeline.INDEFINITE);
         logoTimeline.play();
    }
-   public void stopLogoFx() {
-    if (logoTimeline != null) {
-        logoTimeline.stop(); // Dừng timeline
-        logoTimeline.getKeyFrames().clear(); // Xóa keyframes nếu muốn cleanup
-        logoTimeline = null; // Giải phóng biến nếu không dùng nữa
+    public void stopLogoFx() {
+        if (logoTimeline != null) {
+            logoTimeline.stop(); // Dừng timeline
+            logoTimeline.getKeyFrames().clear(); // Xóa keyframes nếu muốn cleanup
+            logoTimeline = null; // Giải phóng biến nếu không dùng nữa
+        }
     }
-}
+
    public void registerFx(AtomicBoolean  finished,Text content,Node...nodesToHide){
-       RegistorController.Visiable(finished.get(), nodesToHide);
-       TranslateTransition moveText = new TranslateTransition(Duration.seconds(2), content);
+        RegistorController.Visiable(finished.get(), nodesToHide);
+        TranslateTransition moveText = new TranslateTransition(Duration.seconds(2), content);
         moveText.setFromY(0);
         moveText.setToY(-200);
         moveText.setCycleCount(1);

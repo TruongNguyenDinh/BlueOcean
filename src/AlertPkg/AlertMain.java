@@ -108,5 +108,31 @@ public class AlertMain{
             });
         });
     }
+    public static void noiticeLogout(Stage ownerStage, Alert.AlertType type, String title, String header, String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type, content, ButtonType.OK);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.getButtonTypes().setAll(ButtonType.OK);
+            if (ownerStage != null) {
+                alert.initModality(Modality.APPLICATION_MODAL); // Chặn cửa sổ chính
+                alert.initOwner(ownerStage);  
+            }
+            
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.setResizable(false);
+            alertStage.initStyle(StageStyle.UNDECORATED); // Kiểu nhỏ gọn, không có maximize/minimize
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    if (ownerStage != null) {
+                        ownerStage.close();
+                        MediaMusic.stopMusic();
+                        Platform.runLater(() -> new LogInView().start(new Stage()));
+                    }
+                }
+                alertStage.close();
+            });
+        });
+    }
 }
 

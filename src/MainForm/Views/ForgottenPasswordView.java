@@ -17,10 +17,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ImageFactory.ImgFactory;
+import MainForm.Controllers.EmailApp;
+import MainForm.Models.User;
+import MainForm.Utils.Generate_confirmation_number;
+import MainForm.Utils.checkInputData;
 import ShapeFactory.RectangleFactory;
 import ShapeFactory.CircleFactory;
 import TextFactory.TextFieldFact;
 import TextFactory.TextLableFact;
+import javafx.application.Platform;
+import javafx.scene.input.KeyCode;
+
 
 /**
  *
@@ -36,6 +43,7 @@ public class ForgottenPasswordView extends Application {
     private final RectangleFactory rect = new RectangleFactory();
     private final CircleFactory cir = new CircleFactory();
     private final TextFieldFact textField = new TextFieldFact();
+    private String code;
     @Override
     public void start(Stage primaryStage) {
         //Khai báo 
@@ -45,6 +53,9 @@ public class ForgottenPasswordView extends Application {
         Pane root = new Pane();
         ImgFactory img = new ImgFactory();
         Text errorText = new Text();
+        Text successLabel = new Text();
+        Text isSending = new Text();
+        Text falseCode = new Text();
 
         // Khởi tạo cửa sổ chung
         this.window  = primaryStage;
@@ -70,15 +81,20 @@ public class ForgottenPasswordView extends Application {
         //Tạo trường nhập liệu
         TextField userNameField  = textField.createFieldData(225, 200, "Username", "loginField");
         TextField phoneNumberField  = textField.createFieldData(225, 250, "PhoneNumber", "loginField");
+        TextField emailField  = textField.createFieldData(225, 300, "This field is locked", "loginField");
+        emailField.setEditable(false);
+        emailField.setFocusTraversable(false);
+        emailField.setMouseTransparent(true);
         inputList = List.of(
-                userNameField,phoneNumberField
+                userNameField,phoneNumberField,emailField
         );
         //Trường label
         Text userNameLable = label.createText(225, 195, "Username");
         Text phoneNumberLable = label.createText(225, 245, "PhoneNumber");
+        Text emailCodeLable = label.createText(225, 295, "Email code");
         
         textLable = List.of(
-                userNameLable,phoneNumberLable
+                userNameLable,phoneNumberLable,emailCodeLable
         );
         // Nút gửi dữ liệu
         Button send = new Button();
@@ -86,41 +102,131 @@ public class ForgottenPasswordView extends Application {
         send.setLayoutY(340);
         send.setText("Send");
         send.getStyleClass().add("loginButton");
-        send.setOnMouseClicked(event -> {
+        send.setVisible(false);
+        
+        Button verity = new Button();
+        verity.setLayoutX(280);
+        verity.setLayoutY(340);
+        verity.setText("Verity");
+        verity.getStyleClass().add("loginButton");
+        
+        verity.setOnMouseClicked(event -> {
             String user = userNameField.getText();
             String phone = phoneNumberField.getText();
             fpc.setUsername(user);
             fpc.setPhonenumber(phone);
-            if (fpc.checkYesNo()) {
-                root.getChildren().clear();
-                window.setTitle("Re Password");
-                window.setScene(scene2(user,phone));
+            if (fpc.checkYesNo()!=null &&!fpc.checkYesNo().equals("")) {
+                emailField.setDisable(false);
+                emailField.setPromptText("Enter code");
+                emailField.setEditable(true);
+//                emailField.setFocusTraversable(true);
+                emailField.setMouseTransparent(false);
+                phoneNumberField.setEditable(false);
+                phoneNumberField.setFocusTraversable(false);
+                phoneNumberField.setMouseTransparent(true);
+                userNameField.setEditable(false);
+                userNameField.setFocusTraversable(false);
+                userNameField.setMouseTransparent(true);
+                User.setEmail(fpc.checkYesNo());
+                verity.setVisible(false);
+                send.setVisible(true);
+                code = Generate_confirmation_number.generate_number();
                 
+                isSending.setText("Sending email...");
+                isSending.setVisible(true);
+                new Thread(() -> {
+                    EmailApp.actionSendEmail(code);
+
+                    // Sau khi gửi xong thì cập nhật UI:
+                    Platform.runLater(() -> {
+                        isSending.setVisible(false);
+                        successLabel.setText("Confirmation email has been sent!");
+                        successLabel.setVisible(true);
+                    });
+                }).start();
+
+                    
             }
             else errorText.setVisible(true);
         });
-        
+        send.disableProperty().bind(
+            emailField.textProperty().isEmpty()
+        );
+
+        emailField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                String confirm = emailField.getText();
+                if(confirm.equals(code)){
+                    successLabel.setVisible(false);
+                    falseCode.setVisible(false);
+                    String user =userNameField.getText();
+                    String phone =phoneNumberField.getText();
+                    root.getChildren().clear();
+                    window.setTitle("Re-Password");
+                    window.setScene(scene2(user,phone));
+                }
+                else{
+                    successLabel.setVisible(false);
+                    falseCode.setVisible(true);
+                }
+            }
+        });
+        send.setOnAction(e->{
+            String confirm = emailField.getText();
+            if(confirm.equals(code)){
+                successLabel.setVisible(false);
+                falseCode.setVisible(false);
+                String user =userNameField.getText();
+                String phone =phoneNumberField.getText();
+                root.getChildren().clear();
+                window.setTitle("Re-Password");
+                window.setScene(scene2(user,phone));
+            }
+            else{
+                successLabel.setVisible(false);
+                falseCode.setVisible(true); 
+            }
+        });
+
         // Thiết lập thông báo lỗi
         errorText.setText(" ! <False> Can not find Username");
         errorText.setLayoutX(170);
         errorText.setLayoutY(400);
         errorText.getStyleClass().add("errorInput");
         errorText.setVisible(false);
+        
+        falseCode.setText(" ! <False> Your code incorrect");
+        falseCode.setLayoutX(170);
+        falseCode.setLayoutY(400);
+        falseCode.getStyleClass().add("errorInput");
+        falseCode.setVisible(false);
+        
+        
+        successLabel.setLayoutX(170);
+        successLabel.setLayoutY(400);
+        successLabel.setVisible(false);
+        successLabel.getStyleClass().add("successSend");
+        
+        isSending.setLayoutX(170);
+        isSending.setLayoutY(400);
+        isSending.setVisible(false);
+        isSending.getStyleClass().add("isSending");
         // Thêm dữ liệu  
         root.getChildren().addAll(imageList.get(1));
         root.getChildren().addAll(rectangleList);
-        root.getChildren().add(errorText);
+        root.getChildren().addAll(errorText,successLabel,isSending,falseCode);
         root.getChildren().addAll(circleList);
         root.getChildren().add(imageList.get(0));
         root.getChildren().addAll(inputList);
         root.getChildren().addAll(textLable);
         root.getChildren().addAll(send);
+        root.getChildren().addAll(verity);
         // Sét scene
         scene = new Scene(root, 600, 600);
         scene.getStylesheets().add(getClass().getResource("../../CSS/Style.css").toExternalForm());
-        window.setTitle("Fogot Password");
+        window.setTitle("Fogotten Password");
         window.getIcons().add(ImgFactory.getIcon());
-        window.setOnCloseRequest(e->{closeForget(window);});
+//        window.setOnCloseRequest(e->{closeForget(window);});
         window.setResizable(false);
         window.setScene(scene);
         window.show();
@@ -137,6 +243,8 @@ public class ForgottenPasswordView extends Application {
         List<TextField> inputList2;
         List<Text> textLable2;
         Text errorText1;
+        Text errorText2;
+        Text errorText3;
         ImageView bgfg;
         Pane root = new Pane();
         TextField passworField;
@@ -145,11 +253,23 @@ public class ForgottenPasswordView extends Application {
         //Hình nền
         bgfg = img.createImg(0, 0, 1, 736, 1040, 1, 1, "Image/bgfg.jpeg");
         //Báo lỗi
-        errorText1 = new Text(" ! <False>Hai mật khẩu không giống nhau");
+        errorText1 = new Text(" !<False>The two passwords are not the same");
         errorText1.setLayoutX(170);
         errorText1.setLayoutY(400);
         errorText1.getStyleClass().add("errorInput");
         errorText1.setVisible(false);
+        
+        errorText2 = new Text("! <False>Password cannot be blank!");
+        errorText2.setLayoutX(170);
+        errorText2.setLayoutY(400);
+        errorText2.getStyleClass().add("errorInput");
+        errorText2.setVisible(false);
+        
+        errorText3 = new Text(" ! <False>Error entering password!");
+        errorText3.setLayoutX(170);
+        errorText3.setLayoutY(400);
+        errorText3.getStyleClass().add("errorInput");
+        errorText3.setVisible(false);
         //Trường nhập mật khẩu
         passworField  = textField.createFieldData(225, 250, "Password", "loginFieldPass");
         passworField1  = textField.createFieldData(225, 300, "Password", "loginFieldPass");
@@ -171,11 +291,24 @@ public class ForgottenPasswordView extends Application {
         Finish.setOnMouseClicked(e->{
             String newpass = passworField.getText().trim();
             String newpass_again = passworField1.getText().trim();
-            if(newpass.equals(newpass_again)){
-                if(fpc.changePassword(username, phonenumber, newpass));
-                closeForget(window);
-            }           
-            else errorText1.setVisible(true);
+            if(newpass!=null && !newpass.isEmpty()){
+                if(newpass.equals(newpass_again)){
+                    if(checkInputData.isValidPassword(newpass)){
+                       if(fpc.changePassword(username, phonenumber, newpass));
+                        closeForget(window); 
+                    }
+                    else{
+                          errorText3.setVisible(true);
+                    }
+                }           
+                else{
+                    errorText1.setVisible(true);
+                }   
+            }
+            else{
+                 errorText2.setVisible(true);
+            }
+            
         });
         // Thêm dữ liệu
         root.getChildren().add(bgfg);

@@ -69,11 +69,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-effect: dropshadow(gaussian, rgba(44, 187, 99, 0.15), 8, 0.5, 0, 2);
     -fx-cursor: hand;
 }
-.errorInput{
-    -fx-fill:red;
+.errorInput {
+    -fx-fill: red; /* Màu chữ */
     -fx-font-family: "Verdana", sans-serif;
     -fx-font-size: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 6, 0, 3, 3); /* Đổ bóng tối */
 }
+.errorInput1 {
+    -fx-fill: red; /* Màu chữ sáng (trắng) */
+    -fx-font-family: "Verdana", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold; /* Làm chữ đậm */
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.7), 20, 0, 0, 0);/* Đổ bóng tối */
+}
+
 .textForget{
     -fx-fill: white;
     -fx-font-family: "Robot", sans-serif;
@@ -148,3 +157,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-border-color: red;
     -fx-border-width: 2px;
 }
+.isSending{
+    -fx-fill: white;        
+    -fx-font-size: 20px;     
+    -fx-font-weight: bold; 
+}
+.successSend{
+    -fx-fill: #00ff00;            
+    -fx-font-size: 17px;       
+    -fx-font-weight: bold;      
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 4, 0.5, 2, 2);
+}
+
+.button33 {
+    -fx-background-color: #0C4783;
+    -fx-background-radius: 100;
+    -fx-text-fill: white;
+    -fx-font-family: "CerebriSans-Regular", "Roboto", "sans-serif";
+    -fx-font-size: 16px;
+    -fx-padding: 5px 25px;
+    -fx-cursor: hand;
+
+    /* Hiệu ứng bóng nhẹ màu xanh nhạt */
+    -fx-effect: dropshadow(gaussian, rgba(90, 154, 214, 0.3), 10, 0.3, 0, 4);
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-rotate: 0;
+}
+
+.button33:hover {
+    -fx-background-color: #1D6FC1;
+    -fx-effect: dropshadow(gaussian, rgba(90, 154, 214, 0.5), 15, 0.5, 0, 5);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-rotate: -1;
+}
+.text-style {
+    -fx-fill: white; /* Màu chữ trắng */
+    -fx-font-size: 15px; /* Kích thước chữ lớn */
+    -fx-font-family: "Arial", sans-serif; /* Font chữ */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.5, 1, 1); /* Hiệu ứng drop shadow */
+}
+
+

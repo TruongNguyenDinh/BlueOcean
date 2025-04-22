@@ -12,9 +12,9 @@ package MainForm.Models;
  */
 public class UserTemps {
     private  String nickname,phone,address,email;
-    private  boolean gender;
+    private  Boolean gender;
     public UserTemps (){}
-    public UserTemps(String nickname,String phone,String address,boolean gender,String email){
+    public UserTemps(String nickname,String phone,String address,Boolean gender,String email){
         this.nickname = nickname;
         this.phone = phone;
         this.address = address;
@@ -39,7 +39,7 @@ public class UserTemps {
     public  String getAddress(){
         return address;
     }
-    public void setGender(boolean gender1){
+    public void setGender(Boolean gender1){
         this.gender = gender1;
     }
     public boolean getGender(){

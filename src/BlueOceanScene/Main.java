@@ -60,14 +60,15 @@ public class Main extends Application {
     private HBox title_bar;
     private Pane bulletin_boardPane;
     private VBox group2;
-    private Stage MainStage,stage;
+    private Stage MainStage;
+    private static Stage stage;
     private ReminderPanel reminderPanel;
     private final List<String> paths = new ArrayList<>();
     private final AnimationFx fx = new AnimationFx();
     public void setStage(Stage stage){
-        this.stage = stage;
+        Main.stage = stage;
     }
-    public Stage getStage() {
+    public static Stage getStage() {
         return stage;
     }
 

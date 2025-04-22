@@ -20,8 +20,10 @@ public class QuickLogin  {
     public QuickLogin(String string){
         this.terminal = string;
     }
-    public boolean checkQuickLogin (){
+    public boolean checkQuickLogin  (){
 //        System.out.println("username: ");
+        // /truong .quicklogin
+        // result = truong
         try{
             String[] parts = terminal.split("/");// tách chuỗi thành 2 mảng theo / [] và [xxxx]
             String result = parts[1].trim();
