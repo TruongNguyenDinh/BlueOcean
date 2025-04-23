@@ -38,10 +38,10 @@ public class FlappyBirdGame extends Canvas {
     private List<Pipe> pipes;
     
     // Game physics
-    private final int velocityX = -4;
+    private final int velocityX = -2;
     private double velocityY = 0; 
-    private final double gravity = 0.4; 
-    private final double jumpForce = -8.0;
+    private final double gravity = 0.2; 
+    private final double jumpForce = -5.0;
     
     // Game state
     private boolean gameOver = false;

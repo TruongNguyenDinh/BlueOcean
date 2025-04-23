@@ -137,17 +137,16 @@ public class PanelGame extends Canvas {
         timer.start();
     }
 
-    
-
+    private final int rocketsPerSide = 3;
     private void addRockets() {
         if (!player.isAlive()) return;
-
+        for(int i = 0;i < rocketsPerSide;i++){
         rockets.add(new Rocket(0, randY(), 0, 3));         // Left
         rockets.add(new Rocket(width, randY(), 180, 3));   // Right
         rockets.add(new Rocket(randX(), 0, 90, 3));        // Top
         rockets.add(new Rocket(randX(), height, 270, 3));  // Bottom
     }
-
+   }
     private int randX() {
         return rand.nextInt(width - 50) + 25;
     }

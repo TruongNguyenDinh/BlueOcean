@@ -1,3 +1,4 @@
+
 package game.main;
 
 import game.component.PanelGame;
@@ -82,7 +83,6 @@ public class MainRocketShoot extends Application {
 
         // Tạo các nút có âm thanh
         Button playBtn = createStyledButton("▶ Play", sound);
-        Button scoresBtn = createStyledButton("🏆 Ranking", sound);
         Button helpBtn = createStyledButton("❓ Help", sound);
         Button creditBtn = createStyledButton("👨‍💻 Credit", sound);
         Button exitBtn = createStyledButton("❌ Exit", sound);
@@ -93,11 +93,7 @@ public class MainRocketShoot extends Application {
             showGame();
         });
 
-        scoresBtn.setOnAction(e -> {
-            sound.soundClick();
-            showAlert("🏆 Ranking", "🚀 Top Players:\n\n1. Player1 - 5000 points\n2. Player2 - 4500 points\n3. Player3 - 4000 points\n\nFeature coming soon!");
-        });
-
+       
         helpBtn.setOnAction(e -> {
             sound.soundClick();
             showAlert("❓ Help", "🎮 How to Play:\n\n- Use 'A' and 'D' to move left and right.\n- Use 'W' to speed up.\n- Use 'J' to shoot bullets.\n- Use 'K' to launch rockets.\n\nSurvive as long as you can!");
@@ -113,7 +109,7 @@ public class MainRocketShoot extends Application {
             primaryStage.close();
         });
 
-        menuLayout.getChildren().addAll(title, playBtn, scoresBtn, helpBtn, creditBtn, exitBtn);
+        menuLayout.getChildren().addAll(title, playBtn , helpBtn, creditBtn, exitBtn);
 
         StackPane root = new StackPane();
         root.setBackground(new Background(backgroundImage));
@@ -171,4 +167,7 @@ public class MainRocketShoot extends Application {
 
         alert.showAndWait();
     }
+     public static void main(String[] args) {
+        launch(args);
+    } 
 }
