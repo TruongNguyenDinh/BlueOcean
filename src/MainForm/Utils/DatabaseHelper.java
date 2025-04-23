@@ -1,6 +1,8 @@
 package MainForm.Utils;
 
+import AlertPkg.AlertMain;
 import BlueOceanScene.Utils.ReminderPanel.Reminder;
+import LanguagePackage.LanguageManager;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 /**
  *
  * @author truong
@@ -96,7 +99,6 @@ public class DatabaseHelper {
         return rowsinserted > 0;
             
         }catch(SQLException e) {
-            System.err.println("Loi: " + e.getMessage());
             return false;
         }
         

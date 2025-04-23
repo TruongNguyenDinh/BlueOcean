@@ -28,17 +28,6 @@ CREATE TABLE notes (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 GO
--- Bảng lưu thông tin trận đấu
-CREATE TABLE game_matches (
-    match_id INT IDENTITY(1,1) PRIMARY KEY,
-    player1_id INT NOT NULL,
-    player2_id INT NOT NULL,
-    winner_id INT NULL, -- NULL nếu hòa
-    match_date DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (player1_id) REFERENCES users(user_id),
-    FOREIGN KEY (player2_id) REFERENCES users(user_id),
-    FOREIGN KEY (winner_id) REFERENCES users(user_id)
-);
 
 -- Bảng lưu điểm xếp hạng của người chơi
 CREATE TABLE player_rankings (
@@ -66,13 +55,6 @@ VALUES
 GO
 SELECT * FROM users;
 SELECT*FROM notes;
-DELETE FROM notes;
 
-DROP TABLE notes;
-DROP TABLE room_members;
-DROP TABLE messages;
-DROP TABLE files;
-
-DROP TABLE users;
 
 

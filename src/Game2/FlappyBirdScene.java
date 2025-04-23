@@ -198,22 +198,10 @@ public class FlappyBirdScene {
         Button rankingButton = createStyledButton("Xếp hạng");
         rankingButton.setOnAction(e -> showRankingScene());
 
-        Button resetHighScoreButton = createStyledButton("Cài lại điểm số");
-        resetHighScoreButton.setOnAction(e -> {
-            highScore = 0;
-            saveHighScore();
-        });
-
-        Button resetRankingsButton = createStyledButton("Reset Xếp Hạng");
-        resetRankingsButton.setOnAction(e -> {
-            db.resetRankings();
-            showRankingScene();
-        });
-
         Button exitButton = createStyledButton("Thoát");
         exitButton.setOnAction(e -> primaryStage.close());
 
-        menuBox.getChildren().addAll(titleLabel, welcomeLabel, startButton, rankingButton, resetHighScoreButton, resetRankingsButton, exitButton);
+        menuBox.getChildren().addAll(titleLabel, welcomeLabel, startButton, rankingButton, exitButton);
         root.getChildren().add(menuBox);
         menuScene = new Scene(root, boardWidth, boardHeight);
     }

@@ -66,16 +66,4 @@ public class RegistorController {
         return checkUsername()&&checkPassword()&&checkPhonenumber()&&checkFullname()
                 &&checkEmail()&&checkNickname();
     }
-    public static void main(String[] args){
-        String usernamE = "NhungNT";
-        String  passworD = "Truong123";
-        String fullnamE = "Ngu Thượng Nhung";
-        String phonenumbeR = "0362361299";
-        String nicknamE = "Ma Kiếm";
-        String emaiL = "Truong@gmai.com";
-        RegistorController a = new RegistorController(usernamE,passworD,phonenumbeR,emaiL,fullnamE,nicknamE);
-        boolean k = a.checkAllData();
-        boolean x = a.checkNickname();
-        System.out.print(x);
-    }
 }

@@ -91,7 +91,7 @@ public class RegisterView extends Application {
         
         agreeText = label.createText(320, 430,LanguageManager.get("register.agree"), roboto, "ffffff");
         
-        licenseText = label.createText(445, 430,LanguageManager.get("register.tal"), roboto, "ff0000");
+        licenseText = label.createText(480, 430,LanguageManager.get("register.tal"), roboto, "ff0000");
         licenseText.setStyle("-fx-cursor: hand;");
         licenseText.setOnMouseClicked(e -> TermsandLicense.openFile());
 
@@ -145,16 +145,24 @@ public class RegisterView extends Application {
                 if(rgc.checkAllData()){
                     errorSending.setVisible(false);
                     errorInput.setVisible(false);
-                    rgc.sendData();
-                    closeRegister(registorStage);
-                    AlertMain.showAlert(true,primaryStage,Alert.AlertType.INFORMATION, 
-                       LanguageManager.get("alert.titleOK"),
-                       LanguageManager.get("alert.conn"),
-                       LanguageManager.get("alert.success"));
+                    if(rgc.sendData()){
+                        closeRegister(registorStage);
+                        AlertMain.showAlert(true,primaryStage,Alert.AlertType.INFORMATION, 
+                           LanguageManager.get("alert.titleOK"),
+                           LanguageManager.get("alert.conn"),
+                           LanguageManager.get("alert.success"));
+                    }
+                    else{
+                       AlertMain.showAlert1(false,Alert.AlertType.ERROR, 
+                       LanguageManager.get("alert.titleK"),
+                       LanguageManager.get("alert.conn2"),
+                       LanguageManager.get("alert.false1"));
+                    }
+                    
                 }
                 else{
                     AlertMain.showAlert(false,primaryStage,Alert.AlertType.ERROR, 
-                       LanguageManager.get("alert.titleOK"),
+                       LanguageManager.get("alert.titleK"),
                        LanguageManager.get("alert.conn1"),
                        LanguageManager.get("alert.false"));
                     errorInput.setVisible(false);

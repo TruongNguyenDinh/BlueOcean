@@ -267,7 +267,7 @@ public class ReminderPanel {
         else{
             if(DatabaseHelper.testConnection()){
                 if(reminders !=null && !reminders.isEmpty()){
-                    for(Reminder r : reminders){
+                    for(Reminder r : reminders){ // for each
                         if (r.getId() == 0) {
                             // reminder mới, chưa có id -> insert
                             DatabaseHelper.saveNotes(id, r.getMessage(), r.getTime());

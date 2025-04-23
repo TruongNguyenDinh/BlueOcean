@@ -48,6 +48,31 @@ public class AlertMain{
             }
         });
     }
+    public static void showAlert1(boolean lock ,Alert.AlertType type, String title, String header, String content) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(type, content, ButtonType.OK);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+  
+            
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.setResizable(false);
+            alertStage.initStyle(StageStyle.UNDECORATED); // Kiểu nhỏ gọn, không có maximize/minimize
+            if (lock){
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        alertStage.close(); // Đóng cửa sổ Alert
+                    }
+                });
+            }
+            else{
+                alert.showAndWait().ifPresent(response -> {  
+                    if (response == ButtonType.OK)
+                    alertStage.close(); // Đóng cửa sổ Alert
+                });
+            }
+        });
+    }
     public static void checkLogOut(boolean lock,Stage ownerStage, Alert.AlertType type, String title, String header, String content) {
         Platform.runLater(() -> {
             Alert alert = new Alert(type, content, ButtonType.OK);

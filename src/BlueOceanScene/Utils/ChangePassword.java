@@ -129,8 +129,11 @@ public class ChangePassword extends Application {
         });
         
         VBox contentBox = new VBox(5); // khoảng cách giữa avt và container
+        Text username = new Text(User.getFullname());
+        username.setFill(Color.WHITE);
+        username.setFont(Font.FontManagement.GreVib(30));
         contentBox.setAlignment(Pos.CENTER);
-        contentBox.getChildren().addAll(groupavt, container,ok);
+        contentBox.getChildren().addAll(groupavt, username,container,ok);
         
         root.getChildren().addAll(rectBG,subrectBG,contentBox,er1,er2,er3);
 //        StackPane.setAlignment(container, Pos.CENTER);

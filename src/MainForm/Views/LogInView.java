@@ -134,17 +134,17 @@ public class LogInView extends Application {
         showPasswordButton.setLayoutY(220);
         showPasswordButton.getStyleClass().add("showpassbutton");
         //// Sự kiện bật/tắt hiển thị mật khẩu
-        showPasswordButton.setOnAction(event -> {
-            if (showPasswordButton.isSelected()) {
-                showandhide.setText(passwordField.getText());
-                showandhide.setVisible(true);
-                passwordField.setVisible(false);
-            } 
-            else{
-                passwordField.setText(showandhide.getText());
-                passwordField.setVisible(true);
-                showandhide.setVisible(false);
+        showPasswordButton.setOnAction(event->{
+            if(showPasswordButton.isSelected()){
+                   passwordField.setVisible(true);
+                   showandhide.setVisible(false);
+            
             }
+            else{
+            passwordField.setVisible(false);
+                   showandhide.setVisible(true);
+        }
+            
         });
         //// Đồng bộ mật khẩu giữa hai trường
         passwordField.textProperty().addListener((obs, oldText, newText) -> showandhide.setText(newText));

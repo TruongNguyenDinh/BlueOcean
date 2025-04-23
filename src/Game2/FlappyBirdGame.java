@@ -38,10 +38,10 @@ public class FlappyBirdGame extends Canvas {
     private List<Pipe> pipes;
     
     // Game physics
-    private final int velocityX = -4;
+    private final int velocityX = -2;
     private double velocityY = 0; 
-    private final double gravity = 0.4; 
-    private final double jumpForce = -8.0;
+    private final double gravity = 0.2; 
+    private final double jumpForce = -5.0;
     
     // Game state
     private boolean gameOver = false;
@@ -157,7 +157,7 @@ public class FlappyBirdGame extends Canvas {
         int pipeX = boardWidth;
         int pipeWidth = 64;
         int pipeHeight = 512;
-        
+        /////////////////////////////////////
         int openingSpace = 150;
         
         int minTopHeight = -350;
@@ -171,7 +171,10 @@ public class FlappyBirdGame extends Canvas {
         Pipe bottomPipe = new Pipe(bottomPipeImg, pipeX, bottomPipeY, pipeWidth, pipeHeight, false);
         pipes.add(bottomPipe);
     }
-    
+    public static int time() {
+        long millis = System.currentTimeMillis();
+        return (int) (millis / 5000); // Mỗi 5 giây tăng 1 đơn vị
+    }
     private void update() {
         if (gameOver) return;
         
